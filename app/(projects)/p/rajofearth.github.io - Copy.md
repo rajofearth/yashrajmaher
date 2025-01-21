@@ -1,3 +1,22 @@
+---
+layout: projects
+title: "Rajofearth.github.io"
+description: "Yashraj Maher's personal website showcasing my projects, blogs, and more."
+tags: [blog, personal-website]
+permalink: /projects/rajofearth.github.io/
+---
+ <div class="bgGradientMaskSide"></div>
+  <h1><a href="javascript:history.back()" class="back-btn"><--</a
+  >Projects</h1>
+  <nav style="justify-content: center; padding-top: 20px;">
+    <a href="/">Home</a>
+    <a href="/blog/">Blog</a>
+    <a href="/projects/">Projects</a>
+    <a href="/about.html">About</a>
+    <!-- Add other navigation links as needed -->
+  </nav>
+  
+
 # Yashraj Maher's Personal Website
 
 Welcome to my personal website repository! This retro-futuristic website serves as a hub for my projects, blogs, and more. You can visit the website [here](https://rajofearth.github.io).
@@ -16,11 +35,15 @@ This is my personal website where I showcase my projects, share my thoughts thro
 ## Features
 - Project showcases
 - Blog posts
+- Newsletter Signup form
+- Responsive design
 
 ## Technologies Used
-- Nextjs
-- Tailwindcss
-- Shadcn/ui
+- HTML
+- CSS
+- JavaScript
+- Jekyll Static Site Generator
+- Mailchimp Services
 
 ## Usage
 Simply visit [my website](https://rajofearth.github.io) to explore my projects and blogs.
