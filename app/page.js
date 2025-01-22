@@ -4,6 +4,7 @@ import ProjectCard from "./components/ProjectCard";
 import { getProjects } from "./utils/getProjects";
 import BlogCard from './components/BlogCard';
 import { getBlogs } from './utils/getBlogs';
+import Link from 'next/link'
 
 export default function Home() {
   const projects = getProjects();
@@ -23,9 +24,9 @@ export default function Home() {
       <div className="w-full mt-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl">Projects</h2>
-          <button className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">
+          <Link href="/projects" className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">
             Show More
-          </button>
+          </Link>
         </div>
         <div className="flex overflow-x-auto space-x-4 pb-4">
           {projects.map((project, index) => (
@@ -33,26 +34,30 @@ export default function Home() {
               <ProjectCard 
                 title={project.title}
                 description={project.description}
+                rawTitle={project.rawTitle}
+                slug={project.slug}
               />
             </div>
           ))}
         </div>
       </div>
-            {/* Blogs Section */}
-            <div className="w-full mt-8">
+    {/* Blogs Section */}
+    <div className="w-full mt-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl">Blog Posts</h2>
-          <button className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">
+          <Link href="/blog" className="px-4 py-2 text-sm bg-gray-100 rounded-lg hover:bg-gray-200">
             Show More
-          </button>
+          </Link>
         </div>
-        <div className="flex overflow-x-auto space-x-4 pb-4">
+	<div className="flex overflow-x-auto space-x-4 pb-4">
           {blogs.map((blog, index) => (
             <div key={index} className="flex-none w-64">
               <BlogCard 
                 title={blog.title}
                 date={blog.date}
                 description={blog.description}
+                rawTitle = {blog.rawTitle}
+	              slug={blog.slug}
               />
             </div>
           ))}

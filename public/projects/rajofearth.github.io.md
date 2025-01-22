@@ -1,21 +1,8 @@
 ---
-layout: projects
 title: "Rajofearth.github.io"
 description: "Yashraj Maher's personal website showcasing my projects, blogs, and more."
 tags: [blog, personal-website]
-permalink: /projects/rajofearth.github.io/
 ---
- <div class="bgGradientMaskSide"></div>
-  <h1><a href="javascript:history.back()" class="back-btn"><--</a
-  >Projects</h1>
-  <nav style="justify-content: center; padding-top: 20px;">
-    <a href="/">Home</a>
-    <a href="/blog/">Blog</a>
-    <a href="/projects/">Projects</a>
-    <a href="/about.html">About</a>
-    <!-- Add other navigation links as needed -->
-  </nav>
-  
 
 # Yashraj Maher's Personal Website
 

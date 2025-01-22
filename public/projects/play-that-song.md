@@ -1,22 +1,8 @@
 ---
-layout: projects
 title: "Play-that-song"
 description: "A Python-powered, terminal-based MP3 player designed for simplicity and customization. Enjoy a lightweight music experience with easy-to-use controls, all within the command line."
 tags: [cli-music-player, music-player, python, terminal-app]
-permalink: /projects/play-that-song/
 ---
- <div class="bgGradientMaskSide"></div>
-  <h1><a href="javascript:history.back()" class="back-btn"><--</a
-  >Projects</h1>
-  <nav style="justify-content: center; padding-top: 20px;">
-    <a href="/">Home</a>
-    <a href="/blog/">Blog</a>
-    <a href="/projects/">Projects</a>
-    <a href="/about.html">About</a>
-    <!-- Add other navigation links as needed -->
-  </nav>
-  
-
 # Play That Song
 
 **Play That Song** is a terminal-based MP3 player built with Python, utilizing `pygame`, `curses`, and `mutagen`. It features keyboard controls for playback, volume adjustment, seeking within tracks, shuffle, repeat modes, and a customizable text-based interface. The player can display song metadata and switch between music directories during runtime. Installation instructions are provided for Linux, macOS, and Windows.

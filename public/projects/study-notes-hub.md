@@ -1,21 +1,8 @@
 ---
-layout: projects
 title: "Study-notes-hub"
 description: "Study Notes Hub is a user-friendly platform offering quick access to study materials with a sleek design using HTML, CSS, and Tailwind CSS, featuring embedded PDF viewing and easy downloads."
 tags: [pdf-viewer, responsive-design, study-notes, tailwind-css, website]
-permalink: /projects/study-notes-hub/
 ---
- <div class="bgGradientMaskSide"></div>
-  <h1><a href="javascript:history.back()" class="back-btn"><--</a
-  >Projects</h1>
-  <nav style="justify-content: center; padding-top: 20px;">
-    <a href="/">Home</a>
-    <a href="/blog/">Blog</a>
-    <a href="/projects/">Projects</a>
-    <a href="/about.html">About</a>
-    <!-- Add other navigation links as needed -->
-  </nav>
-  
 
 # 📚 Study Notes Hub
 
