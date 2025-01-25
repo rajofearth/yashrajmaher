@@ -5,7 +5,7 @@ import matter from 'gray-matter';
 import truncateText from './truncateText.js';
 
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+?^${}()|[\]\\/']/g, '\\$&');
 }
 
 export function getBlogs(searchQuery = '') {

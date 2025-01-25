@@ -33,6 +33,7 @@ export default function Home() {
             <div key={index} className="flex-none w-64">
               <ProjectCard 
                 title={project.title}
+                date={project.date}
                 description={project.description}
                 rawTitle={project.rawTitle}
                 slug={project.slug}

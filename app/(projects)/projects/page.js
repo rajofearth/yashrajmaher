@@ -2,6 +2,13 @@ import ProjectCard from '../../components/ProjectCard';
 import { getProjects } from '../../utils/getProjects';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { generateMetadata } from '../../../lib/metadata';
+
+export const metadata = generateMetadata({
+  title: "Projects",
+  description: "Explore my portfolio of projects and technical work"
+});
+
 
 export default function Project({ searchParams }) {
   const searchQuery = searchParams?.q?.trim() || '';
@@ -32,16 +39,20 @@ export default function Project({ searchParams }) {
       </form>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-4">
-        {projects.map((project, index) => (
-          <div key={index} className="flex-auto">
+        {projects.length > 0 ? (
+          projects.map((project, index) => (
             <ProjectCard 
+              key={index}
               title={project.title}
               description={project.description}
+              date={project.date}
               rawTitle={project.rawTitle}
               slug={project.slug}
             />
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-gray-500 text-center col-span-full">No projects found matching your search.</p>
+        )}
       </div>
     </div>
   );

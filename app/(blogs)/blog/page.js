@@ -2,6 +2,12 @@ import BlogCard from '../../components/BlogCard';
 import { getBlogs } from '../../utils/getBlogs';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { generateMetadata } from '../../../lib/metadata';
+
+export const metadata = generateMetadata({
+  title: "Blog",
+  description: "Explore my thoughts, stories and ideas through my blog posts"
+});
 
 export default function Blog({ searchParams }) {
   const searchQuery = searchParams?.q?.trim() || '';
@@ -33,17 +39,20 @@ export default function Blog({ searchParams }) {
       </form>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pb-4">
-        {blogs.map((blog, index) => (
-          <div key={index} className="flex-auto">
+        {blogs.length > 0 ? (
+          blogs.map((blog, index) => (
             <BlogCard 
+              key={index}
               title={blog.title}
               date={blog.date}
               description={blog.description}
-	      rawTitle = {blog.rawTitle}
-	      slug={blog.slug}
-            />
-          </div>
-        ))}
+	           rawTitle = {blog.rawTitle}
+	           slug={blog.slug}
+            /> 
+        ))
+      ) : (
+       <p className="text-gray-500 text-center col-span-full">No posts found matching your search.</p>
+        )}
       </div>
     </div>
   );

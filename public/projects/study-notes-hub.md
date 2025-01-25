@@ -1,6 +1,7 @@
 ---
 title: "Study-notes-hub"
 description: "Study Notes Hub is a user-friendly platform offering quick access to study materials with a sleek design using HTML, CSS, and Tailwind CSS, featuring embedded PDF viewing and easy downloads."
+date: 2024-03-25
 tags: [pdf-viewer, responsive-design, study-notes, tailwind-css, website]
 ---
 

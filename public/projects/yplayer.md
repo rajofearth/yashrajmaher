@@ -1,6 +1,7 @@
 ---
 title: "Yplayer"
 description: "YPlayer is a sleek, responsive web-based music player that lets users effortlessly upload, manage, and enjoy their music files. With features like automatic playback and dynamic album art, it delivers a great experience on both desktop and mobile."
+date: 2024-01-02
 tags: [music, music-player, responsive-web-design, webapp]
 ---
 

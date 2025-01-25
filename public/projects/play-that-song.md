@@ -1,6 +1,7 @@
 ---
 title: "Play-that-song"
 description: "A Python-powered, terminal-based MP3 player designed for simplicity and customization. Enjoy a lightweight music experience with easy-to-use controls, all within the command line."
+date: 2024-09-25
 tags: [cli-music-player, music-player, python, terminal-app]
 ---
 # Play That Song

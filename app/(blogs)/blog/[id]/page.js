@@ -8,6 +8,48 @@ import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { generateMetadata as baseGenerateMetadata } from '../../../../lib/metadata';
+
+// Improved filename lookup with debug logging
+function getFileNameFromSlug(slug, postsDirectory) {
+    try {
+        const files = fs.readdirSync(postsDirectory);
+        console.debug('Available files:', files); // Debug
+        
+        const cleanSlug = slug.toLowerCase().replace(/[^\w-]/g, '').replace(/'/g, '');
+        console.debug('Cleaned slug:', cleanSlug); // Debug
+
+        const match = files.find(file => {
+            const base = path.basename(file, '.md');
+            const cleanedFile = base.toLowerCase().replace(/[^\w-]/g, '');
+            return cleanedFile === cleanSlug;
+        });
+
+        console.debug('Matched file:', match); // Debug
+        return match || null;
+    } catch (error) {
+        console.error('Directory read error:', error);
+        return null;
+    }
+}
+
+export async function generateMetadata({ params }) {
+    const { id } = params;
+    const postsDirectory = path.join(process.cwd(), 'public', 'Bposts');
+    const filename = getFileNameFromSlug(id, postsDirectory);
+
+    let title = 'Default Title';
+    let description = 'Default Description';
+
+    if (filename) {
+        const fileContent = fs.readFileSync(path.join(postsDirectory, filename), 'utf8');
+        const { data: frontmatter } = matter(fileContent);
+        title = frontmatter.title || title;
+        description = frontmatter.description || description;
+    }
+
+    return baseGenerateMetadata({ title, description });
+}
 
 export default async function BlogPost({ params }) {
     const { id } = params;
@@ -59,30 +101,15 @@ export default async function BlogPost({ params }) {
             {frontmatter.description && (
                 <p className="text-lg text-gray-800 mb-4">{frontmatter.description}</p>
             )}
-<div className='prose prose-lg prose-slate max-w-none'>
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm, remarkBreaks]}
-    rehypePlugins={[rehypeRaw]}
-    components={{
-      img: ({ node, ...props }) => (
-        <img {...props} className="rounded-lg shadow-lg" alt={props.alt || ''} />
-      ),
-      a: ({ node, ...props }) => (
-        <a {...props} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer" />
-      ),
-      code: ({ node, inline, className, children, ...props }) => {
-        if (inline) {
-          return <code className="bg-gray-100 px-1.5 py-0.5 rounded" {...props}>{children}</code>;
-        }
-        return <pre className="bg-gray-100 p-4 rounded-lg overflow-x-auto">
-          <code className={className} {...props}>{children}</code>
-        </pre>
-      }
-    }}
-  >
-    {content}
-  </ReactMarkdown>
-</div>
+            {/* Content Section */}
+            <div className="prose prose-lg prose-slate max-w-none dark:prose-invert">
+                <ReactMarkdown
+                    remarkPlugins={[remarkGfm, remarkBreaks]}
+                    rehypePlugins={[rehypeRaw]}
+                >
+                    {content}
+                </ReactMarkdown>
+            </div>
         </div>
     );
 }
@@ -101,27 +128,4 @@ function renderError(message, slug = '') {
             {slug && <p className="text-sm text-gray-600 mt-2">Slug: {slug}</p>}
         </div>
     );
-}
-
-// Improved filename lookup with debug logging
-function getFileNameFromSlug(slug, postsDirectory) {
-    try {
-        const files = fs.readdirSync(postsDirectory);
-        console.debug('Available files:', files); // Debug
-        
-        const cleanSlug = slug.toLowerCase().replace(/[^\w-]/g, '');
-        console.debug('Cleaned slug:', cleanSlug); // Debug
-
-        const match = files.find(file => {
-            const base = path.basename(file, '.md');
-            const cleanedFile = base.toLowerCase().replace(/[^\w-]/g, '');
-            return cleanedFile === cleanSlug;
-        });
-
-        console.debug('Matched file:', match); // Debug
-        return match || null;
-    } catch (error) {
-        console.error('Directory read error:', error);
-        return null;
-    }
 }
