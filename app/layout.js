@@ -1,5 +1,6 @@
 import { Delicious_Handrawn } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react"
 
 const deliciousHandrawn = Delicious_Handrawn({
   subsets: ["latin"],
@@ -15,6 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+<Analytics/>
       <body className={`${deliciousHandrawn.variable} font-delicious antialiased m-10`}>
         {children}
       </body>
