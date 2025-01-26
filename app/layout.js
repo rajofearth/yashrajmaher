@@ -1,6 +1,7 @@
 import { Delicious_Handrawn } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react"
+import AdSense from "./components/AdSense"
 
 const deliciousHandrawn = Delicious_Handrawn({
   subsets: ["latin"],
@@ -16,7 +17,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-<Analytics/>
+      <Analytics/>
+      <AdSense pId="ca-pub-7126360642599717"/>
       <body className={`${deliciousHandrawn.variable} font-delicious antialiased m-10`}>
         {children}
       </body>
