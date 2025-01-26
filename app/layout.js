@@ -17,8 +17,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <AdSense pId="ca-pub-7126360642599717"/>
+        <meta name="google-adsense-account" content="ca-pub-7126360642599717">
+      </head>
       <Analytics/>
-      <AdSense pId="ca-pub-7126360642599717"/>
       <body className={`${deliciousHandrawn.variable} font-delicious antialiased m-10`}>
         {children}
       </body>
