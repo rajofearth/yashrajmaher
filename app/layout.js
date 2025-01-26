@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <AdSense pId="ca-pub-7126360642599717"/>
-        <meta name="google-adsense-account" content="ca-pub-7126360642599717">
+        <meta name="google-adsense-account" content="ca-pub-7126360642599717"/>
       </head>
       <Analytics/>
       <body className={`${deliciousHandrawn.variable} font-delicious antialiased m-10`}>
