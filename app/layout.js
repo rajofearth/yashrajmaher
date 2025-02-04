@@ -1,12 +1,16 @@
-import { Delicious_Handrawn } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react"
-import AdSense from "./components/AdSense"
+import { Analytics } from "@vercel/analytics/react";
+import AdSense from "./components/AdSense";
+import { Inter, Space_Grotesk } from "next/font/google";
 
-const deliciousHandrawn = Delicious_Handrawn({
+const inter = Inter({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-delicious-handrawn",
+  variable: "--font-inter",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
 });
 
 export const metadata = {
@@ -18,11 +22,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <AdSense pId="ca-pub-7126360642599717"/>
-        <meta name="google-adsense-account" content="ca-pub-7126360642599717"/>
+        <AdSense pId="ca-pub-7126360642599717" />
+        <meta name="google-adsense-account" content="ca-pub-7126360642599717" />
       </head>
-      <Analytics/>
-      <body className={`${deliciousHandrawn.variable} font-delicious antialiased m-10`}>
+      <Analytics />
+      <body className={`${inter.variable} ${spaceGrotesk.variable}`}>
         {children}
       </body>
     </html>

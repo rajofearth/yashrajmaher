@@ -25,7 +25,7 @@ function getFileNameFromSlug(slug, projectsDirectory) {
 }
 
 export async function generateMetadata({ params }) {
-    const { id } = params;
+    const { id } = await params;
     const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
     const filename = getFileNameFromSlug(id, projectsDirectory);
 
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProjectPost({ params }) {
-    const { id } = params;
+    const { id } = await params;
     const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
 
     if (!fs.existsSync(projectsDirectory)) {

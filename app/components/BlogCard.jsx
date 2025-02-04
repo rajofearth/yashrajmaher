@@ -2,21 +2,32 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 
 export default function BlogCard({ title, date, description, slug }) {
-  const formattedDate = date instanceof Date ? format(date, 'MMMM d, yyyy') : date;
+  const formattedDate = date ? format(new Date(date), 'MMMM d, yyyy') : null;
 
   return (
-    <Link href={`/blog/${slug}`}>
-    <div className="w-full p-4 mb-4 border rounded-lg hover:border-gray-400 transition-colors">
-      <h3 
-        className="text-xl font-medium mb-2"
-        dangerouslySetInnerHTML={{ __html: title }}
-      />
-      <p className="text-sm text-gray-600 mb-2">{formattedDate}</p>
-      <p 
-        className="text-sm text-gray-600"
-        dangerouslySetInnerHTML={{ __html: description }}
-      />
-    </div>
+    <Link href={`/blog/${slug || "#"}`} aria-label={`Read blog post: ${title || "Untitled Blog"}`}>
+      <div className="w-full p-5 mb-6 border rounded-2xl hover:shadow-md hover:border-gray-500 bg-white transition-all cursor-pointer">
+        <div className="space-y-3">
+          {/* Title with proper dangerouslySetInnerHTML usage */}
+          <h3 
+            className="text-xl font-semibold text-gray-800 truncate"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+
+          {/* Date */}
+          {formattedDate && (
+            <time className="block text-sm text-gray-500" dateTime={date}>
+              {formattedDate}
+            </time>
+          )}
+
+          {/* Description with proper dangerouslySetInnerHTML usage */}
+          <p 
+            className="text-base text-gray-700 line-clamp-3"
+            dangerouslySetInnerHTML={{ __html: description }}
+          />
+        </div>
+      </div>
     </Link>
   );
 }
