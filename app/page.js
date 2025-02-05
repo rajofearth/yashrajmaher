@@ -32,6 +32,15 @@ export default function Home() {
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Projects</h2>
+            {projects.length > 0 && projects.length <= 6 && (
+              <Link
+                href="/projects"
+                className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150 group"
+              >
+                See More
+                <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
+              </Link>
+            )}
           </div>
           <div className="relative">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -47,18 +56,14 @@ export default function Home() {
               ))}
             </div>
             {projects.length > 6 && (
-              <div className="mt-4 relative">
-                {/* Gradient overlay */}
-                <div className="h-16 bg-gradient-to-t from-white to-transparent"></div>
-                <div className="absolute inset-0 flex items-end justify-center">
-                  <Link
-                    href="/projects"
-                    className="mb-2 inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    See More
-                    <ArrowRight className="ml-1 w-4 h-4" />
-                  </Link>
-                </div>
+              <div className="mt-4 text-center">
+                <Link
+                  href="/projects"
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300 transition-all duration-150 group"
+                >
+                  See More
+                  <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
+                </Link>
               </div>
             )}
           </div>
@@ -68,6 +73,15 @@ export default function Home() {
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-gray-800">Blog Posts</h2>
+            {blogs.length > 0 && blogs.length <= 6 && (
+              <Link
+                href="/blog"
+                className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150 group"
+              >
+                See More
+                <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
+              </Link>
+            )}
           </div>
           <div className="relative">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -83,18 +97,14 @@ export default function Home() {
               ))}
             </div>
             {blogs.length > 6 && (
-              <div className="mt-4 relative">
-                {/* Gradient overlay */}
-                <div className="h-16 bg-gradient-to-t from-white to-transparent"></div>
-                <div className="absolute inset-0 flex items-end justify-center">
-                  <Link
-                    href="/blog"
-                    className="mb-2 inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
-                  >
-                    See More
-                    <ArrowRight className="ml-1 w-4 h-4" />
-                  </Link>
-                </div>
+              <div className="mt-4 text-center">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300 transition-all duration-150 group"
+                >
+                  See More
+                  <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
+                </Link>
               </div>
             )}
           </div>

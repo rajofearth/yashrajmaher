@@ -18,7 +18,6 @@ export default function ProjectCard({ title, description, date, slug }) {
             <time className="block text-sm text-gray-500" dateTime={date}>
               {formattedDate}
             </time>
-            /* Date */
           )}
 
           {/* Description with proper dangerouslySetInnerHTML */}

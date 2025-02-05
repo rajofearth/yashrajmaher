@@ -24,9 +24,9 @@ export default async function Project({ searchParams }) {
             <div>
               <Link 
                 href="/" 
-                className="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors mb-4 md:mb-0"
+                className="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors mb-4 md:mb-0 group"
               >
-                <ArrowLeft className="w-5 h-5 mr-1 transition-transform duration-150 hover:-translate-x-1" />
+                <ArrowLeft className="w-5 h-5 mr-1 transition-transform duration-150 group-hover:-translate-x-1" />
                 Back Home
               </Link>
               <h1 className="text-4xl font-bold mb-2 tracking-tight">

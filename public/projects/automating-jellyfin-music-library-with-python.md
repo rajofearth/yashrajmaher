@@ -1,7 +1,7 @@
 ---  
 title: "How I Automated My Jellyfin Music Library Cleanup with Python"  
+date: 2024-10-27
 description: "Frustrated by Jellyfin’s metadata quirks, I built a script to enforce album-per-folder rules, sanitize filenames, and fix missing cover art." 
-date: 2024-03-25
 tags: [automation, jellyfin, music, python, metadata]  
 ---  
 
