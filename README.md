@@ -23,14 +23,10 @@ This is my personal website where I showcase my projects, share my thoughts thro
 - Shadcn/ui
 
 ## Usage
-Simply visit [my website](https://rajofearth.github.io) to explore my projects and blogs.
+Simply visit [my website](https://yashrajmaher.vercel.app) to explore my projects and blogs.
 
 ## License
-This project is licensed under a custom license. All rights reserved. Unauthorized use, copying, or distribution of this website's content in any form is strictly prohibited.
+This project is licensed under a custom license. All rights reserved. Unauthorized use, copying, or distribution of this website's content in any form is strictly prohibited. 
 
 ## Contact
 You can reach me through [GitHub](https://github.com/rajofearth) or [Instagram](instagram.com/yashraj.maher).
-
-Thank you for visiting my website!
-
-This README makes it clear that your content should not be copied or used without permission. Let me know if there's anything else you'd like to add or change!
