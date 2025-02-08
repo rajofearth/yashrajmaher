@@ -9,111 +9,137 @@ import rehypeRaw from 'rehype-raw';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { generateMetadata as baseGenerateMetadata } from '../../../../lib/metadata';
+import { getFileFromSlug } from '../../../utils/getFileFromSlug';
+import ErrorPage from '../../../components/ErrorPage';
 
-function getFileNameFromSlug(slug, projectsDirectory) {
-    try {
-        const files = fs.readdirSync(projectsDirectory);
-        const cleanSlug = slug.toLowerCase().replace(/[^\w-]/g, '');
-        return files.find(file => {
-            const base = path.basename(file, '.md');
-            return base.toLowerCase().replace(/[^\w-]/g, '') === cleanSlug;
-        }) || null;
-    } catch (error) {
-        console.error('Error reading directory:', error);
-        return null;
-    }
-}
+const PROJECT_POSTS_DIR = path.join(process.cwd(), 'public', 'projects');
 
-export async function generateMetadata({ params }) {
-    const { id } = await params;
-    const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
-    const filename = getFileNameFromSlug(id, projectsDirectory);
+// Re-use the DESIGN_SYSTEM from the blog post page
+const DESIGN_SYSTEM = {
+  container: 'max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl mx-auto px-4 py-12',
+  prose: 'prose prose-gray max-w-none dark:prose-invert lg:prose-lg',
+  header: 'pb-8 mb-8 border-b border-gray-200 dark:border-gray-700',
+  title: 'text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-4',
+  date: 'text-lg text-gray-500 block mb-3',
+  description: 'text-xl text-gray-600 leading-relaxed mt-6',
+  backButton: 'group inline-flex items-center text-gray-500 hover:text-gray-800 transition-colors mb-8',
+  imageWrapper: 'not-prose my-8', // Keep this for consistency if you add images later
+};
 
-    let title = 'Default Title';
-    let description = 'Default Description';
-
-    if (filename) {
-        const fileContent = fs.readFileSync(path.join(projectsDirectory, filename), 'utf8');
-        const { data: frontmatter } = matter(fileContent);
-        title = frontmatter.title || title;
-        description = frontmatter.description || description;
-    }
-
-    return baseGenerateMetadata({ title, description });
-}
-
-export default async function ProjectPost({ params }) {
-    const { id } = await params;
-    const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
-
-    if (!fs.existsSync(projectsDirectory)) {
-        return renderError('Project directory not found');
-    }
-
-    const filename = getFileNameFromSlug(id, projectsDirectory);
-    if (!filename) {
-        return renderError('Project not found', id);
-    }
-
-    const filePath = path.join(projectsDirectory, filename);
-    let fileContent;
-    try {
-        fileContent = fs.readFileSync(filePath, 'utf8');
-    } catch (error) {
-        console.error('Error reading file:', error);
-        return renderError('Error loading project', id);
-    }
-
-    const { data: frontmatter = {}, content = '' } = matter(fileContent);
-
-    if (!frontmatter.title) {
-        return renderError('Invalid project format', id);
-    }
-    // 6. Format date safely
-    const formattedDate = frontmatter.date ? 
-        format(new Date(frontmatter.date), 'MMMM d, yyyy') : 
-        'No date specified';
-
-return (
-    <div className="max-w-3xl mx-auto py-8">
-        {/* Title and Description Section */}
-        <div className="mb-8 bg-gray-100 p-6 rounded-lg shadow-lg">
-            <div className="flex items-center gap-4">
-                <Link href="/projects" className="p-2 hover:bg-gray-200 rounded-full">
-                    <ArrowLeft className="w-6 h-6" />
-                </Link>
-                <h1 className="text-5xl font-bold text-gray-900">{frontmatter.title}</h1>
-            </div>
-            <p className="text-sm text-gray-600 mb-4">{formattedDate}</p>
-            {frontmatter.description && (
-                <p className="text-lg text-gray-700 mt-4">{frontmatter.description}</p>
-            )}
-        </div>
-        {/* Content Section */}
-        <div className="prose prose-lg prose-slate max-w-none dark:prose-invert">
-            <ReactMarkdown
-                remarkPlugins={[remarkGfm, remarkBreaks]}
-                rehypePlugins={[rehypeRaw]}
-            >
-                {content}
-            </ReactMarkdown>
-        </div>
+// Custom image component (same as blog post page, for consistency)
+const MarkdownImage = ({ src, alt }) => (
+    <div className={DESIGN_SYSTEM.imageWrapper}>
+        <img
+            src={src}
+            alt={alt}
+            className="mx-auto rounded-lg shadow-lg"
+            style={{
+                maxWidth: 'min(90%, 1024px)',
+                height: 'auto',
+                width: 'auto',
+            }}
+        />
+        {alt && <figcaption className="text-center text-sm text-gray-500 mt-2">{alt}</figcaption>}
     </div>
 );
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const filename = getFileFromSlug(id, PROJECT_POSTS_DIR);
+
+  let title = 'Default Title';
+  let description = 'Default Description';
+
+  if (filename) {
+    const fileContent = fs.readFileSync(path.join(PROJECT_POSTS_DIR, filename), 'utf8');
+    const { data: frontmatter } = matter(fileContent);
+    title = frontmatter.title || title;
+    description = frontmatter.description || description;
+  }
+
+  return baseGenerateMetadata({ title, description });
 }
 
-function renderError(message, slug = '') {
-    return (
-        <div className="max-w-3xl mx-auto py-8">
-            <div className="flex items-center gap-4 mb-6">
-                <Link href="/projects" className="p-2 hover:bg-gray-100 rounded-full">
-                    <ArrowLeft className="w-6 h-6" />
-                </Link>
-                <h1 className="text-4xl font-bold">Error</h1>
-            </div>
-            <p className="text-red-600">{message}</p>
-            {slug && <p className="text-sm text-gray-600 mt-2">Slug: {slug}</p>}
+export default async function ProjectPost({ params }) {
+  const { id } = await params;
+
+  if (!fs.existsSync(PROJECT_POSTS_DIR)) {
+    return <ErrorPage title="Project directory not found" message="Project directory not found" backLink="/projects" />;
+  }
+
+  const filename = getFileFromSlug(id, PROJECT_POSTS_DIR);
+  if (!filename) {
+    return <ErrorPage title="Project not found" message="Project not found" slug={id} backLink="/projects" />;
+  }
+
+  const filePath = path.join(PROJECT_POSTS_DIR, filename);
+  let fileContent;
+  try {
+    fileContent = fs.readFileSync(filePath, 'utf8');
+  } catch (error) {
+    console.error('Error reading file:', error);
+    return <ErrorPage title="Error loading project" message="Error loading project" slug={id} backLink="/projects" />;
+  }
+
+  const { data: frontmatter = {}, content = '' } = matter(fileContent);
+  if (!frontmatter.title) {
+    return <ErrorPage title="Invalid project format" message="Invalid project format" slug={id} backLink="/projects" />;
+  }
+
+  const formattedDate = frontmatter.date
+    ? format(new Date(frontmatter.date), 'MMMM d, yyyy')
+    : 'No date specified';
+
+  return (
+    <div className={DESIGN_SYSTEM.container}>
+      <Link href="/projects" className={DESIGN_SYSTEM.backButton}>
+        <ArrowLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
+        All Projects
+      </Link>
+      <header className={DESIGN_SYSTEM.header}>
+        <h1 className={DESIGN_SYSTEM.title}>{frontmatter.title}</h1>
+        <time className={DESIGN_SYSTEM.date} dateTime={frontmatter.date}>
+          {formattedDate}
+        </time>
+        {frontmatter.description && (
+          <p className={DESIGN_SYSTEM.description}>
+            {frontmatter.description}
+          </p>
+        )}
+      </header>
+      <article>
+        <div className={DESIGN_SYSTEM.prose}>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+            rehypePlugins={[rehypeRaw]}
+              components={{
+                  a: ({ node, ...props }) => (
+                      <a {...props} className="text-gray-600 hover:text-gray-800 underline transition-colors" />
+                  ),
+                  code: ({ node, inline, className, children, ...props }) => (
+                      <code
+                          {...props}
+                          className={`${className || ''} ${inline ? 'px-1.5 py-0.5' : 'p-4 block overflow-x-auto'
+                              } bg-gray-50 rounded-md text-sm`}
+                      >
+                          {children}
+                      </code>
+                  ),
+                  img: MarkdownImage,
+                  div: ({ node, ...props }) => (
+                      <div {...props} className="max-w-full" />
+                  ),
+                  table: ({ node, ...props }) => (
+                      <div className="overflow-x-auto">
+                          <table {...props} className="w-full" />
+                      </div>
+                  )
+              }}
+          >
+            {content}
+          </ReactMarkdown>
         </div>
-    );
+      </article>
+    </div>
+  );
 }

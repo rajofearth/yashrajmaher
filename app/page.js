@@ -28,6 +28,22 @@ export default function Home() {
           <Socials className="mt-6" />
         </div>
 
+        {/* Navigation Links */}
+        <div className="mt-8 flex justify-center space-x-6">
+          <Link
+            href="/about"
+            className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150"
+          >
+            About Me
+          </Link>
+          <Link
+            href="/privacy"
+            className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+
         {/* Projects Section */}
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
