@@ -7,7 +7,10 @@ export default function About() {
     <div className="min-h-screen bg-white text-gray-800">
       {/* Header */}
       <header className="max-w-6xl mx-auto px-6 py-10 relative">
-        <Link href="/" className="absolute left-0 top-10 flex items-center gap-2 text-lg font-semibold text-gray-600 hover:text-gray-800 transition-transform duration-300">
+        <Link
+          href="/"
+          className="absolute left-4 top-4 md:left-0 md:top-10 flex items-center gap-2 text-lg font-semibold text-gray-600 hover:text-gray-800 transition-transform duration-300"
+        >
           <ArrowLeft className="w-5 h-5" />
           Back
         </Link>

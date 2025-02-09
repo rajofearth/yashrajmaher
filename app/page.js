@@ -42,6 +42,12 @@ export default function Home() {
           >
             Privacy Policy
           </Link>
+          <Link
+            href="/contact"
+            className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150"
+          >
+            Contact Me!
+          </Link>
         </div>
 
         {/* Projects Section */}
