@@ -53,7 +53,7 @@ export default function PrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">Children's Privacy</h2>
               <p className="text-gray-700">
-                This website is not intended for children under the age of 13. I do not knowingly collect data from children under 13. If you believe that I have inadvertently collected such information, please contact me immediately.
+                This website is not intended for children under the age of 10. I do not knowingly collect data from children under 10. If you believe that I have inadvertently collected such information, please contact me immediately.
               </p>
             </section>
 
