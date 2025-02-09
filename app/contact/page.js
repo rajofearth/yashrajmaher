@@ -1,18 +1,12 @@
-import Link from "next/link";
 import Socials from "../components/Socials";
-import { Mail, ArrowLeft } from "lucide-react";
+import { Mail } from "lucide-react";
+import BackButton from "../components/BackButton";
 
 export default function Contact() {
   return (
     <div className="min-h-screen bg-white text-gray-800">
-      {/* Back Button */}
-      <Link
-        href="/about"
-        className="absolute left-0 top-10 flex items-center gap-2 text-lg font-semibold text-gray-600 hover:text-gray-800 transition-transform duration-300 ml-6 mt-2 md:ml-4 md:top-4"
-      >
-        <ArrowLeft className="w-5 h-5" />
-        Back
-      </Link>
+      {/* Back Button (Client Component) */}
+      <BackButton />
 
       {/* Header */}
       <header className="max-w-6xl mx-auto px-6 py-10">
@@ -34,7 +28,7 @@ export default function Contact() {
           <div className="flex items-center gap-3">
             <Mail className="w-6 h-6 text-blue-600" />
             <span className="text-lg text-gray-700">
-              Drop me a message at{" "}
+              Drop me a message at
               <a
                 href="mailto:maheryashraj@gmail.com"
                 className="text-blue-600 hover:underline"
