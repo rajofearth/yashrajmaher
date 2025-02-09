@@ -1,6 +1,6 @@
 {
-  "name": "rajofearth",
-  "version": "0.1.0",
+  "name": "yashrajmaher",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
