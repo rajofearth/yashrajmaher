@@ -7,6 +7,10 @@ const Socials = () => {
        className="hover:scale-110 transition-transform">
       <Github className="w-6 h-6" />
     </a>
+    <a href="https://your-universe.vercel.app/profile/yashraj.maher" target="_blank" rel="noopener noreferrer"
+      className="hover:scale-110 transition-transform">
+     <img src="/icons/yu.svg" alt="Your Universe" className="w-6 h-6" />
+   </a>
     <a href="https://x.com/yashrajmaher" target="_blank" rel="noopener noreferrer"
        className="hover:scale-110 transition-transform">
       <Twitter className="w-6 h-6" />
