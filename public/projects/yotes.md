@@ -1,6 +1,6 @@
 ---
 title: "Yotes: My Quest to Build a Notes App That’s Actually Mine"
-description: "Yotes!!! A Privacy Focused Notes App.. umm it's big more than that. Come on Dive in."
+description: "Yotes!!! A Privacy Focused Notes App.. umm it's bit more than that. Come on Dive in."
 date: 2024-02-26
 author: "Yashraj Maher"
 website: "yotes.vercel.app"
