@@ -6,7 +6,7 @@ export default function ProjectCard({ title, description, date, slug }) {
   const formattedDate = date ? format(new Date(date), 'MMMM d, yyyy') : null;
 
   return (
-    <Link href={`/projects/${slug || "#"}`} aria-label={`View details of project: ${title || "Untitled Project"}`}>
+    <Link href={`/devposts/${slug || "#"}`} aria-label={`View details of devpost: ${title || "Untitled devpost"}`}>
       <div className="w-full p-4 mb-4 border rounded-2xl hover:border-gray-500 hover:shadow-lg bg-white transition-all cursor-pointer">
         <div className="space-y-3">
           {}

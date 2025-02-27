@@ -12,7 +12,7 @@ import { generateMetadata as baseGenerateMetadata } from '../../../../lib/metada
 import { getFileFromSlug } from '../../../utils/getFileFromSlug';
 import ErrorPage from '../../../components/ErrorPage';
 
-const PROJECT_POSTS_DIR = path.join(process.cwd(), 'public', 'projects');
+const devpost_POSTS_DIR = path.join(process.cwd(), 'public', 'devposts');
 
 // Re-use the DESIGN_SYSTEM from the blog post page
 const DESIGN_SYSTEM = {
@@ -48,13 +48,13 @@ const MarkdownImage = ({ src, alt }) => (
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const filename = getFileFromSlug(id, PROJECT_POSTS_DIR);
+  const filename = getFileFromSlug(id, devpost_POSTS_DIR);
 
   let title = 'Default Title';
   let description = 'Default Description';
 
   if (filename) {
-    const fileContent = fs.readFileSync(path.join(PROJECT_POSTS_DIR, filename), 'utf8');
+    const fileContent = fs.readFileSync(path.join(devpost_POSTS_DIR, filename), 'utf8');
     const { data: frontmatter } = matter(fileContent);
     title = frontmatter.title || title;
     description = frontmatter.description || description;
@@ -63,30 +63,30 @@ export async function generateMetadata({ params }) {
   return baseGenerateMetadata({ title, description });
 }
 
-export default async function ProjectPost({ params }) {
+export default async function devpostPost({ params }) {
   const { id } = await params;
 
-  if (!fs.existsSync(PROJECT_POSTS_DIR)) {
-    return <ErrorPage title="Project directory not found" message="Project directory not found" backLink="/projects" />;
+  if (!fs.existsSync(devpost_POSTS_DIR)) {
+    return <ErrorPage title="devpost directory not found" message="devpost directory not found" backLink="/devposts" />;
   }
 
-  const filename = getFileFromSlug(id, PROJECT_POSTS_DIR);
+  const filename = getFileFromSlug(id, devpost_POSTS_DIR);
   if (!filename) {
-    return <ErrorPage title="Project not found" message="Project not found" slug={id} backLink="/projects" />;
+    return <ErrorPage title="devpost not found" message="devpost not found" slug={id} backLink="/devposts" />;
   }
 
-  const filePath = path.join(PROJECT_POSTS_DIR, filename);
+  const filePath = path.join(devpost_POSTS_DIR, filename);
   let fileContent;
   try {
     fileContent = fs.readFileSync(filePath, 'utf8');
   } catch (error) {
     console.error('Error reading file:', error);
-    return <ErrorPage title="Error loading project" message="Error loading project" slug={id} backLink="/projects" />;
+    return <ErrorPage title="Error loading devpost" message="Error loading devpost" slug={id} backLink="/devposts" />;
   }
 
   const { data: frontmatter = {}, content = '' } = matter(fileContent);
   if (!frontmatter.title) {
-    return <ErrorPage title="Invalid project format" message="Invalid project format" slug={id} backLink="/projects" />;
+    return <ErrorPage title="Invalid devpost format" message="Invalid devpost format" slug={id} backLink="/devposts" />;
   }
 
   const formattedDate = frontmatter.date
@@ -95,9 +95,9 @@ export default async function ProjectPost({ params }) {
 
 return (
   <div className={DESIGN_SYSTEM.container}>
-    <Link href="/projects" className={DESIGN_SYSTEM.backButton}>
+    <Link href="/devposts" className={DESIGN_SYSTEM.backButton}>
       <ArrowLeft className="w-5 h-5 mr-1 group-hover:-translate-x-1 transition-transform" />
-      All Projects
+      All Devposts
     </Link>
     <header className={DESIGN_SYSTEM.header}>
       <h1 className={DESIGN_SYSTEM.title}>{frontmatter.title}</h1>
@@ -137,27 +137,42 @@ return (
           remarkPlugins={[remarkGfm, remarkBreaks]}
           rehypePlugins={[rehypeRaw]}
           components={{
-            a: ({ node, ...props }) => (
-              <a {...props} className="text-gray-600 hover:text-gray-800 underline transition-colors" />
-            ),
-            code: ({ node, inline, className, children, ...props }) => (
-              <code
-                {...props}
-                className={`${className || ''} ${inline ? 'px-1.5 py-0.5' : 'p-4 block overflow-x-auto'} bg-gray-50 rounded-md text-sm`}
-              >
-                {children}
-              </code>
-            ),
-            img: MarkdownImage,
-            div: ({ node, ...props }) => (
-              <div {...props} className="max-w-full" />
-            ),
-            table: ({ node, ...props }) => (
-              <div className="overflow-x-auto">
-                <table {...props} className="w-full" />
-              </div>
-            ),
-          }}
+          a: ({ node, ...props }) => (
+            <a {...props} className="text-gray-600 hover:text-gray-800 underline transition-colors" />
+          ),
+          code: ({ node, inline, className, children, ...props }) => {
+            if (inline) {
+              return (
+                <code
+                  {...props}
+                  className="px-1.5 py-0.5 bg-gray-50 text-gray-600 rounded-md"
+                >
+                  {children}
+                </code>
+              );
+            } else {
+              return (
+                <code {...props} className={className}>
+                  {children}
+                </code>
+              );
+            }
+          },
+          pre: ({ node, children, ...props }) => (
+            <pre {...props} className="bg-gray-200 p-4 text-gray-600 rounded overflow-x-auto">
+              {children}
+            </pre>
+          ),
+          img: MarkdownImage,
+          div: ({ node, ...props }) => (
+            <div {...props} className="max-w-full" />
+          ),
+          table: ({ node, ...props }) => (
+            <div className="overflow-x-auto">
+              <table {...props} className="w-full" />
+            </div>
+          ),
+        }}
         >
           {content}
         </ReactMarkdown>

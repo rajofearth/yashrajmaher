@@ -8,23 +8,23 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-export function getProjects(searchQuery = '') {
-  const projectsDirectory = path.join(process.cwd(), 'public', 'projects');
+export function getdevposts(searchQuery = '') {
+  const devpostsDirectory = path.join(process.cwd(), 'public', 'devposts');
   
   // Check if directory exists first
-  if (!fs.existsSync(projectsDirectory)) {
-    console.error('Projects directory not found');
+  if (!fs.existsSync(devpostsDirectory)) {
+    console.error('devposts directory not found');
     return [];
   }
 
   const trimmedQuery = searchQuery.trim().toLowerCase();
   
   try {
-    const files = fs.readdirSync(projectsDirectory);
+    const files = fs.readdirSync(devpostsDirectory);
     
-    const projects = files.map(filename => {
+    const devposts = files.map(filename => {
       const fileContent = fs.readFileSync(
-        path.join(projectsDirectory, filename),
+        path.join(devpostsDirectory, filename),
         'utf8'
       );
       const { data } = matter(fileContent);
@@ -42,9 +42,9 @@ export function getProjects(searchQuery = '') {
       };
     });
 
-    // Filter projects if search query exists
+    // Filter devposts if search query exists
     if (trimmedQuery) {
-      const filtered = projects.filter(project => 
+      const filtered = devposts.filter(project => 
         project.rawTitle.toLowerCase().includes(trimmedQuery) ||
         project.rawDescription.includes(trimmedQuery)
       );
@@ -63,10 +63,10 @@ export function getProjects(searchQuery = '') {
       }));
     }
 
-    return projects;
+    return devposts;
 
   } catch (error) {
-    console.error('Error reading projects:', error);
+    console.error('Error reading devposts:', error);
     return [];
   }
 }

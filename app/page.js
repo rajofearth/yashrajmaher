@@ -1,14 +1,14 @@
 import HeroImage from "./components/HeroImage";
 import Socials from "./components/Socials";
 import ProjectCard from "./components/ProjectCard";
-import { getProjects } from "./utils/getProjects";
+import { getdevposts } from "./utils/getdevposts";
 import BlogCard from "./components/BlogCard";
 import { getBlogs } from "./utils/getBlogs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function Home() {
-  const projects = getProjects();
+  const devposts = getdevposts();
   const blogs = getBlogs();
 
   return (
@@ -50,13 +50,13 @@ export default function Home() {
           </Link>
         </div>
 
-        {/* Projects Section */}
+        {/* devposts Section */}
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800">Projects</h2>
-            {projects.length > 0 && projects.length <= 6 && (
+            <h2 className="text-2xl font-semibold text-gray-800">Devposts</h2>
+            {devposts.length > 0 && devposts.length <= 6 && (
               <Link
-                href="/projects"
+                href="/devposts"
                 className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150 group"
               >
                 See More
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
           <div className="relative">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {projects.slice(0, 6).map((project, index) => (
+              {devposts.slice(0, 6).map((project, index) => (
                 <ProjectCard
                   key={index}
                   title={project.title}
@@ -77,10 +77,10 @@ export default function Home() {
                 />
               ))}
             </div>
-            {projects.length > 6 && (
+            {devposts.length > 6 && (
               <div className="mt-4 text-center">
                 <Link
-                  href="/projects"
+                  href="/devposts"
                   className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300 transition-all duration-150 group"
                 >
                   See More

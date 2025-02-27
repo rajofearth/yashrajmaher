@@ -1,19 +1,19 @@
 import ProjectCard from '../../components/ProjectCard';
-import { getProjects } from '../../utils/getProjects';
+import { getdevposts } from '../../utils/getdevposts';
 import { ArrowLeft, Search } from 'lucide-react';
 import Link from 'next/link';
 import { generateMetadata } from '../../../lib/metadata';
 
 export const metadata = generateMetadata({
-  title: "Projects",
+  title: "Devposts",
   description: "Explore my portfolio of projects and technical work"
 });
 
 // Mark the component as async to await searchParams
-export default async function Project({ searchParams }) {
+export default async function devpost({ searchParams }) {
   const params = await searchParams;
   const searchQuery = params?.q?.trim() || '';
-  const projects = getProjects(searchQuery);
+  const devposts = getdevposts(searchQuery);
 
   return (
     <div className="min-h-screen bg-white text-gray-800">
@@ -38,13 +38,13 @@ export default async function Project({ searchParams }) {
             </div>
             <div className="w-full md:w-64">
               {/* Search Bar */}
-              <form action="/projects" method="GET">
+              <form action="/devposts" method="GET">
                 <div className="relative">
                   <Search className="w-5 h-5 absolute left-4 top-3.5 text-gray-400" />
                   <input
                     type="text"
                     name="q"
-                    placeholder="Filter projects..."
+                    placeholder="Filter devposts..."
                     className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-300 focus:border-gray-400 focus:ring-2 focus:ring-gray-400 focus:bg-white placeholder-gray-500 transition-all text-lg"
                     defaultValue={searchQuery}
                   />
@@ -54,19 +54,19 @@ export default async function Project({ searchParams }) {
           </div>
         </div>
 
-        {/* Projects Grid */}
+        {/* devposts Grid */}
         <div className={`grid gap-8 pb-8
             grid-cols-1 md:grid-cols-2 lg:grid-cols-3
-            ${projects.length === 0 ? 'md:grid-cols-1' : ''}`}>
-          {projects.length > 0 ? (
-            projects.map((project, index) => (
+            ${devposts.length === 0 ? 'md:grid-cols-1' : ''}`}>
+          {devposts.length > 0 ? (
+            devposts.map((devpost, index) => (
               <ProjectCard 
                 key={index}
-                title={project.title}
-                description={project.description}
-                date={project.date}
-                rawTitle={project.rawTitle}
-                slug={project.slug}
+                title={devpost.title}
+                description={devpost.description}
+                date={devpost.date}
+                rawTitle={devpost.rawTitle}
+                slug={devpost.slug}
                 className="hover:scale-105 hover:shadow-lg transition-transform duration-200"
               />
             ))
