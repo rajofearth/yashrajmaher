@@ -39,7 +39,7 @@ export default function PrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold text-gray-800 mb-2">Third-Party Services</h2>
               <p className="text-gray-700">
-                To support this website, I use third-party services such as <strong>Google AdSense</strong> for advertising and <strong>Vercel Analytics</strong> for analytics. These services might use cookies or other technologies to collect information about your online activities across different websites. If you prefer not to see advertisements, you may choose to use an ad blocker; please note that doing so might affect the display of certain features on the site.
+                To support this website, I use third-party services such as <strong>Vercel Analytics</strong> for analytics. Vercel Analytics collects data which helps me understand how visitors interact with the site so that I can make improvements.
               </p>
             </section>
 

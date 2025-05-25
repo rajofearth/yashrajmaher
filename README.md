@@ -42,7 +42,6 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **SEO Optimized:**  Dynamic metadata generation for improved search engine visibility.
 *   **Accessibility:**  Built with accessibility in mind, including semantic HTML and ARIA attributes where appropriate.
 *   **Analytics:**  Integrated with Vercel Analytics for basic, privacy-respecting website usage tracking.
-*   **Advertising:** Integrated with AdSense.
 *   **PWA (Progressive Web App):**  The site is installable as a PWA on supported devices.
 
 ## Technologies Used
@@ -59,7 +58,6 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **rehype-raw:**  A rehype plugin to allow raw HTML within Markdown.
 *   **date-fns:**  A modern JavaScript date utility library.
 *   **Vercel Analytics:**  For privacy-focused website analytics.
-*   **Google AdSense:** For displaying advertisements.
 *   **Server-Only:** Used to safeguard server-only code from being exposed on client-side.
 
 ## Project Structure
