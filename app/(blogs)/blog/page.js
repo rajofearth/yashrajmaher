@@ -1,17 +1,6 @@
-import { ArrowRight, ChevronLeft, Search } from "lucide-react";
-import Link from "next/link";
 import { getBlogs } from "../../utils/getBlogs";
 import { generateMetadata } from "../../../lib/metadata";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
-import { formatDate } from "../../utils/formatDate";
-import LiveSearch from "../../components/LiveSearch";
+import ContentListPage from "../../components/ContentListPage";
 
 export const metadata = generateMetadata({
   title: "Blog",
@@ -19,41 +8,53 @@ export const metadata = generateMetadata({
 });
 
 export default async function Page({ searchParams }) {
-  const params = await searchParams;
-  const searchQuery = params?.q?.trim() || '';
-  const allBlogs = getBlogs(''); // Get all blogs
-  
-  return (
-    <section className="min-h-screen pt-8 pb-16" style={{ backgroundColor: "#f0e9d2" }}>
-      <div className="container mx-auto flex flex-col items-center gap-8 max-w-5xl">
-        {/* Back Button - styled and positioned like the [id] page */}
-        <div className="w-full flex justify-start mb-2">
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-[#7c6e58] hover:text-[#493e35] transition-colors mb-2"
-          >
-            <ChevronLeft className="h-full w-4" />
-            Back Home
-          </Link>
-        </div>
-        <div className="text-center">
-          <Badge variant="secondary" className="mb-2 bg-[#e6dcc1] text-[#5c5546]">
-            Personal Blog
-          </Badge>
-          <h1 className="mb-3 text-4xl md:text-5xl lg:text-6xl font-bold text-[#5c5546]" style={{ fontFamily: "var(--font-serif)" }}>
-            Collected Thoughts
-          </h1>
-          <p className="mb-8 text-[#73695d] md:text-lg max-w-2xl mx-auto" style={{ fontFamily: "var(--font-serif)" }}>
-            Exploring the intersection of technology, creativity, and human experience. Dive into essays, tutorials, and personal reflections on modern development.
-          </p>
-          
-          {/* Live Search Component */}
-          <LiveSearch 
-            initialQuery={searchQuery} 
-            allBlogs={allBlogs} 
-          />
+  try {
+    const { q: searchQuery = "" } = await searchParams || {};
+    let allBlogs = [];
+    
+    try {
+      allBlogs = getBlogs('') || []; // Get all blogs
+      
+      // Ensure all blog entries have the necessary properties
+      allBlogs = allBlogs.map(blog => ({
+        ...blog,
+        rawTitle: blog.rawTitle || blog.title || "",
+        rawDescription: blog.rawDescription || blog.description || "",
+        slug: blog.slug || "",
+        date: blog.date || null
+      }));
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+      allBlogs = [];
+    }
+
+    return (
+      <ContentListPage
+        title="Collected Thoughts"
+        subtitle="Exploring the intersection of technology, creativity, and human experience. Dive into essays, tutorials, and personal reflections on modern development."
+        badgeText="Personal Blog"
+        backLink="/"
+        backText="Back Home"
+        searchQuery={searchQuery}
+        contentItems={allBlogs}
+        contentType="blog"
+      />
+    );
+  } catch (error) {
+    console.error("Error rendering blog page:", error);
+    return (
+      <div className="min-h-screen pt-8 pb-16 bg-background">
+        <div className="container mx-auto flex flex-col items-center gap-8 max-w-5xl">
+          <div className="text-center">
+            <h1 className="mb-3 text-4xl font-bold text-foreground">
+              Error Loading Blog
+            </h1>
+            <p className="mb-8 text-muted-foreground md:text-lg max-w-2xl mx-auto">
+              There was a problem loading the blog content. Please try again later.
+            </p>
+          </div>
         </div>
       </div>
-    </section>
-  );
+    );
+  }
 }

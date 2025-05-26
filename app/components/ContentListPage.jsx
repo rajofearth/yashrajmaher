@@ -1,16 +1,20 @@
-import Link from "next/link";
+"use client";
+
 import { ChevronLeft } from "lucide-react";
-import { design } from '@/lib/design-system';
+import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import LiveSearch from "./LiveSearch";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
-export default function PageLayout({ 
-  children,
-  pageTitle,
-  pageDescription,
+export default function ContentListPage({
+  title,
+  subtitle,
+  badgeText,
   backLink = "/",
   backText = "Back Home",
-  badge = null,
+  searchQuery = "",
+  contentItems = [],
+  contentType = "blog", // "blog" or "project"
 }) {
   return (
     <section className="min-h-screen pt-8 pb-16 bg-background">
@@ -29,33 +33,31 @@ export default function PageLayout({
         </div>
         
         {/* Page Header */}
-        <div className="text-center w-full">
-          {badge && (
+        <div className="text-center">
+          {badgeText && (
             <Badge variant="secondary" className="mb-2">
-              {badge}
+              {badgeText}
             </Badge>
           )}
           
-          <h1 
-            className="mb-3 text-4xl md:text-5xl lg:text-6xl font-bold text-foreground" 
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            {pageTitle}
+          <h1 className="mb-3 text-4xl md:text-5xl lg:text-6xl font-bold text-foreground" 
+               style={{ fontFamily: "var(--font-serif)" }}>
+            {title}
           </h1>
           
-          {pageDescription && (
-            <p 
-              className="mb-8 text-muted-foreground md:text-lg max-w-2xl mx-auto" 
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {pageDescription}
+          {subtitle && (
+            <p className="mb-8 text-muted-foreground md:text-lg max-w-2xl mx-auto" 
+               style={{ fontFamily: "var(--font-serif)" }}>
+              {subtitle}
             </p>
           )}
-        </div>
-        
-        {/* Page Content */}
-        <div className="w-full">
-          {children}
+          
+          {/* Live Search Component */}
+          <LiveSearch 
+            initialQuery={searchQuery} 
+            allItems={contentItems} 
+            contentType={contentType}
+          />
         </div>
       </div>
     </section>

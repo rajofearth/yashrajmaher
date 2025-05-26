@@ -1,31 +1,61 @@
-import ProjectCard from '../../components/ProjectCard';
-import { getdevposts } from '../../utils/getdevposts';
-import { Search } from 'lucide-react';
-import { generateMetadata } from '../../../lib/metadata';
-import PageLayout from '../../components/PageLayout';
-import LiveProjectSearch from '../../components/LiveProjectSearch';
+import { getDevposts } from "../../utils/getDevposts";
+import { generateMetadata } from "../../../lib/metadata";
+import ContentListPage from "../../components/ContentListPage";
 
 export const metadata = generateMetadata({
-  title: "Devposts",
-  description: "Explore my portfolio of projects and technical work"
+  title: "Projects",
+  description: "Browse my portfolio of development projects and technical explorations"
 });
 
-// Mark the component as async to await searchParams
-export default async function DevPostsPage({ searchParams }) {
-  const params = await searchParams;
-  const searchQuery = params?.q?.trim() || '';
-  const allDevposts = getdevposts(''); // Get all devposts for client-side filtering
+export default async function Page({ searchParams }) {
+  try {
+    const { q: searchQuery = "" } = await searchParams || {};
+    let allProjects = [];
+    
+    try {
+      allProjects = getDevposts('') || []; // Get all projects
+      
+      // Ensure all project entries have the necessary properties
+      allProjects = allProjects.map(project => ({
+        ...project,
+        rawTitle: project.rawTitle || project.title || "",
+        rawDescription: project.rawDescription || project.description || "",
+        slug: project.slug || "",
+        date: project.date || null,
+        tags: project.tags || []
+      }));
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      allProjects = [];
+    }
 
-  return (
-    <PageLayout
-      pageTitle="Crafted Projects"
-      pageDescription="An architectural approach to problem-solving through code. Explore case studies ranging from experimental prototypes to production-grade applications."
-      badge="Projects"
-      backLink="/"
-      backText="Back Home"
-    >
-      {/* Live Project Search Component */}
-      <LiveProjectSearch initialQuery={searchQuery} allDevposts={allDevposts} />
-    </PageLayout>
-  );
+    return (
+      <ContentListPage
+        title="My Projects"
+        subtitle="A collection of development projects, experiments, and technical explorations"
+        badgeText="Portfolio"
+        backLink="/"
+        backText="Back Home"
+        searchQuery={searchQuery}
+        contentItems={allProjects}
+        contentType="project"
+      />
+    );
+  } catch (error) {
+    console.error("Error rendering projects page:", error);
+    return (
+      <div className="min-h-screen pt-8 pb-16 bg-background">
+        <div className="container mx-auto flex flex-col items-center gap-8 max-w-5xl">
+          <div className="text-center">
+            <h1 className="mb-3 text-4xl font-bold text-foreground">
+              Error Loading Projects
+            </h1>
+            <p className="mb-8 text-muted-foreground md:text-lg max-w-2xl mx-auto">
+              There was a problem loading the projects content. Please try again later.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }

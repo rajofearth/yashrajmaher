@@ -19,20 +19,20 @@ export default function Contact() {
     >
       {/* Contact Information */}
       <div className="max-w-3xl mx-auto space-y-8">
-        <section className="bg-[#faf6ec] p-6 rounded-xl border border-[#dbd0b8]">
-          <h2 className="text-2xl font-semibold mb-4 text-[#5c5546]" style={{ fontFamily: "var(--font-serif)" }}>Reach Out</h2>
-          <p className="text-lg leading-relaxed text-[#73695d] mb-6" style={{ fontFamily: "var(--font-sans)" }}>
+        <section className="bg-card p-6 rounded-xl border border-border">
+          <h2 className="text-2xl font-semibold mb-4 text-foreground" style={{ fontFamily: "var(--font-serif)" }}>Reach Out</h2>
+          <p className="text-lg leading-relaxed text-muted-foreground mb-6" style={{ fontFamily: "var(--font-sans)" }}>
             I'm currently open to new opportunities and collaborations. Whether
             you have a project in mind, want to discuss tech, or just say hi,
             feel free to reach out!
           </p>
           <div className="flex items-center gap-3 mb-8">
-            <Mail className="w-6 h-6 text-[#7c6e58]" />
-            <span className="text-lg text-[#73695d]" style={{ fontFamily: "var(--font-sans)" }}>
+            <Mail className="w-6 h-6 text-primary" />
+            <span className="text-lg text-muted-foreground" style={{ fontFamily: "var(--font-sans)" }}>
               Drop me a message at{" "}
               <a
                 href="mailto:maheryashraj@gmail.com"
-                className="text-[#7c6e58] hover:text-[#493e35] underline decoration-dashed hover:decoration-solid transition-all"
+                className="text-primary hover:text-primary/70 underline decoration-dashed hover:decoration-solid transition-all"
               >
                 maheryashraj@gmail.com
               </a>
@@ -41,7 +41,7 @@ export default function Contact() {
 
           {/* Socials Component */}
           <div>
-            <h2 className="text-xl font-semibold mb-4 text-[#5c5546]" style={{ fontFamily: "var(--font-serif)" }}>Find Me On</h2>
+            <h2 className="text-xl font-semibold mb-4 text-foreground" style={{ fontFamily: "var(--font-serif)" }}>Find Me On</h2>
             <Socials />
           </div>
         </section>
