@@ -6,21 +6,23 @@ import BlogCard from "./components/BlogCard";
 import { getBlogs } from "./utils/getBlogs";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const devposts = getdevposts();
   const blogs = getBlogs();
 
   return (
-    <div className="min-h-screen bg-white text-gray-800">
-      <div className="max-w-6xl mx-auto px-6 py-12">
+    <div className="min-h-screen" style={{ backgroundColor: "#f0e9d2" }}>
+      <div className="max-w-5xl mx-auto px-6 py-12">
         {/* Hero Section */}
         <div className="flex flex-col items-center text-center">
           <HeroImage />
-          <h1 className="mt-6 text-4xl font-bold tracking-tight">
+          <h1 className="mt-6 text-4xl font-bold text-[#5c5546]" style={{ fontFamily: "var(--font-serif)" }}>
             Yashraj Maher
           </h1>
-          <p className="mt-4 text-lg text-gray-600 leading-relaxed max-w-2xl">
+          <p className="mt-4 text-lg text-[#73695d] leading-relaxed max-w-2xl" style={{ fontFamily: "var(--font-serif)" }}>
             A creator who loves crafting ideas into projects and sharing stories
             through blogs. From building apps to exploring thought-provoking
             concepts, this is where I document my journey of learning and creating.
@@ -32,19 +34,22 @@ export default function Home() {
         <div className="mt-8 flex justify-center space-x-6">
           <Link
             href="/about"
-            className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150"
+            className="text-sm font-medium text-[#7c6e58] hover:text-[#493e35] transition-colors"
+            style={{ fontFamily: "var(--font-sans)" }}
           >
             About Me
           </Link>
           <Link
             href="/privacy"
-            className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150"
+            className="text-sm font-medium text-[#7c6e58] hover:text-[#493e35] transition-colors"
+            style={{ fontFamily: "var(--font-sans)" }}
           >
             Privacy Policy
           </Link>
           <Link
             href="/contact"
-            className="text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150"
+            className="text-sm font-medium text-[#7c6e58] hover:text-[#493e35] transition-colors"
+            style={{ fontFamily: "var(--font-sans)" }}
           >
             Contact Me!
           </Link>
@@ -53,14 +58,23 @@ export default function Home() {
         {/* devposts Section */}
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800">Devposts</h2>
+            <div className="flex items-center">
+              <h2 className="text-2xl font-bold text-[#5c5546] mr-2 leading-none" style={{ fontFamily: "var(--font-serif)" }}>
+                Devposts
+              </h2>
+              <Badge variant="secondary" className="bg-[#e6dcc1] text-[#5c5546] translate-y-0">
+                Projects
+              </Badge>
+            </div>
+            
             {devposts.length > 0 && devposts.length <= 6 && (
               <Link
                 href="/devposts"
-                className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150 group"
+                className="flex items-center text-[#7c6e58] hover:text-[#493e35] transition-colors group leading-none"
+                style={{ fontFamily: "var(--font-serif)" }}
               >
                 See More
-                <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             )}
           </div>
@@ -73,19 +87,18 @@ export default function Home() {
                   date={project.date}
                   description={project.description}
                   slug={project.slug}
-                  className="hover:scale-105 hover:shadow-lg transition-transform duration-200"
+                  tags={project.tags || []}
                 />
               ))}
             </div>
             {devposts.length > 6 && (
-              <div className="mt-4 text-center">
-                <Link
-                  href="/devposts"
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300 transition-all duration-150 group"
-                >
-                  See More
-                  <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
-                </Link>
+              <div className="mt-8 text-center">
+                <Button variant="outline" asChild className="bg-[#faf6ec] border-[#dbd0b8] hover:bg-[#e6dcc1] text-[#5c5546]">
+                  <Link href="/devposts" className="flex items-center gap-2">
+                    See More Projects
+                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
               </div>
             )}
           </div>
@@ -94,14 +107,23 @@ export default function Home() {
         {/* Blogs Section */}
         <div className="mt-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800">Blog Posts</h2>
+            <div className="flex items-center">
+              <h2 className="text-2xl font-bold text-[#5c5546] mr-2 leading-none" style={{ fontFamily: "var(--font-serif)" }}>
+                Blog Posts
+              </h2>
+              <Badge variant="secondary" className="bg-[#e6dcc1] text-[#5c5546] translate-y-0">
+                Writing
+              </Badge>
+            </div>
+            
             {blogs.length > 0 && blogs.length <= 6 && (
               <Link
                 href="/blog"
-                className="inline-flex items-center text-sm font-medium text-gray-600 hover:text-gray-800 transition-all duration-150 group"
+                className="flex items-center text-[#7c6e58] hover:text-[#493e35] transition-colors group leading-none"
+                style={{ fontFamily: "var(--font-serif)" }}
               >
                 See More
-                <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
+                <ArrowRight className="ml-2 size-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             )}
           </div>
@@ -114,19 +136,17 @@ export default function Home() {
                   date={blog.date}
                   description={blog.description}
                   slug={blog.slug}
-                  className="hover:scale-105 hover:shadow-lg transition-transform duration-200"
                 />
               ))}
             </div>
             {blogs.length > 6 && (
-              <div className="mt-4 text-center">
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-gray-200 rounded-md hover:bg-gray-300 transition-all duration-150 group"
-                >
-                  See More
-                  <ArrowRight className="ml-1 w-4 h-4 transition-transform duration-150 group-hover:translate-x-1" />
-                </Link>
+              <div className="mt-8 text-center">
+                <Button variant="outline" asChild className="bg-[#faf6ec] border-[#dbd0b8] hover:bg-[#e6dcc1] text-[#5c5546]">
+                  <Link href="/blog" className="flex items-center gap-2">
+                    See More Articles
+                    <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
               </div>
             )}
           </div>

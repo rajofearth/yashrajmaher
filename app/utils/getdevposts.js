@@ -35,9 +35,11 @@ export function getdevposts(searchQuery = '') {
       
       return {
         title: truncatedTitle,
+        date: data.date || 'No date',
         description: truncatedDesc,
         rawTitle: data.title,
         rawDescription: data.description.toLowerCase(),
+        tags: data.tags || [],
         slug: filename.replace(/\.md$/, '')
       };
     });
@@ -63,7 +65,17 @@ export function getdevposts(searchQuery = '') {
       }));
     }
 
-    return devposts;
+    return devposts.sort((a, b) => {
+      try {
+        // Handle invalid dates by falling back to string comparison
+        const dateA = a.date && a.date !== 'No date' ? new Date(a.date).getTime() : 0;
+        const dateB = b.date && b.date !== 'No date' ? new Date(b.date).getTime() : 0;
+        return dateB - dateA;
+      } catch (error) {
+        // If date comparison fails, don't change order
+        return 0;
+      }
+    });
 
   } catch (error) {
     console.error('Error reading devposts:', error);

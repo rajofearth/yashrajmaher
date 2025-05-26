@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ArrowLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
+import { design } from '@/lib/design-system';
 
 export default function BackButton() {
   const router = useRouter();
@@ -15,9 +16,10 @@ export default function BackButton() {
     <a
       href="#"
       onClick={handleGoBack}
-      className="absolute left-0 top-10 flex items-center gap-2 text-lg font-semibold text-gray-600 hover:text-gray-800 transition-transform duration-300 ml-6 mt-2 md:ml-4 md:top-4 cursor-pointer"
+      className="flex items-center gap-1 text-[#7c6e58] hover:text-[#493e35] transition-colors mb-2"
+      style={{ fontFamily: design.fonts.serif }}
     >
-      <ArrowLeft className="w-5 h-5" />
+      <ChevronLeft className="h-full w-4" />
       Back
     </a>
   );

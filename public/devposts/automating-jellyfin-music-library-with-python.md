@@ -2,6 +2,8 @@
 title: "How I Automated My Jellyfin Music Library Cleanup with Python"  
 date: 2024-10-27
 description: "Frustrated by Jellyfin’s metadata quirks, I built a script to enforce album-per-folder rules, sanitize filenames, and fix missing cover art." 
+author: "Yashraj Maher"
+website: "https://github.com/rajofearth/audio_file_organizer"
 tags: [automation, jellyfin, music, python, metadata]  
 ---  
 
@@ -122,7 +124,7 @@ For albums with missing metadata, the script creates Jellyfin-compatible `.nfo` 
 ---
 
 ### **Try It Yourself**  
-The script is [open-source here](https://github.com/your-repo/jellyfin-music-organizer). To use:  
+The script is [open-source here](https://github.com/rajofearth/audio_file_organizer). To use:  
 
 1. **Install**:  
    ```bash  

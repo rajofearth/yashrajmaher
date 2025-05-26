@@ -3,27 +3,41 @@ import Image from 'next/image';
 
 const HeroImage = () => {
   return (
-    <div className="group perspective-1000" 
-    onMouseMove={(e) => {
-      const rect = e.currentTarget.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      e.currentTarget.style.transform = `
-        rotateY(${x * -10}deg)
-        rotateX(${y * 10}deg)
-        translateZ(20px)
-      `;
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.transform = 'none';
-    }}>
-      <Image
-        src="/my.png"
-        alt="My Image"
-        className="rounded-2xl shadow-lg transition-transform duration-300"
-        width={150}
-        height={150}
-      />
+    <div 
+      className="relative hover-border"
+      style={{
+        borderRadius: "50%",
+        padding: "3px",
+        background: `linear-gradient(90deg, #5c5546, #84776a, #b5a89a, #84776a, #5c5546)`,
+        backgroundSize: "300% 300%",
+        animation: "flowingBorder 8s ease infinite",
+      }}>
+      <style jsx global>{`
+        @keyframes flowingBorder {
+          0% { background-position: 0% 50% }
+          50% { background-position: 100% 50% }
+          100% { background-position: 0% 50% }
+        }
+        
+        .hover-border {
+          transition: background 0.5s ease;
+        }
+        
+        .hover-border:hover {
+          background: linear-gradient(90deg, #faf6ec, #e6dcc1, #faf6ec, #e6dcc1, #faf6ec);
+          background-size: 300% 300%;
+          animation: flowingBorder 5s ease infinite;
+        }
+      `}</style>
+      <div className="overflow-hidden rounded-full">
+        <Image
+          src="/my.png"
+          alt="Yashraj Maher"
+          width={160}
+          height={160}
+          priority
+        />
+      </div>
     </div>
   );
 }

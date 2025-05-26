@@ -50,9 +50,17 @@ export function getBlogs(searchQuery = '') {
       !trimmedQuery || 
       blog.rawTitle.toLowerCase().includes(trimmedQuery) || 
       blog.rawDescription.includes(trimmedQuery)
-    ).sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    ).sort((a, b) => {
+      try {
+        // Handle invalid dates by falling back to string comparison
+        const dateA = a.date && a.date !== 'No date' ? new Date(a.date).getTime() : 0;
+        const dateB = b.date && b.date !== 'No date' ? new Date(b.date).getTime() : 0;
+        return dateB - dateA;
+      } catch (error) {
+        // If date comparison fails, don't change order
+        return 0;
+      }
+    });
   } catch (error) {
     console.error('Error reading blog posts:', error);
     return [];
