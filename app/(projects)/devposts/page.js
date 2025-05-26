@@ -1,4 +1,4 @@
-import { getDevposts } from "../../utils/getDevposts";
+import { getDevposts } from "../../utils/getdevposts";
 import { generateMetadata } from "../../../lib/metadata";
 import ContentListPage from "../../components/ContentListPage";
 

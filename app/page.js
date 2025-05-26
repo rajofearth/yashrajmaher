@@ -1,7 +1,7 @@
 import HeroImage from "./components/HeroImage";
 import Socials from "./components/Socials";
 import ProjectCard from "./components/ProjectCard";
-import { getDevposts } from "./utils/getDevposts";
+import { getDevposts } from "./utils/getdevposts";
 import BlogCard from "./components/BlogCard";
 import { getBlogs } from "./utils/getBlogs";
 import Link from "next/link";
