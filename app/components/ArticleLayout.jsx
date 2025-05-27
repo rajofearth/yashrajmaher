@@ -107,13 +107,15 @@ export default function ArticleLayout({
           {/* Article content */}
           <article className="mx-auto prose max-w-[65ch] bg-card p-8 rounded-xl border shadow-sm">
             {/* Featured image */}
-            <div>
-              <img
-                src={featuredImage}
-                alt={title}
-                className="mt-0 mb-8 aspect-video w-full rounded-lg object-cover"
-              />
-            </div>
+            {featuredImage && (
+              <div>
+                <img
+                  src={featuredImage}
+                  alt={title}
+                  className="mt-0 mb-8 aspect-video w-full rounded-lg object-cover"
+                />
+              </div>
+            )}
             
             {/* Description if available */}
             {description && (

@@ -4,8 +4,9 @@ date: 2024-05-27
 description: "How I rebuilt my personal site with a focus on simplicity, speed, and integrated blogging—the good, the bad, and the unexpected lessons."
 author: "Yashraj Maher"
 authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
+featuredImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/images/redesigned-personal-website.png"
 website: "https://yashrajmaher.vercel.app"
-tags: [Next.js, Tailwind CSS, Web Development, UI Design, Markdown]
+tags: [Next.js, Tweakcn]
 ---
 
 ### **The Itch to Rebuild**
@@ -74,9 +75,9 @@ But quickly realized I needed to:
 3. Handle theme changes across page navigations
 4. Prevent flashing on reload
 
-After some research, I implemented a proper ThemeProvider with localStorage persistence and system preference detection. The coolest part? Discovering (Tweakcn)[https://tweakcn.com] for generating a cohesive theme with all the right contrast ratios.
+After some research, I implemented a proper ThemeProvider with localStorage persistence and system preference detection. The coolest part? Discovering [Tweakcn](https://tweakcn.com) for generating a cohesive theme with all the right contrast ratios.
 
-Rather than manually crafting CSS variables, (Tweakcn)[https://tweakcn.com] let me visualize and adjust my entire color scheme in one go:
+Rather than manually crafting CSS variables, [Tweakcn](https://tweakcn.com) let me visualize and adjust my entire color scheme in one go:
 
 ```css
 /* Sample of the generated theme variables */
@@ -194,7 +195,7 @@ What seemed like a simple task—"just render some markdown"—turned into days 
 The real struggle wasn't the code itself but figuring out which combination of libraries would handle all my use cases—syntax highlighting in code blocks, proper table rendering, and preserving inline HTML when needed.
 
 #### **Theme System: The Color Conundrum**
-Getting a cohesive color system that worked in both light and dark mode was frustrating until I discovered (Tweakcn)[https://tweakcn.com]. This visual editor for shadcn/ui components let me generate a complete theme system:
+Getting a cohesive color system that worked in both light and dark mode was frustrating until I discovered [Tweakcn](https://tweakcn.com). This visual editor for shadcn/ui components let me generate a complete theme system:
 
 ```css
 :root {

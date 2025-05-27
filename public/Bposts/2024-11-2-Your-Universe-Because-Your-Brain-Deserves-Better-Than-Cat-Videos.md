@@ -2,7 +2,7 @@
 layout: post
 title: "Your Universe: Because Your Brain Deserves Better Than Cat Videos"
 date: 2024-11-2
-image: 
+featuredImage: 
 description: "Your Universe - Where quantum physicists debate reality at 3AM, programmers actually write documentation, and AI learns dad jokes. A social platform for the intellectually curious, the perpetually caffeinated, and those who think debugging is a lifestyle choice."
 categories: [your-universe, tech-innovation, social-platform, intellectual-discourse]
 author: "Yashraj Maher (rajofearth)"

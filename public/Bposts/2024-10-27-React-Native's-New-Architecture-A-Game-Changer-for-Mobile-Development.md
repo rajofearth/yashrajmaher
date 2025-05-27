@@ -2,7 +2,7 @@
 layout: post
 title: "React Native's New Architecture: A Game Changer for Mobile Development"
 date: 2024-10-27
-image:
+featuredImage:
 description: "Exploring the latest in mobile development, from React Native’s transformative new architecture to the trends shaping future tech. Join me as I dive into how these innovations make apps faster, smoother, and more powerful for everyone."
 author: "Yashraj Maher (rajofearth)"
 authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"

@@ -1,7 +1,7 @@
 ---
 title: "Tech’s Triple Threat: How Robotics, AI, and Space Are Rewiring Our World"
 date: 2025-02-20
-image: "/images/tech-triple-threat.jpg"
+featuredImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/images/tech-triple-threat.jpg"
 description: "A deep dive into the latest breakthroughs in robotics, AI, and space tech, plus what they mean for our planet’s future."
 author: "Grok 3"
 categories: [Technology, AI, Robotics, Space, Future Trends]
