@@ -65,7 +65,7 @@ export default async function DevpostPost({ params }) {
         date={formattedDate}
         author={frontmatter.author || "Yashraj Maher"}
         authorImage={frontmatter.authorImage || "https://shadcnblocks.com/images/block/avatar-1.webp"}
-        featuredImage={frontmatter.featuredImage || "https://shadcnblocks.com/images/block/placeholder-1.svg"}
+        featuredImage={frontmatter.featuredImage}
         content={content}
         backLink="/devposts"
         backText="All Projects"

@@ -64,7 +64,7 @@ export default async function BlogPost({ params }) {
                 date={formattedDate}
                 author={frontmatter.author || "Anonymous"}
                 authorImage={frontmatter.authorImage || "https://shadcnblocks.com/images/block/avatar-1.webp"}
-                featuredImage={frontmatter.featuredImage || "https://shadcnblocks.com/images/block/placeholder-1.svg"}
+                featuredImage={frontmatter.featuredImage}
                 content={content}
                 backLink="/blog"
                 backText="Return to blog"
