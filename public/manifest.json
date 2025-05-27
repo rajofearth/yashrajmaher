@@ -4,8 +4,8 @@
   "description": "A brief description of your app",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#f0e9d2",
+  "theme_color": "#7c6e58",
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
