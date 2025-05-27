@@ -17,7 +17,7 @@ const MarkdownImage = ({ src, alt }) => (
       alt={alt}
       className="w-full rounded-lg object-cover aspect-video mb-2"
     />
-    {alt && <figcaption className="text-center text-sm text-[#84776a]">{alt}</figcaption>}
+    {alt && <figcaption className="text-center text-sm text-muted-foreground">{alt}</figcaption>}
   </div>
 );
 
@@ -44,22 +44,22 @@ export default function ArticleLayout({
             <div className="flex items-center justify-between mb-5">
               <Link
                 href={backLink}
-                className="flex items-center gap-1 text-[#7c6e58] hover:text-[#493e35] transition-colors"
+                className="flex items-center gap-1 text-primary hover:text-primary/70 transition-colors"
               >
                 <ChevronLeft className="h-full w-4" />
                 {backText}
               </Link>
               <ThemeToggle />
             </div>
-            <div className="bg-[#faf6ec] p-6 rounded-xl border border-[#dbd0b8] mb-6">
+            <div className="bg-card p-6 rounded-xl border mb-6">
               {/* Show tags if it's a project */}
               {isProject && tags && tags.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 mb-4">
-                  <Badge variant="secondary" className="bg-[#e6dcc1] text-[#5c5546]">
+                  <Badge variant="secondary">
                     Project
                   </Badge>
                   {tags.map((tag, i) => (
-                    <Badge key={i} variant="secondary" className="bg-[#e6dcc1] text-[#5c5546]">
+                    <Badge key={i} variant="secondary">
                       {tag}
                     </Badge>
                   ))}
@@ -67,7 +67,7 @@ export default function ArticleLayout({
               )}
               
               <h1 
-                className="mb-5 text-3xl font-bold text-balance lg:text-4xl text-[#5c5546]"
+                className="mb-5 text-3xl font-bold text-balance lg:text-4xl text-card-foreground"
                 style={{ fontFamily: "var(--font-serif)" }}
               >
                 {title}
@@ -75,22 +75,22 @@ export default function ArticleLayout({
               
               <div className="flex items-center justify-between mb-4">
                 <div className="flex gap-3">
-                  <Avatar className="size-7 rounded-full border border-[#dbd0b8]">
+                  <Avatar className="size-7 rounded-full border">
                     <AvatarImage
                       src={authorImage}
                       alt={author} 
                     />
                   </Avatar>
                   <div>
-                    <h2 className="font-semibold text-[#5c5546]" style={{ fontFamily: "var(--font-serif)" }}>{author}</h2>
-                    <p className="text-xs text-[#84776a]" style={{ fontFamily: "var(--font-sans)" }}>{date}</p>
+                    <h2 className="font-semibold text-card-foreground" style={{ fontFamily: "var(--font-serif)" }}>{author}</h2>
+                    <p className="text-xs text-muted-foreground" style={{ fontFamily: "var(--font-sans)" }}>{date}</p>
                   </div>
                 </div>
                 
                 {isProject && website && (
                   <a
                     href={website.startsWith('http') ? website : `https://${website}`}
-                    className="text-xs inline-flex items-center gap-1 px-2 py-1 bg-[#e6dcc1] hover:bg-[#dbd0b8] text-[#493e35] rounded-md transition-colors"
+                    className="text-xs inline-flex items-center gap-1 px-2 py-1 bg-secondary hover:bg-border text-secondary-foreground rounded-md transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -112,7 +112,7 @@ export default function ArticleLayout({
           </aside>
           
           {/* Article content */}
-          <article className="mx-auto prose max-w-[65ch] bg-[#faf6ec] p-8 rounded-xl border border-[#dbd0b8] shadow-sm">
+          <article className="mx-auto prose max-w-[65ch] bg-card p-8 rounded-xl border shadow-sm">
             {/* Featured image */}
             <div>
               <img
@@ -124,7 +124,7 @@ export default function ArticleLayout({
             
             {/* Description if available */}
             {description && (
-              <p className="lead text-[#5c5546] text-xl" style={{ fontFamily: "var(--font-serif)" }}>
+              <p className="lead text-foreground text-xl" style={{ fontFamily: "var(--font-serif)" }}>
                 {description}
               </p>
             )}
@@ -135,7 +135,16 @@ export default function ArticleLayout({
               rehypePlugins={[rehypeRaw]}
               components={{
                 a: ({ node, ...props }) => (
-                  <a {...props} className="text-[#7c6e58] hover:text-[#493e35] underline transition-colors" />
+                  <a {...props} className="text-primary underline transition-colors hover:opacity-80" />
+                ),
+                strong: ({ node, ...props }) => (
+                  <strong {...props} className="text-foreground font-bold" />
+                ),
+                li: ({ node, ...props }) => (
+                  <li {...props} className="text-muted-foreground" />
+                ),
+                ol: ({ node, ...props }) => (
+                  <ol {...props} className="text-muted-foreground list-decimal marker:text-foreground" />
                 ),
                 code: ({ node, inline, className, children, ...props }) => {
                   const match = /language-(\w+)/.exec(className || '');
@@ -144,7 +153,7 @@ export default function ArticleLayout({
                     return (
                       <code
                         {...props}
-                        className="px-1.5 py-0.5 bg-[#e6dcc1] text-[#493e35] rounded-md text-sm font-mono inline"
+                        className="px-1.5 py-0.5 bg-secondary text-secondary-foreground rounded-md text-sm font-mono inline"
                       >
                         {children}
                       </code>
@@ -166,7 +175,7 @@ export default function ArticleLayout({
                     return (
                       <code
                         {...props}
-                        className="px-1.5 py-0.5 bg-[#e6dcc1] text-[#493e35] rounded-md text-sm font-mono inline"
+                        className="px-1.5 py-0.5 bg-secondary text-secondary-foreground rounded-md text-sm font-mono inline"
                       >
                         {children}
                       </code>
@@ -176,14 +185,14 @@ export default function ArticleLayout({
                   return (
                     <code
                       {...props}
-                      className={`${match ? `language-${match[1]}` : ''} block p-4 bg-[#e6dcc1] rounded-md text-sm text-[#493e35] font-mono whitespace-pre-wrap`}
+                      className={`${match ? `language-${match[1]}` : ''} block p-4 bg-secondary rounded-md text-sm text-secondary-foreground font-mono whitespace-pre-wrap`}
                     >
                       {children}
                     </code>
                   );
                 },
                 pre: ({ node, children, ...props }) => (
-                  <pre {...props} className="bg-[#e6dcc1] p-4 text-[#493e35] rounded-md whitespace-pre-wrap">
+                  <pre {...props} className="bg-secondary p-4 text-secondary-foreground rounded-md whitespace-pre-wrap">
                     {children}
                   </pre>
                 ),
@@ -199,22 +208,25 @@ export default function ArticleLayout({
                 blockquote: ({ node, children, ...props }) => (
                   <blockquote 
                     {...props} 
-                    className="border-l-4 border-[#c0b49b] pl-4 italic text-[#5c5546]"
+                    className="border-l-4 border-border pl-4 italic text-foreground"
                   >
                     {children}
                   </blockquote>
                 ),
                 h1: ({ node, ...props }) => (
-                  <h1 {...props} className="text-[#5c5546] mb-4" style={{ fontFamily: "var(--font-serif)" }} />
+                  <h1 {...props} className="text-foreground mb-4" style={{ fontFamily: "var(--font-serif)" }} />
                 ),
                 h2: ({ node, ...props }) => (
-                  <h2 {...props} className="text-[#5c5546] mt-8 mb-4" style={{ fontFamily: "var(--font-serif)" }} />
+                  <h2 {...props} className="text-foreground mt-8 mb-4" style={{ fontFamily: "var(--font-serif)" }} />
                 ),
                 h3: ({ node, ...props }) => (
-                  <h3 {...props} className="text-[#5c5546] mt-6 mb-3" style={{ fontFamily: "var(--font-serif)" }} />
+                  <h3 {...props} className="text-foreground mt-6 mb-3" style={{ fontFamily: "var(--font-serif)" }} />
+                ),
+                h4: ({ node, ...props }) => (
+                  <h4 {...props} className="text-foreground mt-5 mb-2 font-semibold" style={{ fontFamily: "var(--font-serif)" }} />
                 ),
                 p: ({ node, ...props }) => (
-                  <p {...props} className="text-[#73695d] mb-4" style={{ fontFamily: "var(--font-sans)" }} />
+                  <p {...props} className="text-muted-foreground mb-4" style={{ fontFamily: "var(--font-sans)" }} />
                 ),
               }}
             >
