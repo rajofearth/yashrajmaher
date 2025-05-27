@@ -1,6 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import ReactMarkdown from 'react-markdown';
@@ -8,6 +6,7 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import BackButton from '@/app/components/BackButton';
 
 // Custom image component for markdown rendering
 const MarkdownImage = ({ src, alt }) => (
@@ -42,13 +41,7 @@ export default function ArticleLayout({
           {/* Sidebar with post metadata */}
           <aside className="top-10 mx-auto h-fit w-full max-w-[65ch] lg:sticky lg:max-w-96">
             <div className="flex items-center justify-between mb-5">
-              <Link
-                href={backLink}
-                className="flex items-center gap-1 text-primary hover:text-primary/70 transition-colors"
-              >
-                <ChevronLeft className="h-full w-4" />
-                {backText}
-              </Link>
+              <BackButton />
               <ThemeToggle />
             </div>
             <div className="bg-card p-6 rounded-xl border mb-6">
@@ -73,7 +66,7 @@ export default function ArticleLayout({
                 {title}
               </h1>
               
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
                 <div className="flex gap-3">
                   <Avatar className="size-10 rounded-full border">
                     <AvatarImage
@@ -90,7 +83,7 @@ export default function ArticleLayout({
                 {isProject && website && (
                   <a
                     href={website.startsWith('http') ? website : `https://${website}`}
-                    className="text-xs inline-flex items-center gap-1 px-2 py-1 bg-secondary hover:bg-border text-secondary-foreground rounded-md transition-colors"
+                    className="text-xs inline-flex items-center gap-1 px-3 py-1.5 bg-secondary hover:bg-border text-secondary-foreground rounded-md transition-colors whitespace-nowrap"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
