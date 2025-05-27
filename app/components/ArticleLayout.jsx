@@ -26,7 +26,7 @@ export default function ArticleLayout({
   date,
   author = "Anonymous",
   authorImage = "https://shadcnblocks.com/images/block/avatar-1.webp",
-  featuredImage = "https://shadcnblocks.com/images/block/placeholder-1.svg",
+  featuredImage,
   content,
   backLink,
   backText,
