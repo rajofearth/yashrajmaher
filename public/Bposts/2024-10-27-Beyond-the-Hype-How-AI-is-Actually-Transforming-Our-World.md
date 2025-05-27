@@ -4,6 +4,8 @@ title: "Beyond the Hype: How AI is Actually Transforming Our World"
 date: 2024-10-27
 image:
 description: "Exploring the practical applications of AI in healthcare, environmental sustainability, autonomous technology, and beyond—this article dives into how AI is revolutionizing industries to address some of humanity’s biggest challenges."
+author: "Yashraj Maher (rajofearth)"
+authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
 categories: [Artificial Intelligence, Technology Trends]
 ---
  <div class="bgGradientMaskSide"></div>

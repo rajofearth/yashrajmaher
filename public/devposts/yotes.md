@@ -3,6 +3,7 @@ title: "Yotes: My Quest to Build a Notes App That’s Actually Mine"
 description: "Yotes!!! A Privacy Focused Notes App.. umm it's bit more than that. Come on Dive in."
 date: 2024-02-26
 author: "Yashraj Maher"
+authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
 website: "yotes.vercel.app"
 tags: [Supabase, Google Drive API, IndexedDB, Open Source, Web Development]  
 ---

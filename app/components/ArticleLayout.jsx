@@ -75,7 +75,7 @@ export default function ArticleLayout({
               
               <div className="flex items-center justify-between mb-4">
                 <div className="flex gap-3">
-                  <Avatar className="size-7 rounded-full border">
+                  <Avatar className="size-10 rounded-full border">
                     <AvatarImage
                       src={authorImage}
                       alt={author} 

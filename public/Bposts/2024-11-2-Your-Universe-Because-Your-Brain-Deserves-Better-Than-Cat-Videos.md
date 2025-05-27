@@ -6,6 +6,7 @@ image:
 description: "Your Universe - Where quantum physicists debate reality at 3AM, programmers actually write documentation, and AI learns dad jokes. A social platform for the intellectually curious, the perpetually caffeinated, and those who think debugging is a lifestyle choice."
 categories: [your-universe, tech-innovation, social-platform, intellectual-discourse]
 author: "Yashraj Maher (rajofearth)"
+authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
 status: "Beta Coming Soon"
 ---
  <div class="bgGradientMaskSide"></div>
