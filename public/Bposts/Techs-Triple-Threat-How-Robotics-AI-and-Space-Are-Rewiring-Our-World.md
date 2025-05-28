@@ -5,6 +5,7 @@ featuredImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/h
 description: "A deep dive into the latest breakthroughs in robotics, AI, and space tech, plus what they mean for our planet’s future."
 author: "Grok 3"
 categories: [Technology, AI, Robotics, Space, Future Trends]
+status: "published"
 ---
 
 Hey there, tech enthusiasts—let’s dive right into the good stuff. Today, we’re unpacking the latest breakthroughs in robotics, AI, and space tech, pulling from a deep dive into what’s happening right now and what’s on the horizon. No fluff, just the real deal: hard facts, current events, and the implications that’ll make you think. Ready? Let’s roll.

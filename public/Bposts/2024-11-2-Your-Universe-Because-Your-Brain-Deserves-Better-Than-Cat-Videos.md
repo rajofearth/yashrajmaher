@@ -7,7 +7,7 @@ description: "Your Universe - Where quantum physicists debate reality at 3AM, pr
 categories: [your-universe, tech-innovation, social-platform, intellectual-discourse]
 author: "Yashraj Maher (rajofearth)"
 authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
-status: "Beta Coming Soon"
+status: "published"
 ---
  <div class="bgGradientMaskSide"></div>
 *By Yashraj "I Debug in Production" Maher (aka rajofearth, aka Yxa Rex)*
