@@ -10,8 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { Plus, Loader2 } from "lucide-react";
-import TiptapEditor from "../components/TiptapEditor";
+import { Plus, Loader2, Edit, ExternalLink, Trash } from "lucide-react";
 import matter from 'gray-matter';
 
 export default function AdminPage() {
@@ -24,22 +23,8 @@ export default function AdminPage() {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({ category: 'all', status: 'all' });
-  const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [currentPost, setCurrentPost] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
-  const [isSaving, setIsSaving] = useState(false);
-
-  // New post form state
-  const [postTitle, setPostTitle] = useState('');
-  const [postType, setPostType] = useState('blog');
-  const [postContent, setPostContent] = useState('');
-  const [postDate, setPostDate] = useState(new Date().toISOString().split('T')[0]);
-  const [postTags, setPostTags] = useState('');
-  const [postSlug, setPostSlug] = useState('');
-  const [postDescription, setPostDescription] = useState('');
-  const [postWebsite, setPostWebsite] = useState('');
-  const [postStatus, setPostStatus] = useState('draft');
 
   // Authentication
   const handleLogin = (e) => {
@@ -138,104 +123,11 @@ export default function AdminPage() {
     setFilteredPosts(filtered);
   }, [searchQuery, filters, posts]);
 
-  // Handle post editing
-  const handleEditPost = async (post) => {
-    setIsLoading(true);
-    try {
-      const { data } = await fetch(`/api/getContent?path=${post.path}`).then(res => res.json());
-      const content = Buffer.from(data.content, 'base64').toString('utf8');
-      const { data: frontmatter, content: markdown } = matter(content);
-      
-      setCurrentPost(post);
-      setPostTitle(frontmatter.title || '');
-      setPostType(post.type);
-      setPostDate(frontmatter.date || new Date().toISOString().split('T')[0]);
-      setPostTags(frontmatter.tags ? frontmatter.tags.join(', ') : '');
-      setPostContent(markdown || '');
-      setPostSlug(post.name.replace('.md', ''));
-      setPostDescription(frontmatter.description || '');
-      setPostWebsite(frontmatter.website || '');
-      setPostStatus(frontmatter.status || post.status || 'draft');
-      setIsEditorOpen(true);
-    } catch (error) {
-      setError('Error fetching post content: ' + error.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Create new post
   const handleNewPost = () => {
-    setCurrentPost(null);
-    setPostTitle('');
-    setPostType('blog');
-    setPostDate(new Date().toISOString().split('T')[0]);
-    setPostTags('');
-    setPostContent('');
-    setPostSlug('');
-    setPostDescription('');
-    setPostWebsite('');
-    setPostStatus('draft');
-    setIsEditorOpen(true);
-  };
-
-  // Save post
-  const handleSavePost = async () => {
-    if (!postTitle || !postContent) {
-      setError('Title and content are required');
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      // Create frontmatter
-      const frontmatter = {
-        title: postTitle,
-        date: postDate,
-        description: postDescription,
-        tags: postTags ? postTags.split(',').map(tag => tag.trim()) : [],
-        status: postStatus,
-      };
-      
-      // Add website for projects
-      if (postType === 'project' && postWebsite) {
-        frontmatter.website = postWebsite;
-      }
-      
-      // Create slug if not editing
-      const slug = postSlug || postTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      
-      // Create content with frontmatter
-      const content = matter.stringify(postContent, frontmatter);
-      
-      // Determine file path
-      const filePath = currentPost 
-        ? currentPost.path.replace('public/', '') 
-        : `${postType === 'blog' ? 'Bposts' : 'devposts'}/${slug}.md`;
-      
-      // Save post
-      const response = await fetch('/api/savePost', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          filePath,
-          content,
-          postType,
-        }),
-      });
-      
-      if (response.ok) {
-        setIsEditorOpen(false);
-        fetchPosts();
-      } else {
-        const data = await response.json();
-        setError('Failed to save post: ' + data.message);
-      }
-    } catch (error) {
-      setError('Error saving post: ' + error.message);
-    } finally {
-      setIsSaving(false);
-    }
+    // Generate a temporary ID for a new post
+    const tempId = `new-post-${Date.now()}`;
+    router.push(`/admin/inline-editor/${tempId}`);
   };
 
   // Delete post
@@ -342,144 +234,12 @@ export default function AdminPage() {
           
           <PostsTable 
             posts={filteredPosts} 
-            onEdit={handleEditPost} 
             onDelete={(path) => setDeleteTarget(path)} 
             isLoading={isLoading}
             onFilterChange={setFilters}
           />
         </div>
       </div>
-
-      {/* Editor Dialog */}
-      <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
-        <DialogContent className="w-[95vw] max-w-5xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
-          <DialogHeader>
-            <DialogTitle>
-              {currentPost ? 'Edit Post' : 'Create New Post'}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="title">Title</label>
-                <Input
-                  id="title"
-                  value={postTitle}
-                  onChange={(e) => setPostTitle(e.target.value)}
-                  placeholder="Post title"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="type">Post Type</label>
-                <select 
-                  id="type"
-                  value={postType}
-                  onChange={(e) => setPostType(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 py-1"
-                >
-                  <option value="blog">Blog Post</option>
-                  <option value="project">Project</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="date">Date</label>
-                <Input
-                  id="date"
-                  type="date"
-                  value={postDate}
-                  onChange={(e) => setPostDate(e.target.value)}
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="slug">Slug</label>
-                <Input
-                  id="slug"
-                  value={postSlug}
-                  onChange={(e) => setPostSlug(e.target.value)}
-                  placeholder="post-slug (leave empty to auto-generate)"
-                />
-              </div>
-              
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1" htmlFor="description">Description</label>
-                <Input
-                  id="description"
-                  value={postDescription}
-                  onChange={(e) => setPostDescription(e.target.value)}
-                  placeholder="Short description"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="tags">Tags (comma separated)</label>
-                <Input
-                  id="tags"
-                  value={postTags}
-                  onChange={(e) => setPostTags(e.target.value)}
-                  placeholder="tag1, tag2, tag3"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-1" htmlFor="status">Status</label>
-                <select 
-                  id="status"
-                  value={postStatus}
-                  onChange={(e) => setPostStatus(e.target.value)}
-                  className="w-full h-9 rounded-md border border-input bg-background px-3 py-1"
-                >
-                  <option value="draft">Draft</option>
-                  <option value="published">Published</option>
-                  <option value="unpublished">Unpublished</option>
-                </select>
-              </div>
-              
-              {postType === 'project' && (
-                <div>
-                  <label className="block text-sm font-medium mb-1" htmlFor="website">Website/GitHub URL</label>
-                  <Input
-                    id="website"
-                    value={postWebsite}
-                    onChange={(e) => setPostWebsite(e.target.value)}
-                    placeholder="https://github.com/username/repo"
-                  />
-                </div>
-              )}
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="content">Content (Markdown)</label>
-              <div className="min-h-64 border rounded-md p-4 bg-background">
-                <TiptapEditor 
-                  content={postContent} 
-                  setContent={setPostContent} 
-                  placeholder="Write your content in Markdown..."
-                />
-              </div>
-            </div>
-          </div>
-          
-          <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
-            <Button variant="outline" onClick={() => setIsEditorOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSavePost} disabled={isSaving}>
-              {isSaving ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                'Save Post'
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>

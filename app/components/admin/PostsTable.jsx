@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { StatusBadge } from "./StatusBadge";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { 
   DropdownMenu,
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Check, Edit, Trash, Filter } from "lucide-react";
+import { ChevronDown, Check, Edit, Trash, Filter, ExternalLink } from "lucide-react";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -21,6 +22,7 @@ export function PostsTable({
   isLoading = false,
   onFilterChange = () => {}
 }) {
+  const router = useRouter();
   // Initialize column sizes from localStorage or use defaults
   const defaultSizes = [40, 25, 15, 20]; // Default sizes for 4 columns
   const [sizes, setSizes] = useState(
@@ -50,6 +52,11 @@ export function PostsTable({
   // Get unique categories and statuses for filters
   const categories = ["all", "blog", "project"];
   const statuses = ["all", "draft", "published", "unpublished"];
+
+  const handleInlineEdit = (post) => {
+    const slug = post.name.replace('.md', '');
+    router.push(`/admin/inline-editor/${slug}`);
+  };
 
   if (isLoading) {
     return (
@@ -232,7 +239,13 @@ export function PostsTable({
                   {posts.map((post) => (
                     <div key={`actions-${post.path}`} className="p-3 border-b border-border h-[72px] flex items-center justify-end">
                       <div className="flex gap-2">
-                        <Button variant="ghost" size="sm" onClick={() => onEdit(post)} className="text-muted-foreground hover:text-foreground">
+                        <Button 
+                          variant="ghost" 
+                          size="sm" 
+                          onClick={() => handleInlineEdit(post)} 
+                          className="text-muted-foreground hover:text-foreground"
+                          title="Edit post"
+                        >
                           <Edit className="h-4 w-4" />
                           <span className="sr-only">Edit</span>
                         </Button>

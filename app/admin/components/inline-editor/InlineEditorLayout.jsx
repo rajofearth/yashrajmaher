@@ -1,0 +1,211 @@
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { InlineEditableText } from './InlineEditableText';
+import { InlineEditableDate } from './InlineEditableDate';
+import { InlineEditableTags } from './InlineEditableTags';
+import { InlineEditableSelect } from './InlineEditableSelect';
+import { InlineEditableMarkdown } from './InlineEditableMarkdown';
+import { Button } from '@/components/ui/button';
+import { StatusBadge } from '../../../components/admin/StatusBadge';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { ArrowLeft, Save, Check } from 'lucide-react';
+import { Toaster, toast } from 'sonner';
+
+export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
+  const router = useRouter();
+  const [editedPost, setEditedPost] = useState(post);
+  const [isSaving, setIsSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  
+  const handleUpdate = (field, value) => {
+    setEditedPost(prev => ({ ...prev, [field]: value }));
+    setHasChanges(true);
+  };
+  
+  const handleSave = async () => {
+    setIsSaving(true);
+    try {
+      const success = await onSave(editedPost);
+      if (success) {
+        toast.success('Post saved successfully');
+        setHasChanges(false);
+      }
+    } catch (error) {
+      toast.error('Failed to save post: ' + error.message);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+  
+  return (
+    <div className="min-h-screen bg-background">
+      <Toaster position="top-right" richColors />
+      
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="icon" onClick={() => router.push('/admin')} className="text-muted-foreground">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <div className="flex items-center gap-2">
+              <StatusBadge status={editedPost.status} />
+              <InlineEditableSelect
+                value={editedPost.status}
+                onChange={(value) => handleUpdate('status', value)}
+                options={[
+                  { value: 'draft', label: 'Draft' },
+                  { value: 'published', label: 'Published' },
+                  { value: 'unpublished', label: 'Unpublished' }
+                ]}
+                className="text-xs"
+              />
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Button 
+              onClick={handleSave} 
+              disabled={isSaving || !hasChanges}
+              className="flex items-center gap-2"
+            >
+              {isSaving ? (
+                <div className="animate-spin h-4 w-4 border-2 border-foreground border-t-transparent rounded-full" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
+              Save
+            </Button>
+          </div>
+        </div>
+      </header>
+      
+      {/* Content */}
+      <main className="container mx-auto px-4 py-6">
+        <div className="max-w-4xl mx-auto">
+          {/* Title */}
+          <div className="mb-6">
+            <InlineEditableText
+              value={editedPost.title}
+              onChange={(value) => handleUpdate('title', value)}
+              className="text-3xl sm:text-4xl font-bold"
+              placeholder="Post title"
+            />
+          </div>
+          
+          {/* Metadata */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="space-y-4">
+              {isNewPost && (
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground block mb-1">Post Type</label>
+                  <InlineEditableSelect
+                    value={editedPost.type}
+                    onChange={(value) => handleUpdate('type', value)}
+                    options={[
+                      { value: 'blog', label: 'Blog Post' },
+                      { value: 'project', label: 'Project' }
+                    ]}
+                  />
+                </div>
+              )}
+              
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">Date</label>
+                <InlineEditableDate
+                  value={editedPost.date}
+                  onChange={(value) => handleUpdate('date', value)}
+                />
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">Slug</label>
+                <InlineEditableText
+                  value={editedPost.slug}
+                  onChange={(value) => handleUpdate('slug', value)}
+                  placeholder="post-slug"
+                  className="text-sm"
+                />
+              </div>
+              
+              {editedPost.type === 'project' && (
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground block mb-1">Website/GitHub URL</label>
+                  <InlineEditableText
+                    value={editedPost.website}
+                    onChange={(value) => handleUpdate('website', value)}
+                    placeholder="https://github.com/username/repo"
+                    className="text-sm"
+                  />
+                </div>
+              )}
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">Description</label>
+                <InlineEditableText
+                  value={editedPost.description}
+                  onChange={(value) => handleUpdate('description', value)}
+                  placeholder="Short description of your post"
+                  className="text-sm"
+                  multiline
+                />
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">Tags</label>
+                <InlineEditableTags
+                  value={editedPost.tags}
+                  onChange={(value) => handleUpdate('tags', value)}
+                />
+              </div>
+            </div>
+          </div>
+          
+          {/* Markdown Content */}
+          <div className="border rounded-lg overflow-hidden">
+            <div className="bg-muted p-3 border-b">
+              <h2 className="text-sm font-medium">Content</h2>
+            </div>
+            <InlineEditableMarkdown
+              value={editedPost.markdown}
+              onChange={(value) => handleUpdate('markdown', value)}
+              className="min-h-[400px]"
+            />
+          </div>
+          
+          {/* Preview Link */}
+          {!isNewPost && (
+            <div className="mt-6 text-center">
+              <Link
+                href={`/${editedPost.type === 'blog' ? 'blog' : 'devposts'}/${editedPost.slug}`}
+                target="_blank"
+                className="text-sm text-muted-foreground hover:text-primary inline-flex items-center gap-1"
+              >
+                <span>Preview</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </Link>
+            </div>
+          )}
+        </div>
+      </main>
+      
+      {/* Floating save indicator */}
+      {hasChanges && (
+        <div className="fixed bottom-6 right-6 z-50 bg-primary text-primary-foreground shadow-lg rounded-full py-2 px-4 flex items-center gap-2 text-sm animate-in fade-in slide-in-from-bottom-5">
+          <span>Unsaved changes</span>
+          <Button size="sm" onClick={handleSave} className="h-6 rounded-full bg-primary-foreground text-primary">
+            Save
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+} 
