@@ -47,11 +47,15 @@ export function getDevposts(searchQuery = '') {
         tags: frontmatter.tags || [],
         website: frontmatter.website || null,
         featuredImage: frontmatter.featuredImage || null,
+        status: frontmatter.status || 'published' // Default to published for backward compatibility
       };
     });
 
+    // Filter out posts that aren't published
+    const publishedDevposts = devposts.filter(project => project.status === 'published');
+    
     // Sort by date (newest first)
-    const sortedDevposts = devposts.sort((a, b) => {
+    const sortedDevposts = publishedDevposts.sort((a, b) => {
       // Handle missing dates
       if (!a.date) return 1;
       if (!b.date) return -1;

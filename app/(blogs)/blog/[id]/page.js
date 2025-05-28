@@ -53,6 +53,12 @@ export default async function BlogPost({ params }) {
             return <ErrorPage title="Invalid Format" message="Post frontmatter is incomplete" slug={id} backLink="/blog" />;
         }
         
+        // Check if post is published
+        const status = frontmatter.status || 'published'; // Default to published for backward compatibility
+        if (status !== 'published') {
+            return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
+        }
+        
         const formattedDate = frontmatter.date
             ? format(new Date(frontmatter.date), 'MMMM d, yyyy')
             : 'No publication date';

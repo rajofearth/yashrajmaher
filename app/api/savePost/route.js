@@ -1,51 +1,56 @@
-import { Octokit } from "@octokit/rest";
+import { octokit, repoOwner, repoName } from '@/lib/github';
 import { NextResponse } from 'next/server';
+import { z } from 'zod';
+
+const savePostSchema = z.object({
+  filePath: z.string().min(1),
+  content: z.string().min(1),
+  postType: z.enum(['blog', 'project']),
+});
 
 export async function POST(request) {
-    const { filePath, content, postType } = await request.json();
-  if (!filePath || !content || !postType) {
-    return NextResponse.json({ success: false, message: 'Missing required fields' }, { status: 400 });
+  const body = await request.json();
+  const result = savePostSchema.safeParse(body);
+  if (!result.success) {
+    const messages = result.error.errors.map(e => e.message).join(', ');
+    return NextResponse.json({ success: false, message: messages }, { status: 400 });
   }
+  const { filePath, content, postType } = result.data;
 
-    const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
-
+  try {
+    // Check if the file exists to get SHA for update
+    let sha = null;
     try {
-        // Check if the file exists
-        let sha = null;
-        try {
-            const { data } = await octokit.repos.getContent({
-                owner: process.env.GITHUB_REPO_OWNER,
-                repo: process.env.GITHUB_REPO_NAME,
-                path: `public/${filePath}`,
-            });
-            sha = data.sha; // Get the SHA for updating
-        } catch (error) {
-            if (error.status !== 404) { // Ignore 404 (file doesn't exist)
-                throw error;
-            }
-        }
-
-        // Create or update the file
-        const { data } = await octokit.repos.createOrUpdateFileContents({
-            owner: process.env.GITHUB_REPO_OWNER,
-            repo: process.env.GITHUB_REPO_NAME,
-            path: `public/${filePath}`,
-            message: `Create/Update ${postType}: ${filePath}`,
-            content: Buffer.from(content).toString('base64'),
-            sha: sha, // Include SHA if updating
-            committer: {
-              name: 'Yashraj Maher',
-              email: 'rajofearth@proton.me' // Replace
-            },
-            author: {
-              name: 'Yashraj Maher',
-              email: 'rajofearth@proton.me' // Replace
-            }
-        });
-
-      return NextResponse.json({ success: true, message: 'Post saved successfully', data }, { status: 200 });
+      const { data } = await octokit.repos.getContent({
+        owner: repoOwner,
+        repo: repoName,
+        path: `public/${filePath}`,
+      });
+      sha = data.sha;
     } catch (error) {
-        console.error('GitHub API Error:', error);
-      return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+      if (error.status !== 404) throw error;
     }
+
+    const { data } = await octokit.repos.createOrUpdateFileContents({
+      owner: repoOwner,
+      repo: repoName,
+      path: `public/${filePath}`,
+      message: `Create/Update ${postType}: ${filePath}`,
+      content: Buffer.from(content).toString('base64'),
+      sha,
+      committer: {
+        name: 'Yashraj Maher',
+        email: 'rajofearth@proton.me',
+      },
+      author: {
+        name: 'Yashraj Maher',
+        email: 'rajofearth@proton.me',
+      },
+    });
+
+    return NextResponse.json({ success: true, message: 'Post saved successfully', data }, { status: 200 });
+  } catch (error) {
+    console.error('GitHub API Error:', error);
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+  }
 }
