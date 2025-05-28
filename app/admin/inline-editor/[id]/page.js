@@ -8,29 +8,20 @@ import matter from 'gray-matter';
 export default function InlineEditorPage() {
   const router = useRouter();
   const params = useParams();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState(null);
   const [error, setError] = useState(null);
   const [isNewPost, setIsNewPost] = useState(false);
   
-  // Check authentication on load
+  // Load post on mount
   useEffect(() => {
-    const isAdminAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
-    if (!isAdminAuthenticated) {
-      router.push('/admin');
-      return;
-    }
-    setIsAuthenticated(true);
-    
-    // Check if this is a new post or existing one
     if (params.id && params.id.startsWith('new-post-')) {
       setIsNewPost(true);
       createEmptyPost();
     } else {
       fetchPost();
     }
-  }, [router, params.id]);
+  }, [params.id]);
   
   // Create empty post for new posts
   const createEmptyPost = () => {
@@ -185,10 +176,6 @@ export default function InlineEditorPage() {
       return false;
     }
   };
-  
-  if (!isAuthenticated) {
-    return null; // Redirecting to login
-  }
   
   if (isLoading) {
     return (

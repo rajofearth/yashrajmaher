@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter, Playfair_Display, Roboto_Mono } from "next/font/google";
 import { StagewiseToolbar } from '@stagewise/toolbar-next';
 import { ThemeProvider } from "@/components/theme-provider";
+import { ClerkProvider } from '@clerk/nextjs';
 
 // Load fonts
 const inter = Inter({
@@ -40,15 +41,17 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable} ${robotoMono.variable}`}>
       <head />
       <body className="min-h-screen antialiased bg-background text-foreground">
-        <ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
-          {process.env.NODE_ENV === 'development' && (
-            <StagewiseToolbar config={stagewiseConfig} />
-          )}
-          <Analytics />
-          <main>
-            {children}
-          </main>
-        </ThemeProvider>
+        <ClerkProvider>
+          <ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
+            {process.env.NODE_ENV === 'development' && (
+              <StagewiseToolbar config={stagewiseConfig} />
+            )}
+            <Analytics />
+            <main>
+              {children}
+            </main>
+          </ThemeProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
