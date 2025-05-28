@@ -7,6 +7,7 @@ description: "Exploring the latest in mobile development, from React Native’s 
 author: "Yashraj Maher (rajofearth)"
 authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
 categories: [Mobile Development, React Native, Technology Trends, Software Architecture]
+status: "published"
 ---
  <div class="bgGradientMaskSide"></div>
 ## Introduction

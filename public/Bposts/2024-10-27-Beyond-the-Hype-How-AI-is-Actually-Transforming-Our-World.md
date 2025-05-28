@@ -7,6 +7,7 @@ description: "Exploring the practical applications of AI in healthcare, environm
 author: "Yashraj Maher (rajofearth)"
 authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
 categories: [Artificial Intelligence, Technology Trends]
+status: "published"
 ---
  <div class="bgGradientMaskSide"></div>
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/4oKvwgtZaAm0wMygdDRbBO?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>

@@ -6,6 +6,7 @@ author: "Yashraj Maher"
 authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/my.png"
 website: "yotes.vercel.app"
 tags: [Supabase, Google Drive API, IndexedDB, Open Source, Web Development]  
+status: "published"
 ---
 Hey, I’m Yashraj Maher ([rajofearth](https://github.com/rajofearth)), and Yotes is my brainchild—a privacy-first notes app I’ve been hammering away at since late 2024. It’s not just for scribbling thoughts; it’s about owning them, no subscriptions, no corporate clouds. Yotes lives in your Google Drive, piggybacks on your storage, and dreams of being more—a hub for notes, files, and wild ideas. It’s live at [yotes.vercel.app](https://yotes.vercel.app), and this is the raw, unfiltered tale of how it came to life.
 

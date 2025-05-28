@@ -7,6 +7,7 @@ authorImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/hea
 featuredImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/images/redesigned-personal-website.png"
 website: "https://yashrajmaher.vercel.app"
 tags: [Next.js, Tweakcn]
+status: "published"
 ---
 
 ### **The Itch to Rebuild**
