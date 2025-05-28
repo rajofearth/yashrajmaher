@@ -86,7 +86,7 @@ export function InlineEditableText({
       className={`group cursor-text relative p-2 -m-2 rounded-md border border-transparent hover:bg-accent/20 hover:border-border ${className}`}
     >
       {value ? (
-        <div>{value}</div>
+        <div className="break-words whitespace-normal overflow-hidden">{value}</div>
       ) : (
         <div className="text-muted-foreground">{placeholder}</div>
       )}

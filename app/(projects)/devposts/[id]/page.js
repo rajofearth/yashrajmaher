@@ -53,6 +53,12 @@ export default async function DevpostPost({ params }) {
   if (!frontmatter.title) {
     return <ErrorPage title="Invalid project format" message="Project data is incomplete" slug={id} backLink="/devposts" />;
   }
+  
+  // Check if project is published
+  const status = frontmatter.status || 'published'; // Default to published for backward compatibility
+  if (status !== 'published') {
+    return <ErrorPage title="Project Not Available" message="This project is not currently available" backLink="/devposts" />;
+  }
 
   const formattedDate = frontmatter.date
     ? format(new Date(frontmatter.date), 'MMMM d, yyyy')

@@ -44,13 +44,19 @@ export function getBlogs(searchQuery = '') {
         description: highlightedDesc,
         rawTitle: data.title,
         rawDescription: data.description.toLowerCase(),
-	slug: filename.replace(/\.md$/, '') 
+        slug: filename.replace(/\.md$/, ''),
+        status: data.status || 'published' // Default to published for backward compatibility
       };
-    }).filter(blog => 
+    })
+    // Filter out posts that aren't published
+    .filter(blog => blog.status === 'published')
+    // Filter by search query if provided
+    .filter(blog => 
       !trimmedQuery || 
       blog.rawTitle.toLowerCase().includes(trimmedQuery) || 
       blog.rawDescription.includes(trimmedQuery)
-    ).sort((a, b) => {
+    )
+    .sort((a, b) => {
       try {
         // Handle invalid dates by falling back to string comparison
         const dateA = a.date && a.date !== 'No date' ? new Date(a.date).getTime() : 0;

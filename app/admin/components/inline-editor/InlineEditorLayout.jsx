@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { InlineEditableText } from './InlineEditableText';
@@ -11,7 +11,7 @@ import { InlineEditableMarkdown } from './InlineEditableMarkdown';
 import { Button } from '@/components/ui/button';
 import { StatusBadge } from '../../../components/admin/StatusBadge';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
-import { ArrowLeft, Save, Check } from 'lucide-react';
+import { ArrowLeft, Save, Check, Upload, Link as LinkIcon } from 'lucide-react';
 import { Toaster, toast } from 'sonner';
 
 export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
@@ -19,10 +19,86 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
   const [editedPost, setEditedPost] = useState(post);
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [authorOptions, setAuthorOptions] = useState([]);
+  const [isUsingUrl, setIsUsingUrl] = useState({
+    authorImage: editedPost.authorImage?.startsWith('http'),
+    featuredImage: editedPost.featuredImage?.startsWith('http')
+  });
+  const [availableImages, setAvailableImages] = useState([]);
+  
+  // Fetch author names from existing posts
+  useEffect(() => {
+    const fetchAuthors = async () => {
+      try {
+        const response = await fetch('/api/listPosts');
+        if (response.ok) {
+          const posts = await response.json();
+          const authors = [...new Set(posts
+            .filter(p => p.frontmatter?.author)
+            .map(p => p.frontmatter.author))];
+          
+          setAuthorOptions(authors);
+        }
+      } catch (error) {
+        console.error("Failed to load authors:", error);
+      }
+    };
+    
+    const fetchImages = async () => {
+      try {
+        const response = await fetch('/api/listImages');
+        if (response.ok) {
+          const data = await response.json();
+          setAvailableImages(data.images || []);
+        }
+      } catch (error) {
+        console.error("Failed to load images:", error);
+      }
+    };
+    
+    fetchAuthors();
+    fetchImages();
+  }, []);
   
   const handleUpdate = (field, value) => {
     setEditedPost(prev => ({ ...prev, [field]: value }));
     setHasChanges(true);
+  };
+  
+  const toggleUrlMode = (field) => {
+    setIsUsingUrl(prev => ({
+      ...prev,
+      [field]: !prev[field]
+    }));
+    
+    // Clear the field when switching modes
+    handleUpdate(field, '');
+  };
+  
+  const handleFileUpload = async (e, field) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      // Replace with your actual image upload endpoint
+      const response = await fetch('/api/uploadImage', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        handleUpdate(field, data.path.replace('/public/images/', ''));
+        toast.success(`Image uploaded successfully`);
+      } else {
+        toast.error("Failed to upload image");
+      }
+    } catch (error) {
+      toast.error("Error uploading image: " + error.message);
+    }
   };
   
   const handleSave = async () => {
@@ -132,6 +208,94 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
                 />
               </div>
               
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">Author Name</label>
+                <div className="flex gap-2">
+                  <InlineEditableText
+                    value={editedPost.author || ""}
+                    onChange={(value) => handleUpdate('author', value)}
+                    placeholder="Your Name"
+                    className="text-sm flex-grow"
+                  />
+                  {authorOptions.length > 0 && (
+                    <select 
+                      className="text-sm bg-card border rounded px-2 py-1 text-foreground"
+                      onChange={(e) => {
+                        if (e.target.value) handleUpdate('author', e.target.value);
+                      }}
+                      value=""
+                    >
+                      <option value="">Select author</option>
+                      {authorOptions.map(author => (
+                        <option key={author} value={author}>{author}</option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">
+                  Author Image 
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="ml-2" 
+                    onClick={() => toggleUrlMode('authorImage')}
+                  >
+                    {isUsingUrl.authorImage ? <Upload size={14} /> : <LinkIcon size={14} />}
+                    {isUsingUrl.authorImage ? ' Use file' : ' Use URL'}
+                  </Button>
+                </label>
+                
+                {isUsingUrl.authorImage ? (
+                  <InlineEditableText
+                    value={editedPost.authorImage || ""}
+                    onChange={(value) => handleUpdate('authorImage', value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="text-sm"
+                  />
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="file"
+                      id="authorImageFile"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleFileUpload(e, 'authorImage')}
+                    />
+                    <InlineEditableText
+                      value={editedPost.authorImage || ""}
+                      onChange={(value) => handleUpdate('authorImage', value)}
+                      placeholder="profile.jpg"
+                      className="text-sm flex-grow"
+                    />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => document.getElementById('authorImageFile').click()}
+                    >
+                      <Upload size={14} className="mr-1" /> Upload
+                    </Button>
+                    
+                    {availableImages.length > 0 && (
+                      <select 
+                        className="text-sm bg-card border rounded px-2 py-1 text-foreground"
+                        onChange={(e) => {
+                          if (e.target.value) handleUpdate('authorImage', e.target.value);
+                        }}
+                        value=""
+                      >
+                        <option value="">Select image</option>
+                        {availableImages.map(img => (
+                          <option key={img.name} value={img.name}>{img.name}</option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                )}
+              </div>
+              
               {editedPost.type === 'project' && (
                 <div>
                   <label className="text-sm font-medium text-muted-foreground block mb-1">Website/GitHub URL</label>
@@ -155,6 +319,68 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
                   className="text-sm"
                   multiline
                 />
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-muted-foreground block mb-1">
+                  Featured Image
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="ml-2" 
+                    onClick={() => toggleUrlMode('featuredImage')}
+                  >
+                    {isUsingUrl.featuredImage ? <Upload size={14} /> : <LinkIcon size={14} />}
+                    {isUsingUrl.featuredImage ? ' Use file' : ' Use URL'}
+                  </Button>
+                </label>
+                
+                {isUsingUrl.featuredImage ? (
+                  <InlineEditableText
+                    value={editedPost.featuredImage || ""}
+                    onChange={(value) => handleUpdate('featuredImage', value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="text-sm"
+                  />
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="file"
+                      id="featuredImageFile"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleFileUpload(e, 'featuredImage')}
+                    />
+                    <InlineEditableText
+                      value={editedPost.featuredImage || ""}
+                      onChange={(value) => handleUpdate('featuredImage', value)}
+                      placeholder="featured.jpg"
+                      className="text-sm flex-grow"
+                    />
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => document.getElementById('featuredImageFile').click()}
+                    >
+                      <Upload size={14} className="mr-1" /> Upload
+                    </Button>
+                    
+                    {availableImages.length > 0 && (
+                      <select 
+                        className="text-sm bg-card border rounded px-2 py-1 text-foreground"
+                        onChange={(e) => {
+                          if (e.target.value) handleUpdate('featuredImage', e.target.value);
+                        }}
+                        value=""
+                      >
+                        <option value="">Select image</option>
+                        {availableImages.map(img => (
+                          <option key={img.name} value={img.name}>{img.name}</option>
+                        ))}
+                      </select>
+                    )}
+                  </div>
+                )}
               </div>
               
               <div>

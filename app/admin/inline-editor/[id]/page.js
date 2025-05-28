@@ -46,7 +46,10 @@ export default function InlineEditorPage() {
       name: `post-${Date.now()}.md`,
       isNew: true,
       path: `Bposts/post-${Date.now()}.md`, // Default path for blog posts
-      slug: `post-${Date.now()}`
+      slug: `post-${Date.now()}`,
+      author: '',
+      authorImage: '',
+      featuredImage: ''
     };
     
     setPost(newPost);
@@ -81,7 +84,10 @@ export default function InlineEditorPage() {
         status: frontmatter.status || 'draft',
         type: currentPost.path.includes('Bposts') ? 'blog' : 'project',
         website: frontmatter.website || '',
-        slug: currentPost.name.replace('.md', '')
+        slug: currentPost.name.replace('.md', ''),
+        author: frontmatter.author || '',
+        authorImage: frontmatter.authorImage || '',
+        featuredImage: frontmatter.featuredImage || ''
       });
     } catch (err) {
       setError('Error loading post: ' + err.message);
@@ -114,6 +120,29 @@ export default function InlineEditorPage() {
       // Add website for projects
       if (updatedPost.type === 'project' && updatedPost.website) {
         frontmatter.website = updatedPost.website;
+      }
+      
+      // Add author, authorImage and featuredImage if provided
+      if (updatedPost.author) {
+        frontmatter.author = updatedPost.author;
+      }
+      
+      if (updatedPost.authorImage) {
+        // Keep URLs as is, but add prefix for local files
+        frontmatter.authorImage = updatedPost.authorImage.startsWith('http') 
+          ? updatedPost.authorImage 
+          : updatedPost.authorImage.startsWith('/') 
+            ? updatedPost.authorImage 
+            : `/images/${updatedPost.authorImage}`;
+      }
+      
+      if (updatedPost.featuredImage) {
+        // Keep URLs as is, but add prefix for local files
+        frontmatter.featuredImage = updatedPost.featuredImage.startsWith('http') 
+          ? updatedPost.featuredImage 
+          : updatedPost.featuredImage.startsWith('/') 
+            ? updatedPost.featuredImage 
+            : `/images/${updatedPost.featuredImage}`;
       }
       
       // Create content with frontmatter
