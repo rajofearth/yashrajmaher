@@ -7,16 +7,16 @@ import { Loader2 } from "lucide-react";
 export function DeleteConfirmationDialog({ open, onClose, onConfirm, isDeleting }) {
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-[90vw] sm:max-w-md mx-auto p-4 sm:p-6">
         <DialogHeader>
-          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogTitle className="text-lg sm:text-xl">Confirm Deletion</DialogTitle>
         </DialogHeader>
-        <p>Are you sure you want to delete this post? This action cannot be undone.</p>
-        <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
-          <Button variant="outline" onClick={onClose}>
+        <p className="text-sm sm:text-base py-2">Are you sure you want to delete this post? This action cannot be undone.</p>
+        <DialogFooter className="flex flex-col-reverse sm:flex-row gap-2 sm:gap-0 mt-4">
+          <Button variant="outline" onClick={onClose} className="w-full sm:w-auto">
             Cancel
           </Button>
-          <Button variant="destructive" onClick={onConfirm} disabled={isDeleting}>
+          <Button variant="destructive" onClick={onConfirm} disabled={isDeleting} className="w-full sm:w-auto">
             {isDeleting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

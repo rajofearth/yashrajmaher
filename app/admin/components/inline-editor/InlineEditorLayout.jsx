@@ -122,32 +122,39 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
       
       {/* Header */}
       <header className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" size="icon" onClick={() => router.push('/admin')} className="text-muted-foreground">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div className="flex items-center gap-2">
-              <StatusBadge status={editedPost.status} />
-              <InlineEditableSelect
-                value={editedPost.status}
-                onChange={(value) => handleUpdate('status', value)}
-                options={[
-                  { value: 'draft', label: 'Draft' },
-                  { value: 'published', label: 'Published' },
-                  { value: 'unpublished', label: 'Unpublished' }
-                ]}
-                className="text-xs"
-              />
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-0">
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-start">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => router.push('/admin')} className="text-muted-foreground">
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <div className="flex items-center gap-2">
+                <StatusBadge status={editedPost.status} />
+                <InlineEditableSelect
+                  value={editedPost.status}
+                  onChange={(value) => handleUpdate('status', value)}
+                  options={[
+                    { value: 'draft', label: 'Draft' },
+                    { value: 'published', label: 'Published' },
+                    { value: 'unpublished', label: 'Unpublished' }
+                  ]}
+                  className="text-xs"
+                />
+              </div>
+            </div>
+            <div className="flex sm:hidden items-center gap-3">
+              <ThemeToggle />
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+            <div className="hidden sm:block">
+              <ThemeToggle />
+            </div>
             <Button 
               onClick={handleSave} 
               disabled={isSaving || !hasChanges}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 w-full sm:w-auto"
             >
               {isSaving ? (
                 <div className="animate-spin h-4 w-4 border-2 border-foreground border-t-transparent rounded-full" />
@@ -161,24 +168,24 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
       </header>
       
       {/* Content */}
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <div className="max-w-4xl mx-auto">
           {/* Title */}
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <InlineEditableText
               value={editedPost.title}
               onChange={(value) => handleUpdate('title', value)}
-              className="text-3xl sm:text-4xl font-bold"
+              className="text-2xl sm:text-3xl md:text-4xl font-bold"
               placeholder="Post title"
             />
           </div>
           
           {/* Metadata */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 mb-6 sm:mb-8">
+            <div className="space-y-6">
               {isNewPost && (
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground block mb-1">Post Type</label>
+                  <label className="text-sm font-medium text-muted-foreground block mb-2">Post Type</label>
                   <InlineEditableSelect
                     value={editedPost.type}
                     onChange={(value) => handleUpdate('type', value)}
@@ -186,31 +193,33 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
                       { value: 'blog', label: 'Blog Post' },
                       { value: 'project', label: 'Project' }
                     ]}
+                    className="w-full"
                   />
                 </div>
               )}
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">Date</label>
+                <label className="text-sm font-medium text-muted-foreground block mb-2">Date</label>
                 <InlineEditableDate
                   value={editedPost.date}
                   onChange={(value) => handleUpdate('date', value)}
+                  className="w-full"
                 />
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">Slug</label>
+                <label className="text-sm font-medium text-muted-foreground block mb-2">Slug</label>
                 <InlineEditableText
                   value={editedPost.slug}
                   onChange={(value) => handleUpdate('slug', value)}
                   placeholder="post-slug"
-                  className="text-sm"
+                  className="text-sm w-full"
                 />
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">Author Name</label>
-                <div className="flex gap-2">
+                <label className="text-sm font-medium text-muted-foreground block mb-2">Author Name</label>
+                <div className="flex flex-col sm:flex-row gap-2">
                   <InlineEditableText
                     value={editedPost.author || ""}
                     onChange={(value) => handleUpdate('author', value)}
@@ -219,7 +228,7 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
                   />
                   {authorOptions.length > 0 && (
                     <select 
-                      className="text-sm bg-card border rounded px-2 py-1 text-foreground"
+                      className="text-sm bg-card border rounded px-2 py-2 text-foreground"
                       onChange={(e) => {
                         if (e.target.value) handleUpdate('author', e.target.value);
                       }}
@@ -235,28 +244,28 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">
-                  Author Image 
+                <div className="flex flex-wrap justify-between items-center mb-2">
+                  <label className="text-sm font-medium text-muted-foreground">Author Image</label>
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="ml-2" 
                     onClick={() => toggleUrlMode('authorImage')}
+                    className="h-8 text-xs"
                   >
                     {isUsingUrl.authorImage ? <Upload size={14} /> : <LinkIcon size={14} />}
                     {isUsingUrl.authorImage ? ' Use file' : ' Use URL'}
                   </Button>
-                </label>
+                </div>
                 
                 {isUsingUrl.authorImage ? (
                   <InlineEditableText
                     value={editedPost.authorImage || ""}
                     onChange={(value) => handleUpdate('authorImage', value)}
                     placeholder="https://example.com/image.jpg"
-                    className="text-sm"
+                    className="text-sm w-full"
                   />
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="file"
                       id="authorImageFile"
@@ -270,80 +279,81 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
                       placeholder="profile.jpg"
                       className="text-sm flex-grow"
                     />
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => document.getElementById('authorImageFile').click()}
-                    >
-                      <Upload size={14} className="mr-1" /> Upload
-                    </Button>
-                    
-                    {availableImages.length > 0 && (
-                      <select 
-                        className="text-sm bg-card border rounded px-2 py-1 text-foreground"
-                        onChange={(e) => {
-                          if (e.target.value) handleUpdate('authorImage', e.target.value);
-                        }}
-                        value=""
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => document.getElementById('authorImageFile').click()}
+                        className="whitespace-nowrap h-9"
                       >
-                        <option value="">Select image</option>
-                        {availableImages.map(img => (
-                          <option key={img.name} value={img.name}>{img.name}</option>
-                        ))}
-                      </select>
-                    )}
+                        <Upload size={14} className="mr-1" /> Upload
+                      </Button>
+                      
+                      {availableImages.length > 0 && (
+                        <select 
+                          className="text-sm bg-card border rounded px-2 py-2 text-foreground min-w-[120px]"
+                          onChange={(e) => {
+                            if (e.target.value) handleUpdate('authorImage', e.target.value);
+                          }}
+                          value=""
+                        >
+                          <option value="">Select image</option>
+                          {availableImages.map(img => (
+                            <option key={img.name} value={img.name}>{img.name}</option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
               
               {editedPost.type === 'project' && (
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground block mb-1">Website/GitHub URL</label>
+                  <label className="text-sm font-medium text-muted-foreground block mb-2">Website/GitHub URL</label>
                   <InlineEditableText
                     value={editedPost.website}
                     onChange={(value) => handleUpdate('website', value)}
                     placeholder="https://github.com/username/repo"
-                    className="text-sm"
+                    className="text-sm w-full"
                   />
                 </div>
               )}
-            </div>
             
-            <div className="space-y-4">
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">Description</label>
+                <label className="text-sm font-medium text-muted-foreground block mb-2">Description</label>
                 <InlineEditableText
                   value={editedPost.description}
                   onChange={(value) => handleUpdate('description', value)}
                   placeholder="Short description of your post"
-                  className="text-sm"
+                  className="text-sm w-full"
                   multiline
                 />
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">
-                  Featured Image
+                <div className="flex flex-wrap justify-between items-center mb-2">
+                  <label className="text-sm font-medium text-muted-foreground">Featured Image</label>
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="ml-2" 
                     onClick={() => toggleUrlMode('featuredImage')}
+                    className="h-8 text-xs"
                   >
                     {isUsingUrl.featuredImage ? <Upload size={14} /> : <LinkIcon size={14} />}
                     {isUsingUrl.featuredImage ? ' Use file' : ' Use URL'}
                   </Button>
-                </label>
+                </div>
                 
                 {isUsingUrl.featuredImage ? (
                   <InlineEditableText
                     value={editedPost.featuredImage || ""}
                     onChange={(value) => handleUpdate('featuredImage', value)}
                     placeholder="https://example.com/image.jpg"
-                    className="text-sm"
+                    className="text-sm w-full"
                   />
                 ) : (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="file"
                       id="featuredImageFile"
@@ -357,34 +367,37 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
                       placeholder="featured.jpg"
                       className="text-sm flex-grow"
                     />
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => document.getElementById('featuredImageFile').click()}
-                    >
-                      <Upload size={14} className="mr-1" /> Upload
-                    </Button>
-                    
-                    {availableImages.length > 0 && (
-                      <select 
-                        className="text-sm bg-card border rounded px-2 py-1 text-foreground"
-                        onChange={(e) => {
-                          if (e.target.value) handleUpdate('featuredImage', e.target.value);
-                        }}
-                        value=""
+                    <div className="flex gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => document.getElementById('featuredImageFile').click()}
+                        className="whitespace-nowrap h-9"
                       >
-                        <option value="">Select image</option>
-                        {availableImages.map(img => (
-                          <option key={img.name} value={img.name}>{img.name}</option>
-                        ))}
-                      </select>
-                    )}
+                        <Upload size={14} className="mr-1" /> Upload
+                      </Button>
+                      
+                      {availableImages.length > 0 && (
+                        <select 
+                          className="text-sm bg-card border rounded px-2 py-2 text-foreground min-w-[120px]"
+                          onChange={(e) => {
+                            if (e.target.value) handleUpdate('featuredImage', e.target.value);
+                          }}
+                          value=""
+                        >
+                          <option value="">Select image</option>
+                          {availableImages.map(img => (
+                            <option key={img.name} value={img.name}>{img.name}</option>
+                          ))}
+                        </select>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
               
               <div>
-                <label className="text-sm font-medium text-muted-foreground block mb-1">Tags</label>
+                <label className="text-sm font-medium text-muted-foreground block mb-2">Tags</label>
                 <InlineEditableTags
                   value={editedPost.tags}
                   onChange={(value) => handleUpdate('tags', value)}
@@ -401,7 +414,7 @@ export function InlineEditorLayout({ post, onSave, isNewPost = false }) {
             <InlineEditableMarkdown
               value={editedPost.markdown}
               onChange={(value) => handleUpdate('markdown', value)}
-              className="min-h-[400px]"
+              className="min-h-[300px] sm:min-h-[400px]"
             />
           </div>
           

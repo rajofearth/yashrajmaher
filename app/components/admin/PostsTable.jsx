@@ -61,7 +61,14 @@ export function PostsTable({
   if (isLoading) {
     return (
       <div className="px-4 py-3">
-        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        {/* Mobile loading skeleton */}
+        <div className="space-y-4 md:hidden">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="h-24 bg-muted rounded-xl animate-pulse"></div>
+          ))}
+        </div>
+        {/* Desktop loading table */}
+        <div className="overflow-x-auto rounded-xl border border-border bg-card hidden md:block">
           <div className="w-full min-w-[650px]">
             <div className="grid grid-cols-4 bg-muted">
               <div className="p-3 font-medium text-foreground">Title</div>
@@ -162,7 +169,11 @@ export function PostsTable({
   if (posts.length === 0) {
     return (
       <div className="px-4 py-3">
-        <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        {/* Mobile empty state */}
+        <div className="text-center text-muted-foreground md:hidden">
+          No posts found. Create your first post!
+        </div>
+        <div className="overflow-x-auto rounded-xl border border-border bg-card hidden md:block">
           <div className="w-full min-w-[650px]">
             <TableHeaders />
             <div className="p-12 text-center text-muted-foreground">
@@ -176,10 +187,32 @@ export function PostsTable({
 
   return (
     <div className="px-4 py-3">
-      <div className="overflow-x-auto rounded-xl border border-border bg-card">
+      {/* Mobile card view */}
+      <div className="space-y-4 md:hidden">
+        {posts.map((post) => {
+          const title = post.title || post.name.replace('.md', '');
+          const type = post.path.includes('Bposts') ? 'Blog' : 'Project';
+          return (
+            <div key={post.path} className="p-4 bg-card rounded-xl border border-border">
+              <h3 className="font-semibold text-foreground truncate">{title}</h3>
+              <p className="text-sm text-muted-foreground mt-1">{type}</p>
+              <p className="text-sm mt-1"><StatusBadge status={post.status || 'draft'} /></p>
+              <div className="mt-3 flex gap-2">
+                <Button variant="secondary" size="sm" onClick={() => handleInlineEdit(post)}>
+                  Edit
+                </Button>
+                <Button variant="destructive" size="sm" onClick={() => onDelete(post.path)}>
+                  Delete
+                </Button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {/* Desktop table view */}
+      <div className="overflow-x-auto rounded-xl border border-border bg-card hidden md:block">
         <div className="w-full min-w-[650px]">
           <TableHeaders />
-          
           {/* Show message if filtered results are empty */}
           {posts.length > 0 ? (
             <ResizablePanelGroup 

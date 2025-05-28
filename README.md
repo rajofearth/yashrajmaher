@@ -1,4 +1,3 @@
-
 # Yashraj Maher's Personal Website
 
 [![Website Status](https://img.shields.io/website?url=https%3A%2F%2Frajofearth.github.io&label=Website&style=flat-square)](https://rajofearth.github.io)
@@ -18,7 +17,9 @@ Welcome to the repository for my personal website! This site serves as a portfol
     *   [Prerequisites](#prerequisites)
     *   [Installation](#installation)
     *   [Running Locally](#running-locally)
-*   [Content Management (Blogs and Projects)](#content-management-blogs-and-projects)
+*   [Content Management via GitHub CMS (Blogs and Projects)](#content-management-via-github-cms-blogs-and-projects)
+*   [Authentication](#authentication)
+*   [Admin Dashboard](#admin-dashboard)
 *   [Scripts](#scripts)
 *   [License](#license)
 *   [Contact](#contact)
@@ -147,7 +148,7 @@ LICENSE           # MIT License file
 
 2.  **Open your browser:**  The application will be running at `http://localhost:3000`.
 
-## Content Management (Blogs and Projects)
+## Content Management via GitHub CMS (Blogs and Projects)
 
 *   **Adding a Blog Post:**
     1.  Create a new Markdown file (`.md`) in the `public/Bposts/` directory.  The filename will become the slug for the blog post (e.g., `my-new-post.md` will be accessible at `/blog/my-new-post`).
@@ -178,6 +179,18 @@ LICENSE           # MIT License file
         ```
 
 *   **Important**: Ensure that your dates are in a format Javascript can parse.
+
+## Authentication
+
+We secure the `/admin` area using Clerk. Clerk handles sign-in, session management, and sign-out. Only the user matching the `ADMIN_USER_ID` environment variable can access the admin dashboard.
+
+## Admin Dashboard
+
+The admin interface is available at `/admin` and lets you manage your blog posts and projects directly through your GitHub repository:
+* **List & Search:** View, filter, and search all existing blog and project entries.
+* **Inline Editing:** Edit content in the browser using an inline markdown editor.
+* **Create & Delete:** Add new posts/projects or remove existing ones.
+* **GitHub as CMS:** Uses Octokit under the hood to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
 
 ## License
 

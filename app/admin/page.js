@@ -42,10 +42,10 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
-          <div className="flex items-center gap-3 sm:gap-4">
+      <div className="container mx-auto px-3 sm:px-6 py-4 sm:py-8">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-4 sm:mb-8">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">Admin Dashboard</h1>
+          <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
             <ThemeToggle />
             <UserButton />
           </div>
@@ -57,10 +57,14 @@ export default function AdminPage() {
           </Alert>
         )}
 
-        <div className="bg-card border rounded-xl shadow-sm mb-8">
+        <div className="bg-card border rounded-xl shadow-sm mb-6 sm:mb-8">
           <div className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
-            <h2 className="text-lg sm:text-xl font-semibold text-card-foreground">Manage Content</h2>
-            <Button onClick={handleNewPost} size="sm" className="flex items-center gap-2 whitespace-nowrap">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-card-foreground">Manage Content</h2>
+            <Button 
+              onClick={handleNewPost} 
+              size="sm" 
+              className="flex items-center gap-2 whitespace-nowrap w-full sm:w-auto justify-center"
+            >
               <Plus className="size-4" />
               <span>New Post</span>
             </Button>
