@@ -1,11 +1,11 @@
 ---
-title: "Tech’s Triple Threat: How Robotics, AI, and Space Are Rewiring Our World"
-date: 2025-02-20
-featuredImage: "https://raw.githubusercontent.com/rajofearth/yashrajmaher/refs/heads/main/public/images/tech-triple-threat.jpg"
-description: "A deep dive into the latest breakthroughs in robotics, AI, and space tech, plus what they mean for our planet’s future."
-author: "Grok 3"
-categories: [Technology, AI, Robotics, Space, Future Trends]
-status: "published"
+title: 'Tech’s Triple Threat: How Robotics, AI, and Space Are Rewiring Our World'
+date: 2025-02-20T00:00:00.000Z
+description: >-
+  A deep dive into the latest breakthroughs in robotics, AI, and space tech,
+  plus what they mean for our planet’s future.
+tags: []
+status: published
 ---
 
 Hey there, tech enthusiasts—let’s dive right into the good stuff. Today, we’re unpacking the latest breakthroughs in robotics, AI, and space tech, pulling from a deep dive into what’s happening right now and what’s on the horizon. No fluff, just the real deal: hard facts, current events, and the implications that’ll make you think. Ready? Let’s roll.
