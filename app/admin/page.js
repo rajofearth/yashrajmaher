@@ -2,303 +2,536 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import TiptapEditor from '../components/TiptapEditor';
+import { SearchBar } from "../components/admin/SearchBar";
+import { TabNavigation } from "../components/admin/TabNavigation";
+import { PostsTable } from "../components/admin/PostsTable";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Plus, Loader2 } from "lucide-react";
+import TiptapEditor from "../components/TiptapEditor";
+import matter from 'gray-matter';
 
-export default function AdminPanel() {
-  // Authentication state
-  const [password, setPassword] = useState('');
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [message, setMessage] = useState('');
-
-  // Tab state: "manage" to list posts, "new" to create or edit posts
-  const [activeTab, setActiveTab] = useState('manage');
-
-  // Post form state
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-  // Use "blog" or "project"
-  const [postType, setPostType] = useState('blog');
-  const [content, setContent] = useState(''); // HTML content from TiptapEditor
-  const [editingPost, setEditingPost] = useState(null);
-
-  // Posts list state
-  const [posts, setPosts] = useState([]);
-  const [loadingPosts, setLoadingPosts] = useState(false);
-
+export default function AdminPage() {
   const router = useRouter();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('all');
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [currentPost, setCurrentPost] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
-  // --- Login Handler ---
+  // New post form state
+  const [postTitle, setPostTitle] = useState('');
+  const [postType, setPostType] = useState('blog');
+  const [postContent, setPostContent] = useState('');
+  const [postDate, setPostDate] = useState(new Date().toISOString().split('T')[0]);
+  const [postTags, setPostTags] = useState('');
+  const [postSlug, setPostSlug] = useState('');
+  const [postDescription, setPostDescription] = useState('');
+  const [postWebsite, setPostWebsite] = useState('');
+  const [postStatus, setPostStatus] = useState('draft');
+
+  // Authentication
   const handleLogin = (e) => {
     e.preventDefault();
-    // Make sure you define NEXT_PUBLIC_ADMIN_PASSWORD in your .env.local file!
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
+    const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+    
+    if (password === correctPassword) {
       setIsAuthenticated(true);
+      localStorage.setItem('isAdminAuthenticated', 'true');
       fetchPosts();
     } else {
-      setMessage('Incorrect password.');
+      setError('Invalid password');
     }
   };
 
-const fetchPosts = async () => {
-  setLoadingPosts(true);
-  setMessage('Fetching posts...');
-  try {
-    const res = await fetch(`/api/listPosts?postType=${encodeURIComponent(postType)}`);
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Error fetching posts: ${res.status} - ${errorText}`);
-    }
-    const data = await res.json();
-    setPosts(data.posts || []);
-    setMessage('');
-  } catch (error) {
-    console.error('Error fetching posts:', error);
-    setMessage('Error fetching posts: ' + error.message);
-  } finally {
-    setLoadingPosts(false);
-  }
-};
-
-
-  // --- Delete Post ---
-const handleDelete = async (filePath) => {
-  if (!confirm('Are you sure you want to delete this post?')) return;
-  setMessage('Deleting post...');
-  try {
-    const res = await fetch('/api/deletePost', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filePath: `public/${filePath}` }),
-    });
-
-    const data = await res.json();
-    if (data.success) {
-      setMessage('Post deleted successfully.');
+  // Check for existing authentication on load
+  useEffect(() => {
+    const isAdminAuthenticated = localStorage.getItem('isAdminAuthenticated') === 'true';
+    if (isAdminAuthenticated) {
+      setIsAuthenticated(true);
       fetchPosts();
-    } else {
-      setMessage('Error deleting post: ' + data.message);
     }
-  } catch (error) {
-    console.error('Error deleting post:', error);
-    setMessage('Error deleting post: ' + error.message);
-  }
-};
+  }, []);
 
+  // Fetch all posts
+  const fetchPosts = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/listPosts');
+      
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Process the posts to include frontmatter data like status
+        const postsWithStatus = data.map(post => {
+          // If the post already has a status field, use it
+          if (post.status) return post;
+          
+          // Otherwise, check if we have frontmatter data (date means we do)
+          if (post.date) {
+            return {
+              ...post,
+              status: post.status || 'published' // Default to published if we have frontmatter but no status
+            };
+          }
+          
+          // Default for posts without any frontmatter data
+          return {
+            ...post,
+            status: 'draft'
+          };
+        });
+        
+        setPosts(postsWithStatus);
+        setFilteredPosts(postsWithStatus);
+      } else {
+        setError('Failed to fetch posts');
+      }
+    } catch (error) {
+      setError('Error fetching posts: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // --- Save Post (Create or Update) ---
-  const handleSave = async () => {
-    if (!title || !description || !content) {
-      setMessage('Please fill all fields.');
+  // Handle search and filtering
+  useEffect(() => {
+    if (!posts.length) return;
+    
+    let filtered = [...posts];
+    
+    // Filter by search query
+    if (searchQuery) {
+      filtered = filtered.filter(post => 
+        post.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Filter by tab
+    if (activeTab === 'blog') {
+      filtered = filtered.filter(post => post.type === 'blog');
+    } else if (activeTab === 'project') {
+      filtered = filtered.filter(post => post.type === 'project');
+    }
+    
+    setFilteredPosts(filtered);
+  }, [searchQuery, activeTab, posts]);
+
+  // Handle post editing
+  const handleEditPost = async (post) => {
+    setIsLoading(true);
+    try {
+      const { data } = await fetch(`/api/getContent?path=${post.path}`).then(res => res.json());
+      const content = Buffer.from(data.content, 'base64').toString('utf8');
+      const { data: frontmatter, content: markdown } = matter(content);
+      
+      setCurrentPost(post);
+      setPostTitle(frontmatter.title || '');
+      setPostType(post.type);
+      setPostDate(frontmatter.date || new Date().toISOString().split('T')[0]);
+      setPostTags(frontmatter.tags ? frontmatter.tags.join(', ') : '');
+      setPostContent(markdown || '');
+      setPostSlug(post.name.replace('.md', ''));
+      setPostDescription(frontmatter.description || '');
+      setPostWebsite(frontmatter.website || '');
+      setPostStatus(frontmatter.status || post.status || 'draft');
+      setIsEditorOpen(true);
+    } catch (error) {
+      setError('Error fetching post content: ' + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Create new post
+  const handleNewPost = () => {
+    setCurrentPost(null);
+    setPostTitle('');
+    setPostType('blog');
+    setPostDate(new Date().toISOString().split('T')[0]);
+    setPostTags('');
+    setPostContent('');
+    setPostSlug('');
+    setPostDescription('');
+    setPostWebsite('');
+    setPostStatus('draft');
+    setIsEditorOpen(true);
+  };
+
+  // Save post
+  const handleSavePost = async () => {
+    if (!postTitle || !postContent) {
+      setError('Title and content are required');
       return;
     }
-    setMessage('Saving post...');
-    const filename = `${title.toLowerCase().replace(/ /g, '-')}.md`;
-    // For blog posts use Bposts, for projects use projects
-    const filePath = editingPost
-      ? editingPost.filePath
-      : postType === 'blog'
-      ? `Bposts/${filename}`
-      : `projects/${filename}`;
-    const frontmatter = `---\ntitle: "${title}"\ndate: ${date}\ndescription: "${description}"\n---\n\n`;
-    const fullContent = frontmatter + content;
+
+    setIsSaving(true);
     try {
-      const res = await fetch('/api/savePost', {
+      // Create frontmatter
+      const frontmatter = {
+        title: postTitle,
+        date: postDate,
+        description: postDescription,
+        tags: postTags ? postTags.split(',').map(tag => tag.trim()) : [],
+        status: postStatus,
+      };
+      
+      // Add website for projects
+      if (postType === 'project' && postWebsite) {
+        frontmatter.website = postWebsite;
+      }
+      
+      // Create slug if not editing
+      const slug = postSlug || postTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      
+      // Create content with frontmatter
+      const content = matter.stringify(postContent, frontmatter);
+      
+      // Determine file path
+      const filePath = currentPost 
+        ? currentPost.path.replace('public/', '') 
+        : `${postType === 'blog' ? 'Bposts' : 'devposts'}/${slug}.md`;
+      
+      // Save post
+      const response = await fetch('/api/savePost', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           filePath,
-          content: fullContent,
+          content,
           postType,
-          originalFilePath: editingPost ? editingPost.filePath : null,
         }),
       });
-      const data = await res.json();
-      if (data.success) {
-        setMessage('Post saved successfully.');
-        // Reset form fields
-        setTitle('');
-        setDescription('');
-        setContent('');
-        setEditingPost(null);
+      
+      if (response.ok) {
+        setIsEditorOpen(false);
         fetchPosts();
-        setActiveTab('manage');
       } else {
-        setMessage('Error saving post: ' + data.message);
+        const data = await response.json();
+        setError('Failed to save post: ' + data.message);
       }
     } catch (error) {
-      console.error('Error saving post:', error);
-      setMessage('Error saving post: ' + error.message);
+      setError('Error saving post: ' + error.message);
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  // --- Edit Post Handler ---
-  const handleEdit = (post) => {
-    setEditingPost(post);
-    setTitle(post.title);
-    setDescription(post.description);
-    setDate(post.date);
-    setPostType(post.postType);
-    setContent(post.content || '');
-    setActiveTab('new');
+  // Delete post
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
+    
+    setIsDeleting(true);
+    try {
+      const response = await fetch('/api/deletePost', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ path: deleteTarget }),
+      });
+      
+      if (response.ok) {
+        setDeleteTarget(null);
+        fetchPosts();
+      } else {
+        const data = await response.json();
+        setError('Failed to delete post: ' + data.message);
+      }
+    } catch (error) {
+      setError('Error deleting post: ' + error.message);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  // --- UI Rendering ---
+  // Logout
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('isAdminAuthenticated');
+    router.push('/');
+  };
+
+  // If not authenticated, show login screen
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <form onSubmit={handleLogin} className="p-8 bg-white rounded shadow-md w-80">
-          <h1 className="text-2xl font-bold mb-4">Admin Login</h1>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter admin password"
-            className="w-full p-2 border rounded mb-4"
-          />
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-            Login
-          </button>
-          {message && <p className="mt-2 text-red-500">{message}</p>}
-        </form>
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <Card className="w-full max-w-md p-6">
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold text-foreground">Admin Login</h1>
+              <p className="text-muted-foreground">Enter your password to continue</p>
+            </div>
+            
+            {error && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+            
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full"
+              />
+            </div>
+            
+            <Button type="submit" className="w-full">
+              Login
+            </Button>
+          </form>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <h1 className="text-3xl font-bold mb-6">Admin Panel</h1>
-      {/* Tabs */}
-      <div className="mb-6 border-b pb-2">
-        <button
-          onClick={() => {
-            setActiveTab('manage');
-            fetchPosts();
-          }}
-          className={`mr-4 pb-2 ${activeTab === 'manage' ? 'border-b-2 border-blue-500 font-semibold' : 'text-gray-500'}`}
-        >
-          Manage Posts
-        </button>
-        <button
-          onClick={() => {
-            setActiveTab('new');
-            setEditingPost(null);
-            // Reset form
-            setTitle('');
-            setDescription('');
-            setContent('');
-            setDate(new Date().toISOString().split('T')[0]);
-          }}
-          className={`pb-2 ${activeTab === 'new' ? 'border-b-2 border-blue-500 font-semibold' : 'text-gray-500'}`}
-        >
-          New Post
-        </button>
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto py-8">
+        <header className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Button variant="outline" onClick={handleLogout}>
+              Logout
+            </Button>
+          </div>
+        </header>
+        
+        {error && (
+          <Alert variant="destructive" className="mb-4">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        <div className="bg-card border rounded-xl shadow-sm mb-8">
+          <div className="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <h2 className="text-xl font-semibold text-card-foreground">Manage Content</h2>
+            <Button onClick={handleNewPost} className="flex items-center gap-2">
+              <Plus className="size-4" />
+              New Post
+            </Button>
+          </div>
+          
+          <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+            <TabNavigation 
+              activeTab={activeTab} 
+              tabs={[
+                { id: 'all', label: 'All Content' },
+                { id: 'blog', label: 'Blog Posts' },
+                { id: 'project', label: 'Projects' }
+              ]} 
+              onTabChange={setActiveTab} 
+            />
+            
+            <SearchBar 
+              placeholder="Search by title..." 
+              onChange={setSearchQuery} 
+            />
+            
+            <TabsContent value="all">
+              <PostsTable 
+                posts={filteredPosts} 
+                onEdit={handleEditPost} 
+                onDelete={(path) => setDeleteTarget(path)} 
+                isLoading={isLoading} 
+              />
+            </TabsContent>
+            
+            <TabsContent value="blog">
+              <PostsTable 
+                posts={filteredPosts} 
+                onEdit={handleEditPost} 
+                onDelete={(path) => setDeleteTarget(path)} 
+                isLoading={isLoading} 
+              />
+            </TabsContent>
+            
+            <TabsContent value="project">
+              <PostsTable 
+                posts={filteredPosts} 
+                onEdit={handleEditPost} 
+                onDelete={(path) => setDeleteTarget(path)} 
+                isLoading={isLoading} 
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
 
-      {activeTab === 'manage' && (
-        <div>
-          {loadingPosts ? (
-            <p>Loading posts...</p>
-          ) : (
-            <table className="min-w-full border">
-              <thead>
-                <tr>
-                  <th className="border p-2">Title</th>
-                  <th className="border p-2">Date</th>
-                  <th className="border p-2">Type</th>
-                  <th className="border p-2">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {posts.length === 0 ? (
-                  <tr>
-                    <td colSpan="4" className="p-4 text-center">
-                      No posts found.
-                    </td>
-                  </tr>
-                ) : (
-                  posts.map((post, idx) => (
-                    <tr key={idx} className="hover:bg-gray-100">
-                      <td className="border p-2">{post.name}</td>
-                      <td className="border p-2">{post.date || 'N/A'}</td>
-                      <td className="border p-2 capitalize">{post.path.includes('Bposts') ? 'blog' : 'project'}</td>
-                      <td className="border p-2 space-x-2">
-                        <button
-                          onClick={() => handleEdit(post)}
-                          className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(post.path.replace('public/', ''))}
-                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          )}
-        </div>
-      )}
+      {/* Editor Dialog */}
+      <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {currentPost ? 'Edit Post' : 'Create New Post'}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-1" htmlFor="title">Title</label>
+                <Input
+                  id="title"
+                  value={postTitle}
+                  onChange={(e) => setPostTitle(e.target.value)}
+                  placeholder="Post title"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1" htmlFor="type">Post Type</label>
+                <select 
+                  id="type"
+                  value={postType}
+                  onChange={(e) => setPostType(e.target.value)}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 py-1"
+                >
+                  <option value="blog">Blog Post</option>
+                  <option value="project">Project</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1" htmlFor="date">Date</label>
+                <Input
+                  id="date"
+                  type="date"
+                  value={postDate}
+                  onChange={(e) => setPostDate(e.target.value)}
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1" htmlFor="slug">Slug</label>
+                <Input
+                  id="slug"
+                  value={postSlug}
+                  onChange={(e) => setPostSlug(e.target.value)}
+                  placeholder="post-slug (leave empty to auto-generate)"
+                />
+              </div>
+              
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium mb-1" htmlFor="description">Description</label>
+                <Input
+                  id="description"
+                  value={postDescription}
+                  onChange={(e) => setPostDescription(e.target.value)}
+                  placeholder="Short description"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1" htmlFor="tags">Tags (comma separated)</label>
+                <Input
+                  id="tags"
+                  value={postTags}
+                  onChange={(e) => setPostTags(e.target.value)}
+                  placeholder="tag1, tag2, tag3"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-1" htmlFor="status">Status</label>
+                <select 
+                  id="status"
+                  value={postStatus}
+                  onChange={(e) => setPostStatus(e.target.value)}
+                  className="w-full h-9 rounded-md border border-input bg-background px-3 py-1"
+                >
+                  <option value="draft">Draft</option>
+                  <option value="published">Published</option>
+                  <option value="unpublished">Unpublished</option>
+                </select>
+              </div>
+              
+              {postType === 'project' && (
+                <div>
+                  <label className="block text-sm font-medium mb-1" htmlFor="website">Website/GitHub URL</label>
+                  <Input
+                    id="website"
+                    value={postWebsite}
+                    onChange={(e) => setPostWebsite(e.target.value)}
+                    placeholder="https://github.com/username/repo"
+                  />
+                </div>
+              )}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-1" htmlFor="content">Content (Markdown)</label>
+              <div className="min-h-64 border rounded-md p-4 bg-background">
+                <TiptapEditor 
+                  content={postContent} 
+                  setContent={setPostContent} 
+                  placeholder="Write your content in Markdown..."
+                />
+              </div>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditorOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleSavePost} disabled={isSaving}>
+              {isSaving ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                'Save Post'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      {activeTab === 'new' && (
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-4">{editingPost ? 'Edit Post' : 'New Post'}</h2>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Post Type:</label>
-            <select
-              value={postType}
-              onChange={(e) => setPostType(e.target.value)}
-              className="mt-1 block w-full p-2 border rounded"
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+          </DialogHeader>
+          <p>Are you sure you want to delete this post? This action cannot be undone.</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setDeleteTarget(null)}>
+              Cancel
+            </Button>
+            <Button 
+              variant="destructive" 
+              onClick={handleDeleteConfirm} 
+              disabled={isDeleting}
             >
-              <option value="blog">Blog Post</option>
-              <option value="project">Project</option>
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Title:</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 block w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Date:</label>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="mt-1 block w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Description:</label>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="mt-1 block w-full p-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Content:</label>
-            <TiptapEditor content={content} setContent={setContent} placeholder="Start writing your post here..." />
-          </div>
-          <button
-            onClick={handleSave}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Save Post
-          </button>
-          {message && <p className="mt-4 text-red-600">{message}</p>}
-        </div>
-      )}
+              {isDeleting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                'Delete'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -11,8 +11,11 @@
   "dependencies": {
     "@octokit/rest": "^21.1.0",
     "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-dropdown-menu": "^2.1.15",
+    "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tabs": "^1.1.12",
     "@stagewise/toolbar-next": "^0.1.2",
     "@tailwindcss/typography": "^0.5.16",
     "@tiptap/extension-blockquote": "^2.11.5",
@@ -57,7 +60,8 @@
     "server-only": "^0.0.1",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
-    "turndown": "^7.2.0"
+    "turndown": "^7.2.0",
+    "zod": "^3.25.32"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

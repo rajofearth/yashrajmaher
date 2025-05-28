@@ -1,37 +1,29 @@
-import { Octokit } from "octokit";
+import { octokit, repoOwner, repoName } from '@/lib/github';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
-const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+const deletePostSchema = z.object({ path: z.string().min(1) });
 
 export async function POST(request) {
-  const { path } = await request.json();
+  const body = await request.json();
+  const result = deletePostSchema.safeParse(body);
+  if (!result.success) {
+    const messages = result.error.errors.map(e => e.message).join(', ');
+    return NextResponse.json({ success: false, message: messages }, { status: 400 });
+  }
+  const { path } = result.data;
 
   try {
-    const repoOwner = process.env.GITHUB_REPO_OWNER;
-    const repoName = process.env.GITHUB_REPO_NAME;
-
     // Retrieve SHA to delete
-    const { data } = await octokit.repos.getContent({
-      owner: repoOwner,
-      repo: repoName,
-      path,
-    });
+    const { data } = await octokit.repos.getContent({ owner: repoOwner, repo: repoName, path });
 
     const sha = data.sha;
 
-    await octokit.repos.deleteFile({
-      owner: repoOwner,
-      repo: repoName,
-      path,
-      message: `Deleted ${path}`,
-      sha,
-    });
+    await octokit.repos.deleteFile({ owner: repoOwner, repo: repoName, path, message: `Deleted ${path}`, sha });
 
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    return NextResponse.json({ success: true }, { status: 200 });
 
   } catch (error) {
-    return new Response(
-      JSON.stringify({ success: false, message: error.message }),
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
 }
