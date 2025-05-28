@@ -3,14 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { SearchBar } from "../components/admin/SearchBar";
-import { TabNavigation } from "../components/admin/TabNavigation";
 import { PostsTable } from "../components/admin/PostsTable";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Plus, Loader2 } from "lucide-react";
 import TiptapEditor from "../components/TiptapEditor";
@@ -25,7 +23,7 @@ export default function AdminPage() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
+  const [filters, setFilters] = useState({ category: 'all', status: 'all' });
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentPost, setCurrentPost] = useState(null);
@@ -107,7 +105,7 @@ export default function AdminPage() {
     }
   };
 
-  // Handle search and filtering
+  // Update the filtering logic
   useEffect(() => {
     if (!posts.length) return;
     
@@ -115,20 +113,30 @@ export default function AdminPage() {
     
     // Filter by search query
     if (searchQuery) {
-      filtered = filtered.filter(post => 
-        post.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
+      filtered = filtered.filter(post => {
+        const title = post.title ? post.title.toLowerCase() : '';
+        const filename = post.name.toLowerCase();
+        return title.includes(searchQuery.toLowerCase()) || 
+               filename.includes(searchQuery.toLowerCase());
+      });
     }
     
-    // Filter by tab
-    if (activeTab === 'blog') {
-      filtered = filtered.filter(post => post.type === 'blog');
-    } else if (activeTab === 'project') {
-      filtered = filtered.filter(post => post.type === 'project');
+    // Filter by category
+    if (filters.category !== 'all') {
+      filtered = filtered.filter(post => {
+        if (filters.category === 'blog') return post.type === 'blog';
+        if (filters.category === 'project') return post.type === 'project';
+        return true;
+      });
+    }
+    
+    // Filter by status
+    if (filters.status !== 'all') {
+      filtered = filtered.filter(post => post.status === filters.status);
     }
     
     setFilteredPosts(filtered);
-  }, [searchQuery, activeTab, posts]);
+  }, [searchQuery, filters, posts]);
 
   // Handle post editing
   const handleEditPost = async (post) => {
@@ -301,12 +309,12 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-foreground">Admin Dashboard</h1>
-          <div className="flex items-center gap-4">
+      <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Admin Dashboard</h1>
+          <div className="flex items-center gap-3 sm:gap-4">
             <ThemeToggle />
-            <Button variant="outline" onClick={handleLogout}>
+            <Button variant="outline" size="sm" onClick={handleLogout} className="whitespace-nowrap">
               Logout
             </Button>
           </div>
@@ -319,63 +327,32 @@ export default function AdminPage() {
         )}
 
         <div className="bg-card border rounded-xl shadow-sm mb-8">
-          <div className="p-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h2 className="text-xl font-semibold text-card-foreground">Manage Content</h2>
-            <Button onClick={handleNewPost} className="flex items-center gap-2">
+          <div className="p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-card-foreground">Manage Content</h2>
+            <Button onClick={handleNewPost} size="sm" className="flex items-center gap-2 whitespace-nowrap">
               <Plus className="size-4" />
-              New Post
+              <span>New Post</span>
             </Button>
           </div>
           
-          <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
-            <TabNavigation 
-              activeTab={activeTab} 
-              tabs={[
-                { id: 'all', label: 'All Content' },
-                { id: 'blog', label: 'Blog Posts' },
-                { id: 'project', label: 'Projects' }
-              ]} 
-              onTabChange={setActiveTab} 
-            />
-            
-            <SearchBar 
-              placeholder="Search by title..." 
-              onChange={setSearchQuery} 
-            />
-            
-            <TabsContent value="all">
-              <PostsTable 
-                posts={filteredPosts} 
-                onEdit={handleEditPost} 
-                onDelete={(path) => setDeleteTarget(path)} 
-                isLoading={isLoading} 
-              />
-            </TabsContent>
-            
-            <TabsContent value="blog">
-              <PostsTable 
-                posts={filteredPosts} 
-                onEdit={handleEditPost} 
-                onDelete={(path) => setDeleteTarget(path)} 
-                isLoading={isLoading} 
-              />
-            </TabsContent>
-            
-            <TabsContent value="project">
-              <PostsTable 
-                posts={filteredPosts} 
-                onEdit={handleEditPost} 
-                onDelete={(path) => setDeleteTarget(path)} 
-                isLoading={isLoading} 
-              />
-            </TabsContent>
-          </Tabs>
+          <SearchBar 
+            placeholder="Search by title..." 
+            onChange={setSearchQuery} 
+          />
+          
+          <PostsTable 
+            posts={filteredPosts} 
+            onEdit={handleEditPost} 
+            onDelete={(path) => setDeleteTarget(path)} 
+            isLoading={isLoading}
+            onFilterChange={setFilters}
+          />
         </div>
       </div>
 
       {/* Editor Dialog */}
       <Dialog open={isEditorOpen} onOpenChange={setIsEditorOpen}>
-        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] max-w-5xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           <DialogHeader>
             <DialogTitle>
               {currentPost ? 'Edit Post' : 'Create New Post'}
@@ -486,7 +463,7 @@ export default function AdminPage() {
             </div>
           </div>
           
-          <DialogFooter>
+          <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setIsEditorOpen(false)}>
               Cancel
             </Button>
@@ -506,12 +483,12 @@ export default function AdminPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={!!deleteTarget} onOpenChange={(open) => !open && setDeleteTarget(null)}>
-        <DialogContent>
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Confirm Deletion</DialogTitle>
           </DialogHeader>
           <p>Are you sure you want to delete this post? This action cannot be undone.</p>
-          <DialogFooter>
+          <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
             <Button variant="outline" onClick={() => setDeleteTarget(null)}>
               Cancel
             </Button>
