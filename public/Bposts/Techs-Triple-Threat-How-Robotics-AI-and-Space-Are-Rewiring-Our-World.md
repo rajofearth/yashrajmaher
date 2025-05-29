@@ -7,7 +7,7 @@ description: >-
 tags: []
 status: published
 author: Yashraj Maher (rajofearth)
-authorImage: /images/avatar684078169-1748497356563.png
+authorImage: /images/avatar684078169-1748501784214.png
 featuredImage: /images/tech-triple-threat.jpg
 ---
 
