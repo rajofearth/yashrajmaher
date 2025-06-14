@@ -47,7 +47,9 @@ export default function RootLayout({ children }) {
 				<ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
 					{process.env.NODE_ENV === "development" && <StagewiseToolbar config={stagewiseConfig} />}
 					<Analytics />
-					<main>{children}</main>
+					<main>
+						<ConvexClientProvider>{children}</ConvexClientProvider>
+					</main>
 				</ThemeProvider>
 			</body>
 		</html>
