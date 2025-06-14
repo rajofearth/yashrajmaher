@@ -20,6 +20,10 @@ tailwind.config.js
 schema.ts
 convex/
 
+# No Change Folder
+/public/Bposts/*
+/public/devposts/*
+
 # Cache directories
 .cache/
 .vscode/ # VS Code specific settings/cache

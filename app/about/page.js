@@ -3,8 +3,8 @@ import { generateMetadata } from "../../lib/metadata";
 import PageLayout from "../components/PageLayout";
 import { Button } from "@/components/ui/button";
 import Socials from "../components/Socials";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata = generateMetadata({
 	title: "About Me",
@@ -43,8 +43,7 @@ export default function About() {
 						I&apos;m Yashraj Maher&mdash;a full-stack developer, dedicated student, and creative storyteller. On this
 						website, I share my journey through occasional dev blogs, personal narratives, tech insights, and even
 						musings on space exploration. Every piece reflects my passion for learning, building innovative projects,
-						and exploring new ideas&mdash;whether it&apos;s a detailed technical post or a creative piece of
-						fiction.
+						and exploring new ideas&mdash;whether it&apos;s a detailed technical post or a creative piece of fiction.
 					</p>
 					<Socials />
 				</div>
@@ -59,29 +58,29 @@ export default function About() {
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<Code className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Dev Blogs</strong> &ndash; Occasional insights and stories
-							behind the projects I build.
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Dev Blogs</strong> &ndash; Occasional insights and
+							stories behind the projects I build.
 						</span>
 					</div>
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<PenTool className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Fiction</strong> &ndash; Original stories that capture my
-							creative side.
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Fiction</strong> &ndash; Original stories that capture
+							my creative side.
 						</span>
 					</div>
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<BookOpen className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Tech Insights</strong> &ndash; Occasional reflections and
-							thoughtful perspectives on the ever-evolving tech world.
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Tech Insights</strong> &ndash; Occasional reflections
+							and thoughtful perspectives on the ever-evolving tech world.
 						</span>
 					</div>
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<Rocket className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Space Exploration</strong> &ndash; Occasional musings and
-							discoveries about the cosmos.
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Space Exploration</strong> &ndash; Occasional musings
+							and discoveries about the cosmos.
 						</span>
 					</div>
 				</div>
@@ -99,8 +98,8 @@ export default function About() {
 					className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed"
 					style={{ fontFamily: "var(--font-sans)" }}
 				>
-					I love collaborating and exchanging ideas with fellow creatives, developers, and explorers. Even if I don&apos;t
-					always publish a post, I&apos;m always open to connecting and sharing thoughts.
+					I love collaborating and exchanging ideas with fellow creatives, developers, and explorers. Even if I
+					don&apos;t always publish a post, I&apos;m always open to connecting and sharing thoughts.
 				</p>
 			</section>
 		</PageLayout>
