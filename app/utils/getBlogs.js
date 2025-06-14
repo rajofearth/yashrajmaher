@@ -1,74 +1,75 @@
-import 'server-only';
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
-import truncateText from './truncateText.js';
+import truncateText from "./truncateText.js";
+import matter from "gray-matter";
+import path from "path";
+import "server-only";
+import fs from "fs";
 
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\/']/g, '\\$&');
+	return string.replace(/[.*+?^${}()|[\]\\/']/g, "\\$&");
 }
 
-export function getBlogs(searchQuery = '') {
-  const blogsDirectory = path.join(process.cwd(), 'public', 'Bposts');
-  if (!fs.existsSync(blogsDirectory)) return [];
+export function getBlogs(searchQuery = "") {
+	const blogsDirectory = path.join(process.cwd(), "public", "Bposts");
+	if (!fs.existsSync(blogsDirectory)) return [];
 
-  const trimmedQuery = searchQuery.trim().toLowerCase();
-  
-  try {
-    const files = fs.readdirSync(blogsDirectory);
+	const trimmedQuery = searchQuery.trim().toLowerCase();
 
-    return files.map(filename => {
-      const fileContent = fs.readFileSync(
-        path.join(blogsDirectory, filename),
-        'utf8'
-      );
-      const { data } = matter(fileContent);
+	try {
+		const files = fs.readdirSync(blogsDirectory);
 
-      // Truncate first
-      const truncatedTitle = truncateText(data.title, 30) || 'Untitled';
-      const truncatedDesc = truncateText(data.description, 140) || 'No description';
+		return (
+			files
+				.map(filename => {
+					const fileContent = fs.readFileSync(path.join(blogsDirectory, filename), "utf8");
+					const { data } = matter(fileContent);
 
-      // Highlight matches
-      let highlightedTitle = truncatedTitle;
-      let highlightedDesc = truncatedDesc;
-      
-      if (trimmedQuery) {
-        const regex = new RegExp(`(${escapeRegExp(trimmedQuery)})`, 'gi');
-        highlightedTitle = truncatedTitle.replace(regex, '<span class="highlight">$1</span>');
-        highlightedDesc = truncatedDesc.replace(regex, '<span class="highlight">$1</span>');
-      }
+					// Truncate first
+					const truncatedTitle = truncateText(data.title, 30) || "Untitled";
+					const truncatedDesc = truncateText(data.description, 140) || "No description";
 
-      return {
-        title: highlightedTitle,
-        date: data.date || 'No date',
-        description: highlightedDesc,
-        rawTitle: data.title,
-        rawDescription: data.description.toLowerCase(),
-        slug: filename.replace(/\.md$/, ''),
-        status: data.status || 'published' // Default to published for backward compatibility
-      };
-    })
-    // Filter out posts that aren't published
-    .filter(blog => blog.status === 'published')
-    // Filter by search query if provided
-    .filter(blog => 
-      !trimmedQuery || 
-      blog.rawTitle.toLowerCase().includes(trimmedQuery) || 
-      blog.rawDescription.includes(trimmedQuery)
-    )
-    .sort((a, b) => {
-      try {
-        // Handle invalid dates by falling back to string comparison
-        const dateA = a.date && a.date !== 'No date' ? new Date(a.date).getTime() : 0;
-        const dateB = b.date && b.date !== 'No date' ? new Date(b.date).getTime() : 0;
-        return dateB - dateA;
-      } catch (error) {
-        // If date comparison fails, don't change order
-        return 0;
-      }
-    });
-  } catch (error) {
-    console.error('Error reading blog posts:', error);
-    return [];
-  }
+					// Highlight matches
+					let highlightedTitle = truncatedTitle;
+					let highlightedDesc = truncatedDesc;
+
+					if (trimmedQuery) {
+						const regex = new RegExp(`(${escapeRegExp(trimmedQuery)})`, "gi");
+						highlightedTitle = truncatedTitle.replace(regex, '<span class="highlight">$1</span>');
+						highlightedDesc = truncatedDesc.replace(regex, '<span class="highlight">$1</span>');
+					}
+
+					return {
+						title: highlightedTitle,
+						date: data.date || "No date",
+						description: highlightedDesc,
+						rawTitle: data.title,
+						rawDescription: data.description.toLowerCase(),
+						slug: filename.replace(/\.md$/, ""),
+						status: data.status || "published", // Default to published for backward compatibility
+					};
+				})
+				// Filter out posts that aren't published
+				.filter(blog => blog.status === "published")
+				// Filter by search query if provided
+				.filter(
+					blog =>
+						!trimmedQuery ||
+						blog.rawTitle.toLowerCase().includes(trimmedQuery) ||
+						blog.rawDescription.includes(trimmedQuery)
+				)
+				.sort((a, b) => {
+					try {
+						// Handle invalid dates by falling back to string comparison
+						const dateA = a.date && a.date !== "No date" ? new Date(a.date).getTime() : 0;
+						const dateB = b.date && b.date !== "No date" ? new Date(b.date).getTime() : 0;
+						return dateB - dateA;
+					} catch (error) {
+						// If date comparison fails, don't change order
+						return 0;
+					}
+				})
+		);
+	} catch (error) {
+		console.error("Error reading blog posts:", error);
+		return [];
+	}
 }
