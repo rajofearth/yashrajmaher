@@ -50,6 +50,3 @@ node_modules
 
 .cursor/
 .cursorrules
-
-# clerk configuration (can include secrets)
-/.clerk/

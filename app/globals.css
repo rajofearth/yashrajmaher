@@ -563,14 +563,3 @@
     @apply bg-background font-sans text-foreground antialiased;
   }
 }
-
-/* Enlarge Clerk admin avatar */
-.cl-avatarBox.cl-userButtonAvatarBox {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-}
-
-.cl-avatarImage.cl-userButtonAvatarImage {
-  width: 2.5rem !important;
-  height: 2.5rem !important;
-}

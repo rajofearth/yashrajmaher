@@ -180,18 +180,6 @@ LICENSE           # MIT License file
 
 *   **Important**: Ensure that your dates are in a format Javascript can parse.
 
-## Authentication
-
-We secure the `/admin` area using Clerk. Clerk handles sign-in, session management, and sign-out. Only the user matching the `ADMIN_USER_ID` environment variable can access the admin dashboard.
-
-## Admin Dashboard
-
-The admin interface is available at `/admin` and lets you manage your blog posts and projects directly through your GitHub repository:
-* **List & Search:** View, filter, and search all existing blog and project entries.
-* **Inline Editing:** Edit content in the browser using an inline markdown editor.
-* **Create & Delete:** Add new posts/projects or remove existing ones.
-* **GitHub as CMS:** Uses Octokit under the hood to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
-
 ## License
 
 This project uses a dual-licensing approach to clearly distinguish between the website's *code* and its *content*:
