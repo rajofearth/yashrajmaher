@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 
-const HeroImage = () => {
+export default function HeroImage() {
 	return (
 		<div
 			className="hover-border relative"
@@ -41,6 +41,4 @@ const HeroImage = () => {
 			</div>
 		</div>
 	);
-};
-
-export default HeroImage;
+}

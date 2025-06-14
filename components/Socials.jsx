@@ -1,5 +1,4 @@
 import { Linkedin, Github, Twitter, Instagram } from "lucide-react";
-import { design } from "@/lib/design-system";
 
 const Socials = ({ className = "" }) => {
 	// Common classes for social icons

@@ -1,6 +1,5 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Badge } from "@/components/ui/badge";
-import { design } from "@/lib/design-system";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 

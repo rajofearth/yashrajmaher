@@ -3,6 +3,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { StagewiseToolbar } from "@stagewise/toolbar-next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
+import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
+import { ConvexClientProvider } from "@/app/ConvexClientProvider";
 
 // Load fonts
 const inter = Inter({
@@ -37,21 +39,23 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={`${inter.variable} ${playfair.variable} ${robotoMono.variable}`}
-		>
-			<head />
-			<body className="bg-background text-foreground min-h-screen antialiased">
-				<ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
-					{process.env.NODE_ENV === "development" && <StagewiseToolbar config={stagewiseConfig} />}
-					<Analytics />
-					<main>
-						<ConvexClientProvider>{children}</ConvexClientProvider>
-					</main>
-				</ThemeProvider>
-			</body>
-		</html>
+		<ConvexAuthNextjsServerProvider>
+			<html
+				lang="en"
+				suppressHydrationWarning
+				className={`${inter.variable} ${playfair.variable} ${robotoMono.variable}`}
+			>
+				<head />
+				<body className="bg-background text-foreground min-h-screen antialiased">
+					<ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
+						{process.env.NODE_ENV === "development" && <StagewiseToolbar config={stagewiseConfig} />}
+						<Analytics />
+						<main>
+							<ConvexClientProvider>{children}</ConvexClientProvider>
+						</main>
+					</ThemeProvider>
+				</body>
+			</html>
+		</ConvexAuthNextjsServerProvider>
 	);
 }

@@ -1,6 +1,6 @@
-import ContentListPage from "../../components/ContentListPage";
-import { generateMetadata } from "../../../lib/metadata";
-import { getDevposts } from "../../utils/getdevposts";
+import ContentListPage from "@/components/ContentListPage";
+import { generateMetadata } from "@/lib/metadata";
+import { getDevposts } from "@/utils/getdevposts";
 
 export const metadata = generateMetadata({
 	title: "Projects",

@@ -1,7 +1,7 @@
-import { generateMetadata as baseGenerateMetadata } from "../../../../lib/metadata";
-import { getFileFromSlug } from "../../../utils/getFileFromSlug";
-import ArticleLayout from "../../../components/ArticleLayout";
-import ErrorPage from "../../../components/ErrorPage";
+import { generateMetadata as baseGenerateMetadata } from "@/lib/metadata";
+import { getFileFromSlug } from "@/utils/getFileFromSlug";
+import ArticleLayout from "@/components/ArticleLayout";
+import ErrorPage from "@/components/ErrorPage";
 import { format } from "date-fns";
 import matter from "gray-matter";
 import path from "path";

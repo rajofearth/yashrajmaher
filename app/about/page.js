@@ -1,8 +1,8 @@
 import { Code, PenTool, BookOpen, Rocket, ArrowRight } from "lucide-react";
-import { generateMetadata } from "../../lib/metadata";
-import PageLayout from "../components/PageLayout";
+import { generateMetadata } from "@/lib/metadata";
+import PageLayout from "@/components/PageLayout";
 import { Button } from "@/components/ui/button";
-import Socials from "../components/Socials";
+import Socials from "@/components/Socials";
 import Image from "next/image";
 import Link from "next/link";
 

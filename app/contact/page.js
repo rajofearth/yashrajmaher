@@ -1,6 +1,6 @@
-import { generateMetadata } from "../../lib/metadata";
-import PageLayout from "../components/PageLayout";
-import Socials from "../components/Socials";
+import { generateMetadata } from "@/lib/metadata";
+import PageLayout from "@/components/PageLayout";
+import Socials from "@/components/Socials";
 import { Mail } from "lucide-react";
 
 export const metadata = generateMetadata({

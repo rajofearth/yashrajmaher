@@ -1,5 +1,4 @@
-import PageLayout from "../components/PageLayout";
-import { design } from "@/lib/design-system";
+import PageLayout from "@/components/PageLayout";
 import Link from "next/link";
 
 export default function PrivacyPolicy() {

@@ -1,6 +1,5 @@
-// app/components/ProjectCard.jsx
 import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "@/utils/formatDate";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";

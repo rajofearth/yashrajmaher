@@ -1,6 +1,6 @@
-import ContentListPage from "../../components/ContentListPage";
-import { generateMetadata } from "../../../lib/metadata";
-import { getBlogs } from "../../utils/getBlogs";
+import ContentListPage from "@/components/ContentListPage";
+import { generateMetadata } from "@/lib/metadata";
+import { getBlogs } from "@/utils/getBlogs";
 
 export const metadata = generateMetadata({
 	title: "Blog",

@@ -1,6 +1,6 @@
 "use client";
 
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard from "@/components/ProjectCard";
 import { useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Search } from "lucide-react";

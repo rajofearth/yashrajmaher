@@ -1,12 +1,12 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import ProjectCard from "./components/ProjectCard";
-import { getDevposts } from "./utils/getdevposts";
+import ProjectCard from "@/components/ProjectCard";
+import { getDevposts } from "@/utils/getdevposts";
 import { Button } from "@/components/ui/button";
-import HeroImage from "./components/HeroImage";
+import HeroImage from "@/components/HeroImage";
 import { Badge } from "@/components/ui/badge";
-import BlogCard from "./components/BlogCard";
-import { getBlogs } from "./utils/getBlogs";
-import Socials from "./components/Socials";
+import BlogCard from "@/components/BlogCard";
+import { getBlogs } from "@/utils/getBlogs";
+import Socials from "@/components/Socials";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
