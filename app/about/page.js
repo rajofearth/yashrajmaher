@@ -4,6 +4,7 @@ import PageLayout from "../components/PageLayout";
 import { Button } from "@/components/ui/button";
 import Socials from "../components/Socials";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = generateMetadata({
 	title: "About Me",
@@ -24,10 +25,13 @@ export default function About() {
 					}}
 				>
 					<div className="overflow-hidden rounded-full">
-						<img
+						<Image
 							src="/my.png"
 							alt="Yashraj Maher"
+							width={192}
+							height={192}
 							className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+							priority
 						/>
 					</div>
 				</div>
@@ -36,10 +40,11 @@ export default function About() {
 						Welcome!
 					</h2>
 					<p className="text-muted-foreground text-lg leading-relaxed" style={{ fontFamily: "var(--font-sans)" }}>
-						I'm Yashraj Maher—a full-stack developer, dedicated student, and creative storyteller. On this website, I
-						share my journey through occasional dev blogs, personal narratives, tech insights, and even musings on space
-						exploration. Every piece reflects my passion for learning, building innovative projects, and exploring new
-						ideas—whether it's a detailed technical post or a creative piece of fiction.
+						I&apos;m Yashraj Maher&mdash;a full-stack developer, dedicated student, and creative storyteller. On this
+						website, I share my journey through occasional dev blogs, personal narratives, tech insights, and even
+						musings on space exploration. Every piece reflects my passion for learning, building innovative projects,
+						and exploring new ideas&mdash;whether it&apos;s a detailed technical post or a creative piece of
+						fiction.
 					</p>
 					<Socials />
 				</div>
@@ -54,28 +59,28 @@ export default function About() {
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<Code className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Dev Blogs</strong> – Occasional insights and stories
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Dev Blogs</strong> &ndash; Occasional insights and stories
 							behind the projects I build.
 						</span>
 					</div>
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<PenTool className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Fiction</strong> – Original stories that capture my
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Fiction</strong> &ndash; Original stories that capture my
 							creative side.
 						</span>
 					</div>
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<BookOpen className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Tech Insights</strong> – Occasional reflections and
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Tech Insights</strong> &ndash; Occasional reflections and
 							thoughtful perspectives on the ever-evolving tech world.
 						</span>
 					</div>
 					<div className="bg-card border-border flex items-start gap-3 rounded-lg border p-4">
 						<Rocket className="text-primary mt-1 h-6 w-6" />
 						<span className="text-foreground text-lg">
-							<strong style={{ fontFamily: "var(--font-serif)" }}>Space Exploration</strong> – Occasional musings and
+							<strong style={{ fontFamily: "var(--font-serif)" }}>Space Exploration</strong> &ndash; Occasional musings and
 							discoveries about the cosmos.
 						</span>
 					</div>
@@ -86,7 +91,7 @@ export default function About() {
 			<section className="space-y-6 pb-10 text-center">
 				<Button variant="outline" asChild>
 					<Link href="/contact" className="flex items-center gap-2 text-lg">
-						Let's Connect
+						Let&apos;s Connect
 						<ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
 					</Link>
 				</Button>
@@ -94,8 +99,8 @@ export default function About() {
 					className="text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed"
 					style={{ fontFamily: "var(--font-sans)" }}
 				>
-					I love collaborating and exchanging ideas with fellow creatives, developers, and explorers. Even if I don't
-					always publish a post, I'm always open to connecting and sharing thoughts.
+					I love collaborating and exchanging ideas with fellow creatives, developers, and explorers. Even if I don&apos;t
+					always publish a post, I&apos;m always open to connecting and sharing thoughts.
 				</p>
 			</section>
 		</PageLayout>

@@ -1,6 +1,5 @@
 import { generateMetadata } from "../../lib/metadata";
 import PageLayout from "../components/PageLayout";
-import { design } from "@/lib/design-system";
 import Socials from "../components/Socials";
 import { Mail } from "lucide-react";
 
@@ -24,7 +23,7 @@ export default function Contact() {
 						Reach Out
 					</h2>
 					<p className="text-muted-foreground mb-6 text-lg leading-relaxed" style={{ fontFamily: "var(--font-sans)" }}>
-						I'm currently open to new opportunities and collaborations. Whether you have a project in mind, want to
+						I&apos;m currently open to new opportunities and collaborations. Whether you have a project in mind, want to
 						discuss tech, or just say hi, feel free to reach out!
 					</p>
 					<div className="mb-8 flex items-center gap-3">

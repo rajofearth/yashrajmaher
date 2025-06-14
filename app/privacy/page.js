@@ -68,7 +68,7 @@ export default function PrivacyPolicy() {
 
 					<section>
 						<h2 className="text-foreground mb-2 text-2xl font-semibold" style={{ fontFamily: "var(--font-serif)" }}>
-							Children's Privacy
+							Children&apos;s Privacy
 						</h2>
 						<p className="text-muted-foreground" style={{ fontFamily: "var(--font-sans)" }}>
 							This website is not intended for children under the age of 10. I do not knowingly collect data from
