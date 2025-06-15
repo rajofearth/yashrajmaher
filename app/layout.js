@@ -4,6 +4,7 @@ import { Inter, Playfair_Display, Roboto_Mono } from "next/font/google";
 import { StagewiseToolbar } from '@stagewise/toolbar-next';
 import { ThemeProvider } from "@/components/theme-provider";
 import { ClerkProvider } from '@clerk/nextjs';
+import ChatAgent from '@/app/components/ChatAgent';
 
 // Load fonts
 const inter = Inter({
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
             <main>
               {children}
             </main>
+            <ChatAgent />
           </ThemeProvider>
         </ClerkProvider>
       </body>
