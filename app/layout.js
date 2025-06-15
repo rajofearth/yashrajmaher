@@ -3,8 +3,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { StagewiseToolbar } from "@stagewise/toolbar-next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
-import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
-import { ConvexClientProvider } from "@/app/ConvexClientProvider";
 
 // Load fonts
 const inter = Inter({
@@ -39,7 +37,6 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 	return (
-		<ConvexAuthNextjsServerProvider>
 			<html
 				lang="en"
 				suppressHydrationWarning
@@ -51,11 +48,10 @@ export default function RootLayout({ children }) {
 						{process.env.NODE_ENV === "development" && <StagewiseToolbar config={stagewiseConfig} />}
 						<Analytics />
 						<main>
-							<ConvexClientProvider>{children}</ConvexClientProvider>
+							{children}
 						</main>
 					</ThemeProvider>
 				</body>
 			</html>
-		</ConvexAuthNextjsServerProvider>
 	);
 }
