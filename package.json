@@ -8,14 +8,13 @@
 		"dev:server": "bunx convex dev",
 		"build": "bun --bun next build",
 		"start": "bun --bun next start",
-		"lint": "eslint .",
-		"lint:fix": "eslint . --fix",
+		"lint": "oxlint .",
+		"lint:fix": "oxlint . --fix",
 		"format": "bunx prettier --write .",
 		"format:check": "bunx prettier --check ."
 	},
 	"dependencies": {
 		"@auth/core": "0.37.0",
-		"@convex-dev/auth": "^0.0.87",
 		"@octokit/rest": "^21.1.0",
 		"@radix-ui/react-avatar": "^1.1.10",
 		"@radix-ui/react-dialog": "^1.1.14",
@@ -31,7 +30,6 @@
 		"@vercel/analytics": "^1.4.1",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"convex": "^1.24.8",
 		"date-fns": "^4.1.0",
 		"gray-matter": "^4.0.3",
 		"lucide-react": "^0.473.0",
@@ -56,19 +54,10 @@
 		"zod": "^3.25.32"
 	},
 	"devDependencies": {
-		"@eslint/eslintrc": "^3",
 		"@eslint/js": "^9.29.0",
 		"@tailwindcss/postcss": "^4.1.0",
-		"@tailwindcss/vite": "^4.1.0",
-		"@typescript-eslint/eslint-plugin": "^8.34.0",
-		"@typescript-eslint/parser": "^8.34.0",
 		"concurrently": "^9.1.2",
-		"eslint": "^9.29.0",
-		"eslint-config-next": "15.1.5",
-		"eslint-config-prettier": "^10.1.5",
-		"eslint-plugin-react": "^7.37.5",
-		"eslint-plugin-react-hooks": "^5.2.0",
-		"eslint-plugin-unused-imports": "^4.1.4",
+		"oxlint": "^1.1.0",
 		"postcss": "^8",
 		"prettier": "^3.5.3",
 		"prettier-plugin-sort-imports": "^1.8.8",
@@ -78,7 +67,6 @@
 	},
 	"trustedDependencies": [
 		"@tailwindcss/oxide",
-		"esbuild",
 		"sharp",
 		"unrs-resolver"
 	]

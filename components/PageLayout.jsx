@@ -9,7 +9,7 @@ export default function PageLayout({
 	pageDescription,
 	backLink = "/",
 	backText = "Back Home",
-	badge = null,
+	badge = undefined,
 }) {
 	return (
 		<section className="bg-background min-h-screen pt-8 pb-16">

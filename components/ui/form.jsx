@@ -90,7 +90,7 @@ const FormMessage = React.forwardRef(({ className, children, ...props }, ref) =>
 	const body = error ? String(error?.message ?? "") : children;
 
 	if (!body) {
-		return null;
+		return;
 	}
 
 	return (

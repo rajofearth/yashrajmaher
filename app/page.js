@@ -77,7 +77,7 @@ export default function Home() {
 								Projects
 							</Badge>
 						</div>
-						{devposts.length > 0 && devposts.length <= 6 && (
+						{0 < devposts.length && 6 >= devposts.length && (
 							<Link
 								href="/devposts"
 								className="text-primary hover:text-primary/80 group flex items-center leading-none transition-colors"
@@ -99,7 +99,7 @@ export default function Home() {
 							/>
 						))}
 					</div>
-					{devposts.length > 6 && (
+					{6 < devposts.length && (
 						<div className="mt-8 text-center">
 							<Button variant="outline" asChild>
 								<Link href="/devposts" className="flex items-center gap-2">
@@ -125,7 +125,7 @@ export default function Home() {
 								Writing
 							</Badge>
 						</div>
-						{blogs.length > 0 && blogs.length <= 6 && (
+						{0 < blogs.length && 6 >= blogs.length && (
 							<Link
 								href="/blog"
 								className="text-primary hover:text-primary/80 group flex items-center leading-none transition-colors"
@@ -146,7 +146,7 @@ export default function Home() {
 							/>
 						))}
 					</div>
-					{blogs.length > 6 && (
+					{6 < blogs.length && (
 						<div className="mt-8 text-center">
 							<Button variant="outline" asChild>
 								<Link href="/blog" className="flex items-center gap-2">

@@ -5,9 +5,15 @@ import Link from "next/link";
 export default function ErrorPage({ title, message, slug, backLink = "/blog", backText = "Back" }) {
 	// Determine appropriate back text based on backLink if not explicitly provided
 	const getBackText = () => {
-		if (backText !== "Back") return backText;
-		if (backLink === "/blog") return "Back to blog";
-		if (backLink === "/devposts") return "Back to projects";
+		if ("Back" !== backText) {
+			return backText;
+		}
+		if ("/blog" === backLink) {
+			return "Back to blog";
+		}
+		if ("/devposts" === backLink) {
+			return "Back to projects";
+		}
 		return "Back";
 	};
 

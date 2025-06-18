@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import * as React from "react";
 
-const ThemeContext = createContext({ theme: "light", setTheme: () => null });
+const ThemeContext = createContext({ theme: "light", setTheme: () => undefined });
 
 const themeOptions = ["light", "dark", "system"];
 
@@ -15,7 +15,7 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
 
 		if (savedTheme && themeOptions.includes(savedTheme)) {
 			setTheme(savedTheme);
-		} else if (defaultTheme === "system") {
+		} else if ("system" === defaultTheme) {
 			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 			setTheme(systemTheme);
 		}
@@ -26,7 +26,7 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
 
 		root.classList.remove("light", "dark");
 
-		if (theme === "system") {
+		if ("system" === theme) {
 			const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 			root.classList.add(systemTheme);
 
@@ -45,7 +45,7 @@ export function ThemeProvider({ children, defaultTheme = "system", storageKey = 
 		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
 		const handleChange = () => {
-			if (theme === "system") {
+			if ("system" === theme) {
 				const systemTheme = mediaQuery.matches ? "dark" : "light";
 				const root = window.document.documentElement;
 				root.classList.remove("light", "dark");

@@ -9,10 +9,10 @@ export function getFileFromSlug(slug, directory) {
 			files.find(file => {
 				const base = path.basename(file, ".md");
 				return base.toLowerCase().replace(/[^\w-]/g, "") === cleanSlug;
-			}) || null
+			}) || undefined
 		);
 	} catch (error) {
 		console.error("Error reading directory:", error);
-		return null;
+		return;
 	}
 }

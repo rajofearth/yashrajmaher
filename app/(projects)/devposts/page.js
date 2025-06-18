@@ -1,6 +1,6 @@
 import ContentListPage from "@/components/ContentListPage";
-import { generateMetadata } from "@/lib/metadata";
 import { getDevposts } from "@/utils/getdevposts";
+import { generateMetadata } from "@/lib/metadata";
 
 export const metadata = generateMetadata({
 	title: "Projects",
@@ -21,7 +21,7 @@ export default async function Page({ searchParams }) {
 				rawTitle: project.rawTitle || project.title || "",
 				rawDescription: project.rawDescription || project.description || "",
 				slug: project.slug || "",
-				date: project.date || null,
+				date: project.date || undefined,
 				tags: project.tags || [],
 			}));
 		} catch (error) {

@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { formatDate } from "@/utils/formatDate";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
@@ -32,7 +32,7 @@ export default function ProjectCard({ title, date, description, slug, tags = [],
 					dangerouslySetInnerHTML={{ __html: description }}
 				/>
 
-				{tags && tags.length > 0 && (
+				{tags && 0 < tags.length && (
 					<div className="mt-2 flex flex-wrap gap-2">
 						{tags.map((tag, i) => (
 							<Badge key={i} variant="secondary">

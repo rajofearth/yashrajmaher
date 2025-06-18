@@ -13,10 +13,14 @@ const BLOG_POSTS_DIR = path.join(process.cwd(), "public", "Bposts");
 export async function generateMetadata({ params }) {
 	try {
 		const { id } = await params;
-		if (!id) return baseGenerateMetadata({ title: "Post Not Found" });
+		if (!id) {
+			return baseGenerateMetadata({ title: "Post Not Found" });
+		}
 
 		const filename = getFileFromSlug(id, BLOG_POSTS_DIR);
-		if (!filename) return baseGenerateMetadata({ title: "Post Not Found" });
+		if (!filename) {
+			return baseGenerateMetadata({ title: "Post Not Found" });
+		}
 
 		const fileContent = fs.readFileSync(path.join(BLOG_POSTS_DIR, filename), "utf8");
 		const { data: frontmatter } = matter(fileContent);
@@ -57,7 +61,7 @@ export default async function BlogPost({ params }) {
 
 		// Check if post is published
 		const status = frontmatter.status || "published"; // Default to published for backward compatibility
-		if (status !== "published") {
+		if ("published" !== status) {
 			return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
 		}
 

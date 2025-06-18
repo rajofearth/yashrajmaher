@@ -1,4 +1,4 @@
-import { Code, PenTool, BookOpen, Rocket, ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpen, Code, PenTool, Rocket } from "lucide-react";
 import { generateMetadata } from "@/lib/metadata";
 import PageLayout from "@/components/PageLayout";
 import { Button } from "@/components/ui/button";

@@ -21,7 +21,7 @@ export default async function Page({ searchParams }) {
 				rawTitle: blog.rawTitle || blog.title || "",
 				rawDescription: blog.rawDescription || blog.description || "",
 				slug: blog.slug || "",
-				date: blog.date || null,
+				date: blog.date || undefined,
 			}));
 		} catch (error) {
 			console.error("Error fetching blogs:", error);

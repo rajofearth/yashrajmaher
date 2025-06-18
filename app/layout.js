@@ -37,21 +37,19 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 	return (
-			<html
-				lang="en"
-				suppressHydrationWarning
-				className={`${inter.variable} ${playfair.variable} ${robotoMono.variable}`}
-			>
-				<head />
-				<body className="bg-background text-foreground min-h-screen antialiased">
-					<ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
-						{process.env.NODE_ENV === "development" && <StagewiseToolbar config={stagewiseConfig} />}
-						<Analytics />
-						<main>
-							{children}
-						</main>
-					</ThemeProvider>
-				</body>
-			</html>
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={`${inter.variable} ${playfair.variable} ${robotoMono.variable}`}
+		>
+			<head />
+			<body className="bg-background text-foreground min-h-screen antialiased">
+				<ThemeProvider defaultTheme="light" storageKey="yashraj-theme">
+					{"development" === process.env.NODE_ENV && <StagewiseToolbar config={stagewiseConfig} />}
+					<Analytics />
+					<main>{children}</main>
+				</ThemeProvider>
+			</body>
+		</html>
 	);
 }

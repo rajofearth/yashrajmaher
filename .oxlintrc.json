@@ -1,0 +1,51 @@
+{
+  "plugins": ["react", "unicorn", "typescript", "oxc"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "style": "warn"
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-alert": "error",
+    "no-debugger": "error",
+    "no-unused-vars": "warn",
+    "no-undef": "error",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "unicorn/filename-case": ["warn", { "case": "kebabCase" }],
+    "typescript/no-explicit-any": "warn"
+  },
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "build",
+    "dist",
+    "coverage",
+    "public/Bposts/*",
+    "public/devposts/*",
+    "*.lock",
+    "*.log",
+    ".env*",
+    ".vercel",
+    "*.tsbuildinfo",
+    "convex/"
+  ],
+  "overrides": [
+    {
+      "files": ["**/*.{ts,tsx}"],
+      "plugins": ["typescript"],
+      "rules": {
+        "typescript/no-explicit-any": "error"
+      }
+    },
+    {
+      "files": ["**/test/**"],
+      "plugins": ["jest"],
+      "env": { "jest": true },
+      "rules": {
+        "jest/no-disabled-tests": "off"
+      }
+    }
+  ]
+}

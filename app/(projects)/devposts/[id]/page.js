@@ -12,10 +12,14 @@ const DEVPOSTS_DIR = path.join(process.cwd(), "public", "devposts");
 export async function generateMetadata({ params }) {
 	try {
 		const { id } = await params;
-		if (!id) return baseGenerateMetadata({ title: "Project Not Found" });
+		if (!id) {
+			return baseGenerateMetadata({ title: "Project Not Found" });
+		}
 
 		const filename = getFileFromSlug(id, DEVPOSTS_DIR);
-		if (!filename) return baseGenerateMetadata({ title: "Project Not Found" });
+		if (!filename) {
+			return baseGenerateMetadata({ title: "Project Not Found" });
+		}
 
 		const fileContent = fs.readFileSync(path.join(DEVPOSTS_DIR, filename), "utf8");
 		const { data: frontmatter } = matter(fileContent);
@@ -67,7 +71,7 @@ export default async function DevpostPost({ params }) {
 
 		// Check if project is published
 		const status = frontmatter.status || "published"; // Default to published for backward compatibility
-		if (status !== "published") {
+		if ("published" !== status) {
 			return (
 				<ErrorPage
 					title="Project Not Available"
@@ -91,7 +95,7 @@ export default async function DevpostPost({ params }) {
 				backLink="/devposts"
 				backText="All Projects"
 				tags={frontmatter.tags || []}
-				isProject={true}
+				isProject
 				website={frontmatter.website}
 			/>
 		);

@@ -2,7 +2,7 @@
 
 import ProjectCard from "@/components/ProjectCard";
 import { useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
 export default function LiveProjectSearch({ initialQuery = "", allDevposts = [] }) {
@@ -51,7 +51,7 @@ export default function LiveProjectSearch({ initialQuery = "", allDevposts = [] 
 
 		// Highlight matches in title and description
 		const highlighted = filtered.map(devpost => {
-			const escapedQuery = debouncedQuery.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+			const escapedQuery = debouncedQuery.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
 			const regex = new RegExp(`(${escapedQuery})`, "gi");
 
 			let title = devpost.rawTitle || "";
@@ -87,7 +87,7 @@ export default function LiveProjectSearch({ initialQuery = "", allDevposts = [] 
 				</div>
 			</div>
 
-			{filteredDevposts.length > 0 ? (
+			{0 < filteredDevposts.length ? (
 				<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 					{filteredDevposts.map((devpost, index) => (
 						<ProjectCard

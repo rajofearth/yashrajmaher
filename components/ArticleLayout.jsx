@@ -28,7 +28,7 @@ export default function ArticleLayout({
 	backText,
 	tags = [],
 	isProject = false,
-	website = null,
+	website = undefined,
 }) {
 	return (
 		<section className="bg-background min-h-screen pt-8 pb-16">
@@ -42,7 +42,7 @@ export default function ArticleLayout({
 						</div>
 						<div className="bg-card mb-6 rounded-xl border p-6">
 							{/* Show tags if it's a project */}
-							{isProject && tags && tags.length > 0 && (
+							{isProject && tags && 0 < tags.length && (
 								<div className="mb-4 flex flex-wrap items-center gap-2">
 									<Badge variant="secondary">Project</Badge>
 									{tags.map((tag, i) => (
@@ -176,10 +176,10 @@ export default function ArticleLayout({
 									// Check if this is a simple code without language that should be inline
 									const codeStr = String(children).trim();
 									const isSingleLineSimpleCode =
-										!match && codeStr.length < 30 && !codeStr.includes("\n") && !codeStr.includes("\r");
+										!match && 30 > codeStr.length && !codeStr.includes("\n") && !codeStr.includes("\r");
 
 									// Check if inside a list item or is simple code
-									const parentIsLi = node?.parentNode?.type === "element" && node.parentNode.tagName === "li";
+									const parentIsLi = "element" === node?.parentNode?.type && "li" === node.parentNode.tagName;
 
 									if (parentIsLi || isSingleLineSimpleCode) {
 										return (

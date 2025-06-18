@@ -5,7 +5,7 @@ import "server-only";
 import fs from "fs";
 
 function escapeRegExp(string) {
-	return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+	return string.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
 }
 
 const DEVPOSTS_DIR = path.join(process.cwd(), "public", "devposts");
@@ -35,7 +35,7 @@ export function getDevposts(searchQuery = "") {
 				.toLowerCase();
 
 			// Extract excerpt (first 150 chars)
-			const excerpt = content.trim().slice(0, 150) + (content.length > 150 ? "..." : "");
+			const excerpt = content.trim().slice(0, 150) + (150 < content.length ? "..." : "");
 
 			// Return project data
 			return {
@@ -44,22 +44,26 @@ export function getDevposts(searchQuery = "") {
 				rawDescription: frontmatter.description || excerpt,
 				title: frontmatter.title || "Untitled Project",
 				description: frontmatter.description || excerpt,
-				date: frontmatter.date ? new Date(frontmatter.date) : null,
+				date: frontmatter.date ? new Date(frontmatter.date) : undefined,
 				tags: frontmatter.tags || [],
-				website: frontmatter.website || null,
-				featuredImage: frontmatter.featuredImage || null,
+				website: frontmatter.website || undefined,
+				featuredImage: frontmatter.featuredImage || undefined,
 				status: frontmatter.status || "published", // Default to published for backward compatibility
 			};
 		});
 
 		// Filter out posts that aren't published
-		const publishedDevposts = devposts.filter(project => project.status === "published");
+		const publishedDevposts = devposts.filter(project => "published" === project.status);
 
 		// Sort by date (newest first)
 		const sortedDevposts = publishedDevposts.sort((a, b) => {
 			// Handle missing dates
-			if (!a.date) return 1;
-			if (!b.date) return -1;
+			if (!a.date) {
+				return 1;
+			}
+			if (!b.date) {
+				return -1;
+			}
 			return b.date - a.date;
 		});
 

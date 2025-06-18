@@ -5,12 +5,14 @@ import "server-only";
 import fs from "fs";
 
 function escapeRegExp(string) {
-	return string.replace(/[.*+?^${}()|[\]\\/']/g, "\\$&");
+	return string.replace(/[.*+?^${}()|[\]\\/']/g, String.raw`\$&`);
 }
 
 export function getBlogs(searchQuery = "") {
 	const blogsDirectory = path.join(process.cwd(), "public", "Bposts");
-	if (!fs.existsSync(blogsDirectory)) return [];
+	if (!fs.existsSync(blogsDirectory)) {
+		return [];
+	}
 
 	const trimmedQuery = searchQuery.trim().toLowerCase();
 
@@ -48,7 +50,7 @@ export function getBlogs(searchQuery = "") {
 					};
 				})
 				// Filter out posts that aren't published
-				.filter(blog => blog.status === "published")
+				.filter(blog => "published" === blog.status)
 				// Filter by search query if provided
 				.filter(
 					blog =>
@@ -59,10 +61,10 @@ export function getBlogs(searchQuery = "") {
 				.sort((a, b) => {
 					try {
 						// Handle invalid dates by falling back to string comparison
-						const dateA = a.date && a.date !== "No date" ? new Date(a.date).getTime() : 0;
-						const dateB = b.date && b.date !== "No date" ? new Date(b.date).getTime() : 0;
+						const dateA = a.date && "No date" !== a.date ? new Date(a.date).getTime() : 0;
+						const dateB = b.date && "No date" !== b.date ? new Date(b.date).getTime() : 0;
 						return dateB - dateA;
-					} catch (error) {
+					} catch {
 						// If date comparison fails, don't change order
 						return 0;
 					}
