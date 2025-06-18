@@ -51,3 +51,4 @@ node_modules
 .cursor/
 .cursorrules
 certificates
+/generated/prisma
