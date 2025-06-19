@@ -29,7 +29,11 @@
     ".env*",
     ".vercel",
     "*.tsbuildinfo",
-    "convex/"
+    "convex/",
+    "prisma/",
+    "public/*",
+    "generated/*",
+    "components/ui/*"
   ],
   "overrides": [
     {

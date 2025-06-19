@@ -14,7 +14,6 @@ export default function ContentListPage({
 	backText = "Back Home",
 	searchQuery = "",
 	contentItems = [],
-	contentType = "blog", // "blog" or "project"
 }) {
 	return (
 		<section className="bg-background min-h-screen pt-8 pb-16">
@@ -57,7 +56,7 @@ export default function ContentListPage({
 					)}
 
 					{/* Live Search Component */}
-					<LiveSearch initialQuery={searchQuery} allItems={contentItems} contentType={contentType} />
+					<LiveSearch initialQuery={searchQuery} allItems={contentItems} />
 				</div>
 			</div>
 		</section>

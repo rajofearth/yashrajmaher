@@ -110,9 +110,9 @@ LICENSE           # MIT License file
 
 - **`app/`:** Contains all the routes, components, and logic for the application. The structure uses Next.js's App
   Router.
-- **`app/(blogs)/` and `app/(projects)/`:** These directories organize the blog and project sections, using parentheses
-  to group related routes without affecting the URL structure.
-- **`app/components/`:** Houses reusable UI components like `BlogCard`, `ProjectCard`, `Socials`, `BackButton`, etc.
+- **`app/(blogs)/`** These directories organize the blog section, using parentheses to group related routes without
+  affecting the URL structure.
+- **`app/components/`:** Houses reusable UI components like `PostCard`, `Socials`, `BackButton`, etc.
 - **`app/utils/`:** Contains helper functions for fetching blog posts and projects, truncating text, and other
   utilities.
 - **`public/Bposts/` and `public/projects/`:** These directories store the Markdown files that contain the content for

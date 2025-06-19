@@ -1,6 +1,6 @@
 import ContentListPage from "@/components/ContentListPage";
 import { generateMetadata } from "@/lib/metadata";
-import { getBlogs } from "@/utils/getBlogs";
+import prisma from "@/prisma/db";
 
 export const metadata = generateMetadata({
 	title: "Blog",
@@ -13,15 +13,15 @@ export default async function Page({ searchParams }) {
 		let allBlogs = [];
 
 		try {
-			allBlogs = getBlogs("") || []; // Get all blogs
+			allBlogs = await prisma.post.findMany({
+				where: {
+					status: "published",
+				},
+			});
 
-			// Ensure all blog entries have the necessary properties
 			allBlogs = allBlogs.map(blog => ({
 				...blog,
-				rawTitle: blog.rawTitle || blog.title || "",
-				rawDescription: blog.rawDescription || blog.description || "",
-				slug: blog.slug || "",
-				date: blog.date || undefined,
+				date: blog.date ? new Date(blog.date) : undefined,
 			}));
 		} catch (error) {
 			console.error("Error fetching blogs:", error);
@@ -37,7 +37,6 @@ export default async function Page({ searchParams }) {
 				backText="Back Home"
 				searchQuery={searchQuery}
 				contentItems={allBlogs}
-				contentType="blog"
 			/>
 		);
 	} catch (error) {

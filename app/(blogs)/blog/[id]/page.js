@@ -1,88 +1,45 @@
 import { generateMetadata as baseGenerateMetadata } from "@/lib/metadata";
-import { getFileFromSlug } from "@/utils/getFileFromSlug";
 import ArticleLayout from "@/components/ArticleLayout";
 import ErrorPage from "@/components/ErrorPage";
 import { format } from "date-fns";
-import matter from "gray-matter";
-import path from "path";
-import fs from "fs";
-
-// Define BLOG_POSTS_DIR here
-const BLOG_POSTS_DIR = path.join(process.cwd(), "public", "Bposts");
+import prisma from "@/prisma/db";
 
 export async function generateMetadata({ params }) {
-	try {
-		const { id } = await params;
-		if (!id) {
-			return baseGenerateMetadata({ title: "Post Not Found" });
-		}
+	const id = parseInt(params.id, 10);
+	const post = await prisma.post.findUnique({ where: { id } });
 
-		const filename = getFileFromSlug(id, BLOG_POSTS_DIR);
-		if (!filename) {
-			return baseGenerateMetadata({ title: "Post Not Found" });
-		}
-
-		const fileContent = fs.readFileSync(path.join(BLOG_POSTS_DIR, filename), "utf8");
-		const { data: frontmatter } = matter(fileContent);
-		return baseGenerateMetadata({
-			title: frontmatter.title || "Untitled Post",
-			description: frontmatter.description || "Explore this blog post",
-		});
-	} catch (error) {
-		console.error("Error in generateMetadata:", error);
-		return baseGenerateMetadata({ title: "Error", description: "Post loading failed" });
+	if (!post) {
+		return baseGenerateMetadata({ title: "Post Not Found" });
 	}
+	return baseGenerateMetadata({ title: post.title, description: post.description });
 }
 
 export default async function BlogPost({ params }) {
-	try {
-		const { id } = await params;
-		if (!id) {
-			return <ErrorPage title="Invalid Request" message="Missing post identifier" backLink="/blog" />;
-		}
+	const id = parseInt(params.id, 10);
+	const post = await prisma.post.findUnique({ where: { id } });
 
-		if (!fs.existsSync(BLOG_POSTS_DIR)) {
-			return <ErrorPage title="Configuration Error" message="Blog directory not found" backLink="/blog" />;
-		}
-
-		const filename = getFileFromSlug(id, BLOG_POSTS_DIR);
-		if (!filename) {
-			return (
-				<ErrorPage title="Post Not Found" message="The requested article doesn't exist" slug={id} backLink="/blog" />
-			);
-		}
-
-		const fileContent = fs.readFileSync(path.join(BLOG_POSTS_DIR, filename), "utf8");
-		const { data: frontmatter, content } = matter(fileContent);
-
-		if (!frontmatter.title) {
-			return <ErrorPage title="Invalid Format" message="Post frontmatter is incomplete" slug={id} backLink="/blog" />;
-		}
-
-		// Check if post is published
-		const status = frontmatter.status || "published"; // Default to published for backward compatibility
-		if ("published" !== status) {
-			return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
-		}
-
-		const formattedDate = frontmatter.date ? format(new Date(frontmatter.date), "MMMM d, yyyy") : "No publication date";
-
-		return (
-			<ArticleLayout
-				title={frontmatter.title}
-				description={frontmatter.description}
-				date={formattedDate}
-				author={frontmatter.author || "Anonymous"}
-				authorImage={frontmatter.authorImage || "https://shadcnblocks.com/images/block/avatar-1.webp"}
-				featuredImage={frontmatter.featuredImage}
-				content={content}
-				backLink="/blog"
-				backText="Return to blog"
-				isProject={false}
-			/>
-		);
-	} catch (error) {
-		console.error("Blog post rendering error:", error);
-		return <ErrorPage title="Loading Error" message="Failed to load post content" backLink="/blog" />;
+	if (!post) {
+		return <ErrorPage title="Post Not Found" message="The requested article doesn't exist" backLink="/blog" />;
 	}
+
+	if ("published" !== post.status) {
+		return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
+	}
+
+	const formattedDate = post.date ? format(new Date(post.date), "MMMM d, yyyy") : "No publication date";
+
+	return (
+		<ArticleLayout
+			title={post.title}
+			description={post.description}
+			date={formattedDate}
+			author={post.author}
+			authorImage={post.authorImage}
+			content={post.content}
+			backLink="/blog"
+			backText="Return to blog"
+			tags={post.tags ? post.tags.split(",").map(tag => tag.trim()) : []}
+			website={post.website}
+		/>
+	);
 }

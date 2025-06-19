@@ -1,17 +1,15 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import ProjectCard from "@/components/ProjectCard";
-import { getDevposts } from "@/utils/getdevposts";
 import { Button } from "@/components/ui/button";
 import HeroImage from "@/components/HeroImage";
 import { Badge } from "@/components/ui/badge";
-import BlogCard from "@/components/BlogCard";
+import PostCard from "@/components/PostCard";
 import Socials from "@/components/Socials";
 import { ArrowRight } from "lucide-react";
 import prisma from "@/prisma/db";
 import Link from "next/link";
 
 export default async function Home() {
-	const Posts = await prisma.post.findMany();
+	const Posts = await prisma.post.findMany({ take: 6 });
 
 	return (
 		<div className="bg-background min-h-screen">
@@ -76,37 +74,27 @@ export default async function Home() {
 								Writing
 							</Badge>
 						</div>
-						{0 < Posts.length && 6 >= Posts.length && (
-							<Link
-								href="/blog"
-								className="text-primary hover:text-primary/80 group flex items-center leading-none transition-colors"
-								style={{ fontFamily: "var(--font-serif)" }}
-							>
-								See More <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-							</Link>
-						)}
+						<Link
+							href="/blog"
+							className="text-primary hover:text-primary/80 group flex items-center leading-none transition-colors"
+							style={{ fontFamily: "var(--font-serif)" }}
+						>
+							See More <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+						</Link>
 					</div>
 					<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 						{Posts.slice(0, 6).map((blog, index) => (
-							<ProjectCard
-								key={index}
-								title={blog.title}
-								date={blog.date}
-								description={blog.description}
-								slug={blog.id}
-							/>
+							<PostCard key={index} post={blog} />
 						))}
 					</div>
-					{6 < Posts.length && (
-						<div className="mt-8 text-center">
-							<Button variant="outline" asChild>
-								<Link href="/blog" className="flex items-center gap-2">
-									See More Articles
-									<ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-								</Link>
-							</Button>
-						</div>
-					)}
+					<div className="mt-8 text-center">
+						<Button variant="outline" asChild>
+							<Link href="/blog" className="flex items-center gap-2">
+								See More Articles
+								<ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
+							</Link>
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -24,10 +24,7 @@ export default function ArticleLayout({
 	authorImage = "https://shadcnblocks.com/images/block/avatar-1.webp",
 	featuredImage,
 	content,
-	backLink,
-	backText,
 	tags = [],
-	isProject = false,
 	website = undefined,
 }) {
 	return (
@@ -41,10 +38,9 @@ export default function ArticleLayout({
 							<ThemeToggle />
 						</div>
 						<div className="bg-card mb-6 rounded-xl border p-6">
-							{/* Show tags if it's a project */}
-							{isProject && tags && 0 < tags.length && (
+							{tags && 0 < tags.length && (
 								<div className="mb-4 flex flex-wrap items-center gap-2">
-									<Badge variant="secondary">Project</Badge>
+									<Badge variant="secondary">Blog</Badge>
 									{tags.map((tag, i) => (
 										<Badge key={i} variant="secondary">
 											{tag}
@@ -75,7 +71,7 @@ export default function ArticleLayout({
 									</div>
 								</div>
 
-								{isProject && website && (
+								{website && (
 									<a
 										href={website.startsWith("http") ? website : `https://${website}`}
 										className="bg-secondary hover:bg-border text-secondary-foreground inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-xs whitespace-nowrap transition-colors"
@@ -84,7 +80,7 @@ export default function ArticleLayout({
 									>
 										{website.includes("github.com") ? (
 											<>
-												<span>Visit Repo</span>
+												<span>View Repo</span>
 												<svg
 													xmlns="http://www.w3.org/2000/svg"
 													width="12"
@@ -102,7 +98,7 @@ export default function ArticleLayout({
 											</>
 										) : (
 											<>
-												<span>View Project</span>
+												<span>View Website</span>
 												<svg
 													xmlns="http://www.w3.org/2000/svg"
 													width="12"

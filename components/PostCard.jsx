@@ -1,11 +1,29 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { formatDate } from "@/utils/formatDate";
+import { formatDate } from "@/app/utils/formatDate";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-export default function ProjectCard({ title, date, description, slug, tags = [], className }) {
+export default function PostCard({ post, title, date, description, slug, tags = [], className }) {
+	// Use post object if provided, otherwise use individual props for backward compatibility
+	const postData = post || {
+		title,
+		date,
+		description,
+		id: slug,
+		tags: "string" === typeof tags ? tags.split(",").map(tag => tag.trim()) : tags,
+	};
+
+	// Parse tags if they're stored as a string in the database
+	const parsedTags =
+		"string" === typeof postData.tags
+			? postData.tags
+					.split(",")
+					.map(tag => tag.trim())
+					.filter(tag => tag)
+			: postData.tags || [];
+
 	return (
 		<Card
 			className={cn(
@@ -18,10 +36,10 @@ export default function ProjectCard({ title, date, description, slug, tags = [],
 					className="text-card-foreground hover:text-primary text-left text-xl font-semibold transition-colors"
 					style={{ fontFamily: "var(--font-serif)" }}
 				>
-					<Link href={`/devposts/${slug || "#"}`} dangerouslySetInnerHTML={{ __html: title }} />
+					<Link href={`/blog/${postData.id}`} dangerouslySetInnerHTML={{ __html: postData.title }} />
 				</h3>
 				<p className="text-muted-foreground text-left text-sm italic" style={{ fontFamily: "var(--font-serif)" }}>
-					{formatDate(date)}
+					{formatDate(postData.date)}
 				</p>
 			</CardHeader>
 
@@ -29,12 +47,12 @@ export default function ProjectCard({ title, date, description, slug, tags = [],
 				<p
 					className="text-card-foreground mb-3 text-left"
 					style={{ fontFamily: "var(--font-sans)" }}
-					dangerouslySetInnerHTML={{ __html: description }}
+					dangerouslySetInnerHTML={{ __html: postData.description }}
 				/>
 
-				{tags && 0 < tags.length && (
+				{parsedTags && 0 < parsedTags.length && (
 					<div className="mt-2 flex flex-wrap gap-2">
-						{tags.map((tag, i) => (
+						{parsedTags.map((tag, i) => (
 							<Badge key={i} variant="secondary">
 								{tag}
 							</Badge>
@@ -45,11 +63,11 @@ export default function ProjectCard({ title, date, description, slug, tags = [],
 
 			<CardFooter className="text-left">
 				<Link
-					href={`/devposts/${slug || "#"}`}
+					href={`/blog/${postData.id}`}
 					className="text-primary hover:text-primary/70 group flex items-center transition-colors"
 					style={{ fontFamily: "var(--font-serif)" }}
 				>
-					See project
+					Read article
 					<ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
 				</Link>
 			</CardFooter>

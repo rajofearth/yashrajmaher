@@ -1,7 +1,7 @@
 "use client";
 
-import ProjectCard from "@/components/ProjectCard";
 import { useSearchParams } from "next/navigation";
+import PostCard from "@/components/PostCard";
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
@@ -90,13 +90,15 @@ export default function LiveProjectSearch({ initialQuery = "", allDevposts = [] 
 			{0 < filteredDevposts.length ? (
 				<div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
 					{filteredDevposts.map((devpost, index) => (
-						<ProjectCard
+						<PostCard
 							key={index}
-							title={devpost.title}
-							description={devpost.description}
-							date={devpost.date}
-							slug={devpost.slug}
-							tags={devpost.tags || []}
+							post={{
+								id: devpost.slug,
+								title: devpost.title,
+								date: devpost.date,
+								description: devpost.description,
+								tags: devpost.tags || [],
+							}}
 							className="text-left"
 						/>
 					))}

@@ -1,44 +1,16 @@
 "use client";
 
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Badge } from "@/components/ui/badge";
+import PostCard from "@/components/PostCard";
 import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import { Search } from "lucide-react";
-import Link from "next/link";
 
-// Local formatDate function to avoid passing server functions to client
-function formatDate(dateObj) {
-	if (!dateObj) {
-		return "";
-	}
-	// Handle both Date objects and date strings
-	const date = dateObj instanceof Date ? dateObj : new Date(dateObj);
-	// Check if date is valid before formatting
-	if (isNaN(date.getTime())) {
-		return "";
-	}
-	return date.toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "long",
-		day: "numeric",
-	});
-}
-
-export default function LiveSearch({
-	initialQuery = "",
-	allItems = [],
-	contentType = "blog", // "blog" or "project"
-}) {
+export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [searchQuery, setSearchQuery] = useState(initialQuery);
 	const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
 	const [filteredItems, setFilteredItems] = useState([]);
-
-	// Determine the base route based on content type
-	const baseRoute = "project" === contentType ? "/devposts" : "/blog";
 
 	// Update URL when search changes
 	useEffect(() => {
@@ -84,16 +56,16 @@ export default function LiveSearch({
 
 			const queryLower = debouncedQuery.toLowerCase();
 			const filtered = allItems.filter(item => {
-				const title = item?.rawTitle || "";
-				const description = item?.rawDescription || "";
+				const title = item.title;
+				const description = item.description;
 				return title.toLowerCase().includes(queryLower) || description.toLowerCase().includes(queryLower);
 			});
 
 			// Highlight matches in title and description
 			const highlighted = filtered.map(item => {
 				try {
-					const title = item?.rawTitle || "";
-					const description = item?.rawDescription || "";
+					const title = item.title;
+					const description = item.description;
 					const escapedQuery = debouncedQuery.replace(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`);
 					const regex = new RegExp(`(${escapedQuery})`, "gi");
 
@@ -115,8 +87,8 @@ export default function LiveSearch({
 					console.error("Error highlighting item:", error);
 					return {
 						...item,
-						title: item?.rawTitle || "",
-						description: item?.rawDescription || "",
+						title: item.title,
+						description: item.description,
 					};
 				}
 			});
@@ -136,7 +108,7 @@ export default function LiveSearch({
 					<input
 						type="text"
 						name="q"
-						placeholder={`Search ${"project" === contentType ? "projects" : "posts"}...`}
+						placeholder="Search posts..."
 						className="border-border focus:border-primary/70 bg-card focus:ring-primary/30 placeholder-muted-foreground w-full rounded-xl border py-3 pr-4 pl-12 text-lg transition-all focus:ring-2"
 						value={searchQuery}
 						onChange={e => setSearchQuery(e.target.value)}
@@ -148,68 +120,23 @@ export default function LiveSearch({
 			{0 < filteredItems.length ? (
 				<div className="grid w-full gap-6 md:grid-cols-2 lg:grid-cols-3">
 					{filteredItems.map((item, index) => (
-						<Card
+						<PostCard
 							key={index}
-							className="bg-card border-border overflow-hidden shadow-sm transition-shadow duration-300 hover:shadow-md"
-						>
-							<CardHeader className="pb-2 text-left">
-								{/* Show tags for projects */}
-								{"project" === contentType && item.tags && 0 < item.tags.length && (
-									<div className="mb-2 flex flex-wrap gap-1">
-										{item.tags.slice(0, 2).map((tag, i) => (
-											<Badge key={i} variant="secondary" className="text-xs">
-												{tag}
-											</Badge>
-										))}
-										{2 < item.tags.length && (
-											<Badge variant="secondary" className="text-xs">
-												+{item.tags.length - 2}
-											</Badge>
-										)}
-									</div>
-								)}
-
-								<h3
-									className="text-card-foreground hover:text-primary text-left text-xl font-semibold transition-colors"
-									style={{ fontFamily: "var(--font-serif)" }}
-								>
-									<Link
-										href={`${baseRoute}/${item.slug || ""}`}
-										dangerouslySetInnerHTML={{ __html: item.title || "" }}
-									/>
-								</h3>
-								<p
-									className="text-muted-foreground text-left text-sm italic"
-									style={{ fontFamily: "var(--font-serif)" }}
-								>
-									{formatDate(item.date)}
-								</p>
-							</CardHeader>
-							<CardContent className="text-left">
-								<p
-									className="text-card-foreground text-left"
-									style={{ fontFamily: "var(--font-sans)" }}
-									dangerouslySetInnerHTML={{ __html: item.description || "" }}
-								/>
-							</CardContent>
-							<CardFooter className="text-left">
-								<Link
-									href={`${baseRoute}/${item.slug || ""}`}
-									className="text-primary hover:text-primary/70 group flex items-center transition-colors"
-									style={{ fontFamily: "var(--font-serif)" }}
-								>
-									Read more
-									<ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
-								</Link>
-							</CardFooter>
-						</Card>
+							post={{
+								id: item.id,
+								title: item.title,
+								date: item.date,
+								description: item.description,
+								tags: item.tags,
+							}}
+						/>
 					))}
 				</div>
 			) : (
 				<div className="w-full py-12 text-center">
 					<div className="text-muted-foreground/70 mb-4 text-4xl">⨯</div>
 					<p className="text-muted-foreground mb-2 text-xl" style={{ fontFamily: "var(--font-serif)" }}>
-						No matching {"project" === contentType ? "projects" : "posts"} found
+						No matching posts found
 					</p>
 					<p className="text-muted-foreground/80" style={{ fontFamily: "var(--font-sans)" }}>
 						Try different search terms
