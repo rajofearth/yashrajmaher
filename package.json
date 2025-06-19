@@ -3,9 +3,7 @@
 	"version": "0.1.7",
 	"private": true,
 	"scripts": {
-		"dev": "concurrently --names \"WEB,SERVER\" --prefix-colors \"cyan,magenta\" --prefix \"[{name}]\" --kill-others-on-fail \"bun --bun next dev\" \"bunx convex dev\"",
-		"dev:web": "bun --bun next dev",
-		"dev:server": "bunx convex dev",
+		"dev": "bun --bun next dev",
 		"build": "bun --bun next build",
 		"start": "bun --bun next start",
 		"lint": "oxlint .",
