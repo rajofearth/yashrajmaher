@@ -9,7 +9,10 @@ import prisma from "@/prisma/db";
 import Link from "next/link";
 
 export default async function Home() {
-	const Posts = await prisma.post.findMany({ take: 6 });
+	const Posts = await prisma.post.findMany({ 
+		take: 6, 
+		orderBy: { createdAt: "desc" } 
+	});
 
 	return (
 		<div className="bg-background min-h-screen">

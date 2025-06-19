@@ -5,8 +5,8 @@ import { format } from "date-fns";
 import prisma from "@/prisma/db";
 
 export async function generateMetadata({ params }) {
-	const id = parseInt(params.id, 10);
-	const post = await prisma.post.findUnique({ where: { id } });
+	const { slug } = params;
+	const post = await prisma.post.findUnique({ where: { slug } });
 
 	if (!post) {
 		return baseGenerateMetadata({ title: "Post Not Found" });
@@ -15,8 +15,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPost({ params }) {
-	const id = parseInt(params.id, 10);
-	const post = await prisma.post.findUnique({ where: { id } });
+	const { slug } = params;
+	const post = await prisma.post.findUnique({ where: { slug } });
 
 	if (!post) {
 		return <ErrorPage title="Post Not Found" message="The requested article doesn't exist" backLink="/blog" />;

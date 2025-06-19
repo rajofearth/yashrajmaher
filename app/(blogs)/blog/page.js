@@ -17,11 +17,12 @@ export default async function Page({ searchParams }) {
 				where: {
 					status: "published",
 				},
+				orderBy: { createdAt: "desc" },
 			});
 
 			allBlogs = allBlogs.map(blog => ({
 				...blog,
-				date: blog.date ? new Date(blog.date) : undefined,
+				createdAt: blog.createdAt ? new Date(blog.createdAt) : undefined,
 			}));
 		} catch (error) {
 			console.error("Error fetching blogs:", error);

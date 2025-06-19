@@ -50,7 +50,8 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 			}
 
 			if (!debouncedQuery || !debouncedQuery.trim()) {
-				setFilteredItems(allItems);
+				const sortedItems = [...allItems].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+				setFilteredItems(sortedItems);
 				return;
 			}
 
@@ -93,7 +94,8 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 				}
 			});
 
-			setFilteredItems(highlighted);
+			const sortedHighlighted = highlighted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+			setFilteredItems(sortedHighlighted);
 		} catch (error) {
 			console.error("Error filtering items:", error);
 			setFilteredItems([]);
@@ -123,9 +125,9 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 						<PostCard
 							key={index}
 							post={{
-								id: item.id,
+								slug: item.slug,
 								title: item.title,
-								date: item.date,
+								createdAt: item.createdAt,
 								description: item.description,
 								tags: item.tags,
 							}}

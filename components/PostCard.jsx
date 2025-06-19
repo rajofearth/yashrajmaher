@@ -3,13 +3,14 @@ import { formatDate } from "@/app/utils/formatDate";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import truncateText from "@/app/utils/truncateText";
 import Link from "next/link";
 
-export default function PostCard({ post, title, date, description, slug, tags = [], className }) {
+export default function PostCard({ post, title, createdAt, description, slug, tags = [], className }) {
 	// Use post object if provided, otherwise use individual props for backward compatibility
 	const postData = post || {
 		title,
-		date,
+		createdAt,
 		description,
 		id: slug,
 		tags: "string" === typeof tags ? tags.split(",").map(tag => tag.trim()) : tags,
@@ -36,10 +37,10 @@ export default function PostCard({ post, title, date, description, slug, tags = 
 					className="text-card-foreground hover:text-primary text-left text-xl font-semibold transition-colors"
 					style={{ fontFamily: "var(--font-serif)" }}
 				>
-					<Link href={`/blog/${postData.id}`} dangerouslySetInnerHTML={{ __html: postData.title }} />
+					<Link href={`/blog/${postData.slug}`} dangerouslySetInnerHTML={{ __html: postData.title }} />
 				</h3>
 				<p className="text-muted-foreground text-left text-sm italic" style={{ fontFamily: "var(--font-serif)" }}>
-					{formatDate(postData.date)}
+					{formatDate(postData.createdAt)}
 				</p>
 			</CardHeader>
 
@@ -47,8 +48,9 @@ export default function PostCard({ post, title, date, description, slug, tags = 
 				<p
 					className="text-card-foreground mb-3 text-left"
 					style={{ fontFamily: "var(--font-sans)" }}
-					dangerouslySetInnerHTML={{ __html: postData.description }}
-				/>
+				>
+					{truncateText(postData.description, 150)}
+				</p>
 
 				{parsedTags && 0 < parsedTags.length && (
 					<div className="mt-2 flex flex-wrap gap-2">
@@ -63,7 +65,7 @@ export default function PostCard({ post, title, date, description, slug, tags = 
 
 			<CardFooter className="text-left">
 				<Link
-					href={`/blog/${postData.id}`}
+					href={`/blog/${postData.slug}`}
 					className="text-primary hover:text-primary/70 group flex items-center transition-colors"
 					style={{ fontFamily: "var(--font-serif)" }}
 				>
