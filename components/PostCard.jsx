@@ -1,9 +1,9 @@
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import truncateText from "@/app/utils/truncateText";
 import { formatDate } from "@/app/utils/formatDate";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import truncateText from "@/app/utils/truncateText";
 import Link from "next/link";
 
 export default function PostCard({ post, title, createdAt, description, slug, tags = [], className }) {
@@ -45,10 +45,7 @@ export default function PostCard({ post, title, createdAt, description, slug, ta
 			</CardHeader>
 
 			<CardContent className="text-left">
-				<p
-					className="text-card-foreground mb-3 text-left"
-					style={{ fontFamily: "var(--font-sans)" }}
-				>
+				<p className="text-card-foreground mb-3 text-left" style={{ fontFamily: "var(--font-sans)" }}>
 					{truncateText(postData.description, 150)}
 				</p>
 

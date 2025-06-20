@@ -9,9 +9,9 @@ import prisma from "@/prisma/db";
 import Link from "next/link";
 
 export default async function Home() {
-	const Posts = await prisma.post.findMany({ 
-		take: 6, 
-		orderBy: { createdAt: "desc" } 
+	const Posts = await prisma.post.findMany({
+		take: 6,
+		orderBy: { createdAt: "desc" },
 	});
 
 	return (
