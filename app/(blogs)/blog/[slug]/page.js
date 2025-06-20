@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import prisma from "@/prisma/db";
 
 export async function generateMetadata({ params }) {
-	const { slug } = params;
+	const { slug } = await params;
 	const post = await prisma.post.findUnique({ where: { slug } });
 
 	if (!post) {
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogPost({ params }) {
-	const { slug } = params;
+	const { slug } = await params;
 	const post = await prisma.post.findUnique({ where: { slug } });
 
 	if (!post) {
@@ -26,15 +26,16 @@ export default async function BlogPost({ params }) {
 		return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
 	}
 
-	const formattedDate = post.date ? format(new Date(post.date), "MMMM d, yyyy") : "No publication date";
+	const formattedDate = post.createdAt ? format(post.createdAt, "MMMM d, yyyy") : "No publication date";
 
 	return (
 		<ArticleLayout
 			title={post.title}
 			description={post.description}
-			date={formattedDate}
+			createdAt={formattedDate}
 			author={post.author}
 			authorImage={post.authorImage}
+			featuredImage={post.featuredImage}
 			content={post.content}
 			backLink="/blog"
 			backText="Return to blog"

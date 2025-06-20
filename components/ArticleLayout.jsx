@@ -19,7 +19,7 @@ const MarkdownImage = ({ src, alt }) => (
 export default function ArticleLayout({
 	title,
 	description,
-	date,
+	createdAt,
 	author = "Anonymous",
 	authorImage = "https://shadcnblocks.com/images/block/avatar-1.webp",
 	featuredImage,
@@ -66,7 +66,7 @@ export default function ArticleLayout({
 											{author}
 										</h2>
 										<p className="text-muted-foreground text-xs" style={{ fontFamily: "var(--font-sans)" }}>
-											{date}
+											{createdAt}
 										</p>
 									</div>
 								</div>
