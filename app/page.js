@@ -7,12 +7,14 @@ import Socials from "@/components/Socials";
 import { ArrowRight } from "lucide-react";
 import prisma from "@/prisma/db";
 import Link from "next/link";
+import { PostSchema } from "@/lib/types";
 
 export default async function Home() {
-	const Posts = await prisma.post.findMany({
+	let Posts = await prisma.post.findMany({
 		take: 6,
 		orderBy: { createdAt: "desc" },
 	});
+	Posts = PostSchema.array().parse(Posts);
 
 	return (
 		<div className="bg-background min-h-screen">

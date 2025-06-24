@@ -1,6 +1,7 @@
 import ContentListPage from "@/components/ContentListPage";
 import { generateMetadata } from "@/lib/metadata";
 import prisma from "@/prisma/db";
+import { PostSchema } from "@/lib/types";
 
 export const metadata = generateMetadata({
 	title: "Blog",
@@ -24,6 +25,8 @@ export default async function Page({ searchParams }) {
 				...blog,
 				createdAt: blog.createdAt ? new Date(blog.createdAt) : undefined,
 			}));
+
+			allBlogs = PostSchema.array().parse(allBlogs);
 		} catch (error) {
 			console.error("Error fetching blogs:", error);
 			allBlogs = [];
