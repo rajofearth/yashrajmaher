@@ -96,48 +96,48 @@ export default function SignupForm() {
 					<p className="text-sm text-muted-foreground">Enter your details to get started</p>
 				</div>
 
-				{error && (
+						{error && (
 					<Alert variant="destructive" className="py-2">
 						<AlertDescription className="text-sm">{error}</AlertDescription>
-					</Alert>
-				)}
+							</Alert>
+						)}
 
 				<div className="grid gap-4">
 					<div className="grid gap-2">
 						<Label htmlFor="name" className="text-sm font-medium text-foreground">
-							Full Name
-						</Label>
-						<Input
-							id="name"
-							name="name"
-							type="text"
+								Full Name
+							</Label>
+								<Input
+									id="name"
+									name="name"
+									type="text"
 							placeholder="Enter your full name"
-							value={formData.name}
-							onChange={handleInputChange}
-							required
-							disabled={isLoading}
-							autoComplete="name"
+									value={formData.name}
+									onChange={handleInputChange}
+									required
+									disabled={isLoading}
+									autoComplete="name"
 							className="h-10 px-3 bg-input border-border focus:shadow-sm transition-shadow duration-200"
-						/>
-					</div>
+								/>
+						</div>
 
 					<div className="grid gap-2">
 						<Label htmlFor="email" className="text-sm font-medium text-foreground">
 							Email Address
-						</Label>
-						<Input
-							id="email"
-							name="email"
-							type="email"
+							</Label>
+								<Input
+									id="email"
+									name="email"
+									type="email"
 							placeholder="Enter your email"
-							value={formData.email}
-							onChange={handleInputChange}
-							required
-							disabled={isLoading}
-							autoComplete="email"
+									value={formData.email}
+									onChange={handleInputChange}
+									required
+									disabled={isLoading}
+									autoComplete="email"
 							className="h-10 px-3 bg-input border-border focus:shadow-sm transition-shadow duration-200"
-						/>
-					</div>
+								/>
+						</div>
 
 					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
 						<div className="grid gap-2">
@@ -214,15 +214,15 @@ export default function SignupForm() {
 						className="w-full h-10 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-md hover:shadow-lg transition-all duration-200 mt-2"
 						disabled={isLoading}
 					>
-						{isLoading ? (
-							<>
-								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-								Creating account...
-							</>
-						) : (
-							"Create Account"
-						)}
-					</Button>
+							{isLoading ? (
+								<>
+									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+									Creating account...
+								</>
+							) : (
+								"Create Account"
+							)}
+						</Button>
 				</div>
 
 				<div className="text-center text-xs text-muted-foreground">
@@ -232,9 +232,9 @@ export default function SignupForm() {
 						className="text-primary hover:text-primary/80 font-medium underline-offset-4 hover:underline transition-colors"
 					>
 						Sign in here
-					</Link>
-				</div>
-			</form>
+							</Link>
+						</div>
+				</form>
 		</div>
 	);
 }
