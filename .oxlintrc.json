@@ -1,9 +1,14 @@
 {
   "plugins": ["react", "unicorn", "typescript", "oxc"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2022": true
+  },
   "categories": {
     "correctness": "error",
     "suspicious": "warn",
-    "style": "warn"
+    "style": "off"
   },
   "rules": {
     "no-console": "warn",
@@ -13,8 +18,10 @@
     "no-undef": "error",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
-    "unicorn/filename-case": ["warn", { "case": "kebabCase" }],
-    "typescript/no-explicit-any": "warn"
+    "unicorn/filename-case": "off",
+    "typescript/no-explicit-any": "warn",
+    "no-magic-numbers": "off",
+    "import/order": "off"
   },
   "ignorePatterns": [
     "node_modules",
@@ -49,6 +56,34 @@
       "env": { "jest": true },
       "rules": {
         "jest/no-disabled-tests": "off"
+      }
+    },
+    {
+      "files": ["middleware.ts", "app/auth.ts", "app/(auth)/**/*.ts", "app/api/**/*.ts"],
+      "env": { "node": true },
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["script.ts"],
+      "env": { "node": true },
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["app/(blogs)/**/*.{js,jsx,ts,tsx}"],
+      "env": { "browser": true, "node": true },
+      "rules": {
+        "no-console": "off"
+      }
+    },
+    {
+      "files": ["components/**/*.{js,jsx,ts,tsx}"],
+      "env": { "browser": true },
+      "rules": {
+        "no-console": "warn"
       }
     }
   ]

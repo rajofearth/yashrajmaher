@@ -1,9 +1,9 @@
 import { generateMetadata as baseGenerateMetadata } from "@/lib/metadata";
 import ArticleLayout from "@/components/ArticleLayout";
 import ErrorPage from "@/components/ErrorPage";
+import { PostSchema } from "@/lib/types";
 import { format } from "date-fns";
 import prisma from "@/prisma/db";
-import { PostSchema } from "@/lib/types";
 
 export async function generateMetadata({ params }) {
 	const { slug } = await params;
@@ -30,7 +30,9 @@ export default async function BlogPost({ params }) {
 		return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
 	}
 
-	const formattedDate = validatedPost.createdAt ? format(validatedPost.createdAt, "MMMM d, yyyy") : "No publication date";
+	const formattedDate = validatedPost.createdAt
+		? format(validatedPost.createdAt, "MMMM d, yyyy")
+		: "No publication date";
 
 	return (
 		<ArticleLayout

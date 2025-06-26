@@ -2,6 +2,7 @@ import { Inter, Playfair_Display, Roboto_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { StagewiseToolbar } from "@stagewise/toolbar-next";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 // Load fonts
@@ -48,6 +49,7 @@ export default function RootLayout({ children }) {
 					{"development" === process.env.NODE_ENV && <StagewiseToolbar config={stagewiseConfig} />}
 					<Analytics />
 					<main>{children}</main>
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>

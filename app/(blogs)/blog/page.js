@@ -1,7 +1,7 @@
 import ContentListPage from "@/components/ContentListPage";
 import { generateMetadata } from "@/lib/metadata";
-import prisma from "@/prisma/db";
 import { PostSchema } from "@/lib/types";
+import prisma from "@/prisma/db";
 
 export const metadata = generateMetadata({
 	title: "Blog",

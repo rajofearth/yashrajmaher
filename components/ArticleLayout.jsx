@@ -147,12 +147,12 @@ export default function ArticleLayout({
 							remarkPlugins={[remarkGfm, remarkBreaks]}
 							rehypePlugins={[rehypeRaw]}
 							components={{
-								a: ({ node, ...props }) => (
+								a: ({ node: _node, ...props }) => (
 									<a {...props} className="text-primary underline transition-colors hover:opacity-80" />
 								),
-								strong: ({ node, ...props }) => <strong {...props} className="text-foreground font-bold" />,
-								li: ({ node, ...props }) => <li {...props} className="text-muted-foreground" />,
-								ol: ({ node, ...props }) => (
+								strong: ({ node: _node, ...props }) => <strong {...props} className="text-foreground font-bold" />,
+								li: ({ node: _node, ...props }) => <li {...props} className="text-muted-foreground" />,
+								ol: ({ node: _node, ...props }) => (
 									<ol {...props} className="text-muted-foreground marker:text-foreground list-decimal" />
 								),
 								code: ({ node, inline, className, children, ...props }) => {
@@ -197,40 +197,40 @@ export default function ArticleLayout({
 										</code>
 									);
 								},
-								pre: ({ node, children, ...props }) => (
+								pre: ({ node: _node, children, ...props }) => (
 									<pre {...props} className="bg-secondary text-secondary-foreground rounded-md p-4 whitespace-pre-wrap">
 										{children}
 									</pre>
 								),
 								img: MarkdownImage,
-								div: ({ node, ...props }) => <div {...props} className="max-w-full" />,
-								table: ({ node, ...props }) => (
+								div: ({ node: _node, ...props }) => <div {...props} className="max-w-full" />,
+								table: ({ node: _node, ...props }) => (
 									<div className="overflow-x-auto">
 										<table {...props} className="w-full" />
 									</div>
 								),
-								blockquote: ({ node, children, ...props }) => (
+								blockquote: ({ node: _node, children, ...props }) => (
 									<blockquote {...props} className="border-border text-foreground border-l-4 pl-4 italic">
 										{children}
 									</blockquote>
 								),
-								h1: ({ node, ...props }) => (
+								h1: ({ node: _node, ...props }) => (
 									<h1 {...props} className="text-foreground mb-4" style={{ fontFamily: "var(--font-serif)" }} />
 								),
-								h2: ({ node, ...props }) => (
+								h2: ({ node: _node, ...props }) => (
 									<h2 {...props} className="text-foreground mt-8 mb-4" style={{ fontFamily: "var(--font-serif)" }} />
 								),
-								h3: ({ node, ...props }) => (
+								h3: ({ node: _node, ...props }) => (
 									<h3 {...props} className="text-foreground mt-6 mb-3" style={{ fontFamily: "var(--font-serif)" }} />
 								),
-								h4: ({ node, ...props }) => (
+								h4: ({ node: _node, ...props }) => (
 									<h4
 										{...props}
 										className="text-foreground mt-5 mb-2 font-semibold"
 										style={{ fontFamily: "var(--font-serif)" }}
 									/>
 								),
-								p: ({ node, ...props }) => (
+								p: ({ node: _node, ...props }) => (
 									<p {...props} className="text-muted-foreground mb-4" style={{ fontFamily: "var(--font-sans)" }} />
 								),
 							}}

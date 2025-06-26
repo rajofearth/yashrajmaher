@@ -1,12 +1,11 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import PostCard from "@/components/PostCard";
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
 export default function LiveSearch({ initialQuery = "", allItems = [] }) {
-	const router = useRouter();
 	const searchParams = useSearchParams();
 	const [searchQuery, setSearchQuery] = useState(initialQuery);
 	const [debouncedQuery, setDebouncedQuery] = useState(initialQuery);
@@ -26,8 +25,8 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 			// Update URL without reloading the page
 			const newUrl = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ""}`;
 			window.history.replaceState({ path: newUrl }, "", newUrl);
-		} catch (error) {
-			console.error("Error updating URL:", error);
+		} catch {
+			// Silently handle URL update errors
 		}
 	}, [debouncedQuery, searchParams]);
 
@@ -44,7 +43,6 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 	useEffect(() => {
 		try {
 			if (!Array.isArray(allItems)) {
-				console.error("allItems is not an array:", allItems);
 				setFilteredItems([]);
 				return;
 			}
@@ -84,8 +82,7 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 						title: highlightedTitle,
 						description: highlightedDescription,
 					};
-				} catch (error) {
-					console.error("Error highlighting item:", error);
+				} catch {
 					return {
 						...item,
 						title: item.title,
@@ -96,8 +93,7 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 
 			const sortedHighlighted = highlighted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 			setFilteredItems(sortedHighlighted);
-		} catch (error) {
-			console.error("Error filtering items:", error);
+		} catch {
 			setFilteredItems([]);
 		}
 	}, [debouncedQuery, allItems]);

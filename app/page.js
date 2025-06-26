@@ -5,9 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import PostCard from "@/components/PostCard";
 import Socials from "@/components/Socials";
 import { ArrowRight } from "lucide-react";
+import { PostSchema } from "@/lib/types";
 import prisma from "@/prisma/db";
 import Link from "next/link";
-import { PostSchema } from "@/lib/types";
 
 export default async function Home() {
 	let Posts = await prisma.post.findMany({
