@@ -1,10 +1,15 @@
-import LoginForm from "./login-form";
+import AuthLayout from "@/components/AuthLayout";
+import LoginForm from "@/app/(auth)/login/login-form";
 
 export const metadata = {
-	title: "Sign In | Your App",
+	title: "Sign In | Yashraj Maher",
 	description: "Sign in to your account",
 };
 
 export default function LoginPage() {
-	return <LoginForm />;
+	return (
+		<AuthLayout>
+			<LoginForm />
+		</AuthLayout>
+	);
 }

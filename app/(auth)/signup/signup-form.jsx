@@ -1,14 +1,13 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Lock, Mail, User, Eye, EyeOff } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 
@@ -25,7 +24,7 @@ export default function SignupForm() {
 		confirmPassword: "",
 	});
 
-	const handleSubmit = async e => {
+	const handleSubmit = useCallback(async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
 		setError(null);
@@ -66,172 +65,176 @@ export default function SignupForm() {
 				router.push("/dashboard");
 				router.refresh(); // Refresh to update session state
 			}
-		} catch {
+		} catch (err) {
+			console.error("Signup error:", err);
 			setError("An unexpected error occurred. Please try again.");
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}, [formData.email, formData.password, formData.name, formData.confirmPassword, router]);
 
-	const handleInputChange = e => {
+	const handleInputChange = useCallback((e) => {
 		const { name, value } = e.target;
 		setFormData(prev => ({ ...prev, [name]: value }));
 		// Clear error when user starts typing
 		if (error) setError(null);
-	};
+	}, [error]);
+
+	const togglePasswordVisibility = useCallback(() => {
+		setShowPassword(prev => !prev);
+	}, []);
+
+	const toggleConfirmPasswordVisibility = useCallback(() => {
+		setShowConfirmPassword(prev => !prev);
+	}, []);
 
 	return (
-		<div className="bg-background flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-			<Card className="w-full max-w-md">
-				<CardHeader className="space-y-1">
-					<CardTitle className="text-foreground text-center text-2xl">Create an account</CardTitle>
-					<CardDescription className="text-muted-foreground text-center">
-						Enter your details to get started
-					</CardDescription>
-				</CardHeader>
+		<div className="w-full max-w-md mx-auto">
+			<form onSubmit={handleSubmit} className="flex flex-col gap-6 p-6 bg-card rounded-lg shadow-lg border">
+				<div className="flex flex-col items-center gap-2 text-center">
+					<h1 className="text-2xl font-serif font-bold text-foreground">Create Account</h1>
+					<p className="text-sm text-muted-foreground">Enter your details to get started</p>
+				</div>
 
-				<form onSubmit={handleSubmit}>
-					<CardContent className="space-y-4">
-						{error && (
-							<Alert variant="destructive">
-								<AlertDescription>{error}</AlertDescription>
-							</Alert>
-						)}
+				{error && (
+					<Alert variant="destructive" className="py-2">
+						<AlertDescription className="text-sm">{error}</AlertDescription>
+					</Alert>
+				)}
 
-						<div className="space-y-2">
-							<Label htmlFor="name" className="text-foreground">
-								Full Name
-							</Label>
-							<div className="relative">
-								<User className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
-								<Input
-									id="name"
-									name="name"
-									type="text"
-									placeholder="John Doe"
-									value={formData.name}
-									onChange={handleInputChange}
-									required
-									disabled={isLoading}
-									autoComplete="name"
-									className="pl-10"
-								/>
-							</div>
-						</div>
+				<div className="grid gap-4">
+					<div className="grid gap-2">
+						<Label htmlFor="name" className="text-sm font-medium text-foreground">
+							Full Name
+						</Label>
+						<Input
+							id="name"
+							name="name"
+							type="text"
+							placeholder="Enter your full name"
+							value={formData.name}
+							onChange={handleInputChange}
+							required
+							disabled={isLoading}
+							autoComplete="name"
+							className="h-10 px-3 bg-input border-border focus:shadow-sm transition-shadow duration-200"
+						/>
+					</div>
 
-						<div className="space-y-2">
-							<Label htmlFor="email" className="text-foreground">
-								Email
-							</Label>
-							<div className="relative">
-								<Mail className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
-								<Input
-									id="email"
-									name="email"
-									type="email"
-									placeholder="your@email.com"
-									value={formData.email}
-									onChange={handleInputChange}
-									required
-									disabled={isLoading}
-									autoComplete="email"
-									className="pl-10"
-								/>
-							</div>
-						</div>
+					<div className="grid gap-2">
+						<Label htmlFor="email" className="text-sm font-medium text-foreground">
+							Email Address
+						</Label>
+						<Input
+							id="email"
+							name="email"
+							type="email"
+							placeholder="Enter your email"
+							value={formData.email}
+							onChange={handleInputChange}
+							required
+							disabled={isLoading}
+							autoComplete="email"
+							className="h-10 px-3 bg-input border-border focus:shadow-sm transition-shadow duration-200"
+						/>
+					</div>
 
-						<div className="space-y-2">
-							<Label htmlFor="password" className="text-foreground">
+					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+						<div className="grid gap-2">
+							<Label htmlFor="password" className="text-sm font-medium text-foreground">
 								Password
 							</Label>
 							<div className="relative">
-								<Lock className="text-muted-foreground absolute top-1/2 left-3 z-10 h-4 w-4 -translate-y-1/2 transform" />
 								<Input
 									id="password"
 									name="password"
 									type={showPassword ? "text" : "password"}
-									placeholder="Create a strong password"
+									placeholder="Create password"
 									value={formData.password}
 									onChange={handleInputChange}
 									required
 									disabled={isLoading}
 									autoComplete="new-password"
-									className="pr-10 pl-10"
+									className="h-10 px-3 pr-10 bg-input border-border focus:shadow-sm transition-shadow duration-200"
 								/>
 								<Button
 									type="button"
 									variant="ghost"
 									size="sm"
-									className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-									onClick={() => setShowPassword(!showPassword)}
+									className="absolute top-0 right-0 h-full px-2 py-1 hover:bg-transparent"
+									onClick={togglePasswordVisibility}
 									disabled={isLoading}
 								>
 									{showPassword ? (
-										<EyeOff className="text-muted-foreground h-4 w-4" />
+										<EyeOff className="text-muted-foreground h-3 w-3" />
 									) : (
-										<Eye className="text-muted-foreground h-4 w-4" />
+										<Eye className="text-muted-foreground h-3 w-3" />
 									)}
 								</Button>
 							</div>
 						</div>
 
-						<div className="space-y-2">
-							<Label htmlFor="confirmPassword" className="text-foreground">
-								Confirm Password
+						<div className="grid gap-2">
+							<Label htmlFor="confirmPassword" className="text-sm font-medium text-foreground">
+								Confirm
 							</Label>
 							<div className="relative">
-								<Lock className="text-muted-foreground absolute top-1/2 left-3 z-10 h-4 w-4 -translate-y-1/2 transform" />
 								<Input
 									id="confirmPassword"
 									name="confirmPassword"
 									type={showConfirmPassword ? "text" : "password"}
-									placeholder="Confirm your password"
+									placeholder="Confirm password"
 									value={formData.confirmPassword}
 									onChange={handleInputChange}
 									required
 									disabled={isLoading}
 									autoComplete="new-password"
-									className="pr-10 pl-10"
+									className="h-10 px-3 pr-10 bg-input border-border focus:shadow-sm transition-shadow duration-200"
 								/>
 								<Button
 									type="button"
 									variant="ghost"
 									size="sm"
-									className="absolute top-0 right-0 h-full px-3 py-2 hover:bg-transparent"
-									onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+									className="absolute top-0 right-0 h-full px-2 py-1 hover:bg-transparent"
+									onClick={toggleConfirmPasswordVisibility}
 									disabled={isLoading}
 								>
 									{showConfirmPassword ? (
-										<EyeOff className="text-muted-foreground h-4 w-4" />
+										<EyeOff className="text-muted-foreground h-3 w-3" />
 									) : (
-										<Eye className="text-muted-foreground h-4 w-4" />
+										<Eye className="text-muted-foreground h-3 w-3" />
 									)}
 								</Button>
 							</div>
 						</div>
-					</CardContent>
+					</div>
 
-					<CardFooter className="flex flex-col space-y-4">
-						<Button type="submit" size="default" variant="default" className="w-full" disabled={isLoading}>
-							{isLoading ? (
-								<>
-									<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-									Creating account...
-								</>
-							) : (
-								"Create Account"
-							)}
-						</Button>
+					<Button
+						type="submit"
+						className="w-full h-10 bg-primary hover:bg-primary/90 text-primary-foreground font-medium shadow-md hover:shadow-lg transition-all duration-200 mt-2"
+						disabled={isLoading}
+					>
+						{isLoading ? (
+							<>
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+								Creating account...
+							</>
+						) : (
+							"Create Account"
+						)}
+					</Button>
+				</div>
 
-						<div className="text-center text-sm">
-							<span className="text-muted-foreground">Already have an account? </span>
-							<Link href="/login" className="text-primary hover:text-primary/80 font-medium">
-								Sign in
-							</Link>
-						</div>
-					</CardFooter>
-				</form>
-			</Card>
+				<div className="text-center text-xs text-muted-foreground">
+					Already have an account?{" "}
+					<Link
+						href="/login"
+						className="text-primary hover:text-primary/80 font-medium underline-offset-4 hover:underline transition-colors"
+					>
+						Sign in here
+					</Link>
+				</div>
+			</form>
 		</div>
 	);
 }

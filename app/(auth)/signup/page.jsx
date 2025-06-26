@@ -1,4 +1,5 @@
-import SignupForm from "./signup-form";
+import AuthLayout from "@/components/AuthLayout";
+import SignupForm from "@/app/(auth)/signup/signup-form";
 
 export const metadata = {
 	title: "Sign Up | Yashraj Maher",
@@ -6,5 +7,9 @@ export const metadata = {
 };
 
 export default function SignupPage() {
-	return <SignupForm />;
+	return (
+		<AuthLayout>
+			<SignupForm />
+		</AuthLayout>
+	);
 }
