@@ -1,35 +1,57 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+import {
+	PlusCircle,
+	Search,
+	MoreHorizontal,
+	Edit,
+	Trash2,
+	Eye,
+	Calendar as CalendarIcon,
+	Filter,
+	X,
+	SortAsc,
+	SortDesc,
+	RotateCcw,
+} from "lucide-react";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
+import React, { useState, useMemo } from "react";
 import { Slider } from "@/components/ui/slider";
-import { PlusCircle, Search, MoreHorizontal, Edit, Trash2, Eye, Calendar as CalendarIcon, Filter, X, SortAsc, SortDesc, RotateCcw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 
-const getStatusColor = (status) => {
+const getStatusColor = status => {
 	switch (status) {
-		case "published": return "default";
-		case "draft": return "secondary";
-		case "scheduled": return "outline";
-		default: return "secondary";
+		case "published":
+			return "default";
+		case "draft":
+			return "secondary";
+		case "scheduled":
+			return "outline";
+		default:
+			return "secondary";
 	}
 };
 
-const formatDate = (dateString) => {
+const formatDate = dateString => {
 	return new Date(dateString).toLocaleDateString("en-US", {
 		year: "numeric",
 		month: "short",
-		day: "numeric"
+		day: "numeric",
 	});
 };
 
@@ -42,13 +64,13 @@ function PostFilters({ posts, onFilteredPosts }) {
 	const [viewsRange, setViewsRange] = useState([0, 5000]);
 	const [dateRange, setDateRange] = useState({
 		from: null,
-		to: null
+		to: null,
 	});
 	const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
 	// Calculate max views for slider
 	const maxViews = Math.max(...posts.map(post => post.views));
-	
+
 	// Initialize views range with actual max value
 	React.useEffect(() => {
 		setViewsRange([0, maxViews]);
@@ -61,10 +83,11 @@ function PostFilters({ posts, onFilteredPosts }) {
 		// Search filter
 		if (searchQuery.trim()) {
 			const query = searchQuery.toLowerCase();
-			filtered = filtered.filter(post => 
-				post.title.toLowerCase().includes(query) ||
-				post.excerpt.toLowerCase().includes(query) ||
-				post.slug.toLowerCase().includes(query)
+			filtered = filtered.filter(
+				post =>
+					post.title.toLowerCase().includes(query) ||
+					post.excerpt.toLowerCase().includes(query) ||
+					post.slug.toLowerCase().includes(query)
 			);
 		}
 
@@ -74,9 +97,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 		}
 
 		// Views range filter
-		filtered = filtered.filter(post => 
-			post.views >= viewsRange[0] && post.views <= viewsRange[1]
-		);
+		filtered = filtered.filter(post => post.views >= viewsRange[0] && post.views <= viewsRange[1]);
 
 		// Date range filter
 		if (dateRange.from && dateRange.to) {
@@ -89,7 +110,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 		// Sort posts
 		filtered.sort((a, b) => {
 			let aValue, bValue;
-			
+
 			switch (sortBy) {
 				case "title":
 					aValue = a.title.toLowerCase();
@@ -141,7 +162,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 		searchQuery.trim(),
 		statusFilter !== "all",
 		viewsRange[0] > 0 || viewsRange[1] < maxViews,
-		dateRange.from || dateRange.to
+		dateRange.from || dateRange.to,
 	].filter(Boolean).length;
 
 	return (
@@ -151,18 +172,18 @@ function PostFilters({ posts, onFilteredPosts }) {
 				<div className="flex items-center space-x-2">
 					{/* Search Input */}
 					<div className="relative">
-						<Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-						<Input 
-							placeholder="Search posts by title, content, or slug..." 
-							className="pl-10 w-[350px]"
+						<Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform" />
+						<Input
+							placeholder="Search posts by title, content, or slug..."
+							className="w-[350px] pl-10"
 							value={searchQuery}
-							onChange={(e) => setSearchQuery(e.target.value)}
+							onChange={e => setSearchQuery(e.target.value)}
 						/>
 						{searchQuery && (
 							<Button
 								variant="ghost"
 								size="sm"
-								className="absolute right-1 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0"
+								className="absolute top-1/2 right-1 h-6 w-6 -translate-y-1/2 transform p-0"
 								onClick={() => setSearchQuery("")}
 							>
 								<X className="h-3 w-3" />
@@ -203,11 +224,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 						onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
 						className="px-3"
 					>
-						{sortOrder === "asc" ? (
-							<SortAsc className="h-4 w-4" />
-						) : (
-							<SortDesc className="h-4 w-4" />
-						)}
+						{sortOrder === "asc" ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
 					</Button>
 
 					{/* More Filters */}
@@ -227,13 +244,8 @@ function PostFilters({ posts, onFilteredPosts }) {
 							<div className="space-y-4">
 								<div className="flex items-center justify-between">
 									<h3 className="font-medium">Advanced Filters</h3>
-									<Button
-										variant="ghost"
-										size="sm"
-										onClick={clearAllFilters}
-										className="h-8 px-2"
-									>
-										<RotateCcw className="h-3 w-3 mr-1" />
+									<Button variant="ghost" size="sm" onClick={clearAllFilters} className="h-8 px-2">
+										<RotateCcw className="mr-1 h-3 w-3" />
 										Reset
 									</Button>
 								</div>
@@ -250,7 +262,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 											className="w-full"
 										/>
 									</div>
-									<div className="flex justify-between text-xs text-muted-foreground">
+									<div className="text-muted-foreground flex justify-between text-xs">
 										<span>{viewsRange[0].toLocaleString()}</span>
 										<span>{viewsRange[1].toLocaleString()}</span>
 									</div>
@@ -271,7 +283,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 												<Calendar
 													mode="single"
 													selected={dateRange.from}
-													onSelect={(date) => setDateRange(prev => ({ ...prev, from: date }))}
+													onSelect={date => setDateRange(prev => ({ ...prev, from: date }))}
 													initialFocus
 												/>
 											</PopoverContent>
@@ -288,7 +300,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 												<Calendar
 													mode="single"
 													selected={dateRange.to}
-													onSelect={(date) => setDateRange(prev => ({ ...prev, to: date }))}
+													onSelect={date => setDateRange(prev => ({ ...prev, to: date }))}
 													initialFocus
 												/>
 											</PopoverContent>
@@ -299,7 +311,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 											variant="ghost"
 											size="sm"
 											onClick={() => setDateRange({ from: null, to: null })}
-											className="w-full h-8"
+											className="h-8 w-full"
 										>
 											Clear Date Range
 										</Button>
@@ -340,7 +352,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 							</Button>
 						</Badge>
 					)}
-					
+
 					{statusFilter !== "all" && (
 						<Badge variant="secondary" className="gap-1">
 							Status: {statusFilter}
@@ -371,7 +383,8 @@ function PostFilters({ posts, onFilteredPosts }) {
 
 					{(dateRange.from || dateRange.to) && (
 						<Badge variant="secondary" className="gap-1">
-							Date: {dateRange.from ? formatDate(dateRange.from.toISOString()) : "Start"} - {dateRange.to ? formatDate(dateRange.to.toISOString()) : "End"}
+							Date: {dateRange.from ? formatDate(dateRange.from.toISOString()) : "Start"} -{" "}
+							{dateRange.to ? formatDate(dateRange.to.toISOString()) : "End"}
 							<Button
 								variant="ghost"
 								size="sm"
@@ -386,7 +399,7 @@ function PostFilters({ posts, onFilteredPosts }) {
 			)}
 
 			{/* Results Count */}
-			<div className="text-sm text-muted-foreground">
+			<div className="text-muted-foreground text-sm">
 				Showing {filteredPosts.length} of {posts.length} posts
 				{searchQuery && ` for "${searchQuery}"`}
 			</div>
@@ -437,28 +450,20 @@ export default function PostsManagement({ posts }) {
 							</TableHeader>
 							<TableBody>
 								{filteredPosts.length > 0 ? (
-									filteredPosts.map((post) => (
+									filteredPosts.map(post => (
 										<TableRow key={post.id}>
 											<TableCell>
 												<div className="space-y-1">
 													<div className="font-medium">{post.title}</div>
-													<div className="text-sm text-muted-foreground">
-														{post.excerpt}
-													</div>
+													<div className="text-muted-foreground text-sm">{post.excerpt}</div>
 												</div>
 											</TableCell>
 											<TableCell>
-												<Badge variant={getStatusColor(post.status)}>
-													{post.status}
-												</Badge>
+												<Badge variant={getStatusColor(post.status)}>{post.status}</Badge>
 											</TableCell>
 											<TableCell>{post.views.toLocaleString()}</TableCell>
-											<TableCell className="text-muted-foreground">
-												{formatDate(post.createdAt)}
-											</TableCell>
-											<TableCell className="text-muted-foreground">
-												{formatDate(post.updatedAt)}
-											</TableCell>
+											<TableCell className="text-muted-foreground">{formatDate(post.createdAt)}</TableCell>
+											<TableCell className="text-muted-foreground">{formatDate(post.updatedAt)}</TableCell>
 											<TableCell className="text-right">
 												<DropdownMenu>
 													<DropdownMenuTrigger asChild>
@@ -490,10 +495,8 @@ export default function PostsManagement({ posts }) {
 									))
 								) : (
 									<TableRow>
-										<TableCell colSpan={6} className="text-center py-8">
-											<div className="text-muted-foreground">
-												No posts found matching your filters.
-											</div>
+										<TableCell colSpan={6} className="py-8 text-center">
+											<div className="text-muted-foreground">No posts found matching your filters.</div>
 										</TableCell>
 									</TableRow>
 								)}
@@ -517,14 +520,12 @@ export default function PostsManagement({ posts }) {
 									.slice(0, 3)
 									.map((post, index) => (
 										<div key={post.id} className="flex items-center space-x-3">
-											<div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+											<div className="bg-muted flex h-8 w-8 items-center justify-center rounded-full">
 												<span className="text-sm font-medium">{index + 1}</span>
 											</div>
 											<div className="flex-1 space-y-1">
-												<p className="text-sm font-medium leading-none">{post.title}</p>
-												<p className="text-sm text-muted-foreground">
-													{post.views.toLocaleString()} views
-												</p>
+												<p className="text-sm leading-none font-medium">{post.title}</p>
+												<p className="text-muted-foreground text-sm">{post.views.toLocaleString()} views</p>
 											</div>
 										</div>
 									))}
@@ -542,16 +543,14 @@ export default function PostsManagement({ posts }) {
 								{filteredPosts
 									.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
 									.slice(0, 3)
-									.map((post) => (
+									.map(post => (
 										<div key={post.id} className="flex items-center space-x-3">
-											<div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+											<div className="bg-muted flex h-8 w-8 items-center justify-center rounded-full">
 												<CalendarIcon className="h-4 w-4" />
 											</div>
 											<div className="flex-1 space-y-1">
-												<p className="text-sm font-medium leading-none">{post.title}</p>
-												<p className="text-sm text-muted-foreground">
-													Updated {formatDate(post.updatedAt)}
-												</p>
+												<p className="text-sm leading-none font-medium">{post.title}</p>
+												<p className="text-muted-foreground text-sm">Updated {formatDate(post.updatedAt)}</p>
 											</div>
 										</div>
 									))}
@@ -562,4 +561,4 @@ export default function PostsManagement({ posts }) {
 			</TabsContent>
 		</Tabs>
 	);
-} 
+}

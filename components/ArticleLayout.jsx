@@ -69,11 +69,7 @@ export default function ArticleLayout({
 										<p className="text-muted-foreground text-xs" style={{ fontFamily: "var(--font-sans)" }}>
 											{createdAt}
 										</p>
-										{viewTracker && (
-											<div className="mt-1">
-												{viewTracker}
-											</div>
-										)}
+										{viewTracker && <div className="mt-1">{viewTracker}</div>}
 									</div>
 								</div>
 

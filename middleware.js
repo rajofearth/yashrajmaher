@@ -1,3 +1,4 @@
+import { error as logError } from "@/lib/logger";
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
@@ -23,7 +24,7 @@ export async function middleware(request) {
 			// User is authenticated, continue
 			return NextResponse.next();
 		} catch (error) {
-			console.error("Middleware auth error:", error);
+			logError("Middleware auth error:", error);
 			// On error, redirect to login
 			const loginUrl = new URL("/login", request.url);
 			return NextResponse.redirect(loginUrl);
@@ -46,7 +47,7 @@ export async function middleware(request) {
 			}
 		} catch (error) {
 			// If there's an error checking auth, continue to login/signup
-			console.error("Middleware auth check error:", error);
+			logError("Middleware auth check error:", error);
 		}
 	}
 

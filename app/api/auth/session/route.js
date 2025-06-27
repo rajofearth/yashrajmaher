@@ -1,3 +1,4 @@
+import { error as logError } from "@/lib/logger";
 import { NextResponse } from "next/server";
 import { auth } from "@/app/auth";
 
@@ -21,7 +22,7 @@ export async function GET(request) {
 			},
 		});
 	} catch (error) {
-		console.error("Session check error:", error);
+		logError("Session check error:", error);
 		return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 	}
 }
