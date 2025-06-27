@@ -12,6 +12,7 @@ export const auth = betterAuth({
 	emailAndPassword: {
 		enabled: true,
 		requireEmailVerification: false,
+		disableSignUp: true,
 	},
 	session: {
 		expiresIn: 60 * 60 * 24 * 7, // 7 days
@@ -29,3 +30,5 @@ export const auth = betterAuth({
 	].filter(Boolean), // Remove any undefined values
 	plugins: [nextCookies()],
 });
+
+export const SIGNUP_DISABLED = true; // keep in sync with emailAndPassword.disableSignUp

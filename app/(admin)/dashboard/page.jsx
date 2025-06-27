@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Edit, Eye, FileText, TrendingUp } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import truncateText from "@/app/utils/truncateText";
 import PostsManagement from "./posts-management";
@@ -8,6 +6,8 @@ import LogoutButton from "./logout-button";
 import { headers } from "next/headers";
 import { auth } from "@/app/auth";
 import prisma from "@/prisma/db";
+import { getDashboardMetrics } from "@/lib/metrics";
+import DashboardStats from "./dashboard-stats";
 
 export default async function DashboardPage() {
 	// Get session from better-auth
@@ -45,11 +45,8 @@ export default async function DashboardPage() {
 		updatedAt: post.updatedAt.toISOString().split("T")[0], // Format date
 	}));
 
-	// Calculate stats
-	const totalPosts = transformedPosts.length;
-	const publishedPosts = transformedPosts.filter(post => post.status === "published").length;
-	const draftPosts = transformedPosts.filter(post => post.status === "draft").length;
-	const totalViews = transformedPosts.reduce((sum, post) => sum + post.views, 0);
+	// Fetch initial metrics server-side
+	const initialMetrics = await getDashboardMetrics();
 
 	return (
 		<div className="bg-background min-h-screen">
@@ -67,52 +64,8 @@ export default async function DashboardPage() {
 			</div>
 
 			<div className="flex-1 space-y-6 p-6">
-				{/* Stats Overview */}
-				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-					<Card>
-						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Total Posts</CardTitle>
-							<FileText className="text-muted-foreground h-4 w-4" />
-						</CardHeader>
-						<CardContent>
-							<div className="text-2xl font-bold">{totalPosts}</div>
-							<p className="text-muted-foreground text-xs">All blog posts</p>
-						</CardContent>
-					</Card>
-
-					<Card>
-						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Published</CardTitle>
-							<Eye className="text-muted-foreground h-4 w-4" />
-						</CardHeader>
-						<CardContent>
-							<div className="text-2xl font-bold">{publishedPosts}</div>
-							<p className="text-muted-foreground text-xs">Live posts</p>
-						</CardContent>
-					</Card>
-
-					<Card>
-						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Drafts</CardTitle>
-							<Edit className="text-muted-foreground h-4 w-4" />
-						</CardHeader>
-						<CardContent>
-							<div className="text-2xl font-bold">{draftPosts}</div>
-							<p className="text-muted-foreground text-xs">Work in progress</p>
-						</CardContent>
-					</Card>
-
-					<Card>
-						<CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-							<CardTitle className="text-sm font-medium">Total Views</CardTitle>
-							<TrendingUp className="text-muted-foreground h-4 w-4" />
-						</CardHeader>
-						<CardContent>
-							<div className="text-2xl font-bold">{totalViews.toLocaleString()}</div>
-							<p className="text-muted-foreground text-xs">All time views</p>
-						</CardContent>
-					</Card>
-				</div>
+				{/* Live Stats Overview */}
+				<DashboardStats initialStats={initialMetrics} />
 
 				{/* Main Content - Client Component */}
 				<PostsManagement posts={transformedPosts} />

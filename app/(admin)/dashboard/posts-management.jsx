@@ -26,13 +26,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Calendar } from "@/components/ui/calendar";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import truncateText from "@/app/utils/truncateText";
 
 const getStatusColor = status => {
 	switch (status) {
@@ -408,8 +409,39 @@ function PostFilters({ posts, onFilteredPosts }) {
 }
 
 // Client component for posts management
-export default function PostsManagement({ posts }) {
-	const [filteredPosts, setFilteredPosts] = useState(posts);
+export default function PostsManagement({ posts: initialPosts }) {
+	const [posts, setPosts] = useState(initialPosts);
+	const [filteredPosts, setFilteredPosts] = useState(initialPosts);
+
+	// Fetch latest posts periodically
+	const fetchPosts = useCallback(async () => {
+		try {
+			const res = await fetch("/api/admin/posts", { cache: "no-store" });
+			if (res.ok) {
+				const data = await res.json();
+				const transformed = data.map(post => ({
+					...post,
+					excerpt: truncateText(post.description, 100),
+					createdAt: post.createdAt.split("T")[0],
+					updatedAt: post.updatedAt.split("T")[0],
+				}));
+				setPosts(transformed);
+			}
+		} catch {
+		}
+	}, []);
+
+	// Initial fetch and polling every second
+	useEffect(() => {
+		fetchPosts();
+		const id = setInterval(fetchPosts, 1000);
+		return () => clearInterval(id);
+	}, [fetchPosts]);
+
+	// Update filteredPosts when posts change
+	useEffect(() => {
+		setFilteredPosts(posts);
+	}, [posts]);
 
 	return (
 		<Tabs defaultValue="posts" className="space-y-4">

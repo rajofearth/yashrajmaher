@@ -11,6 +11,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
+import { SIGNUP_DISABLED } from "@/app/auth";
 
 export default function LoginForm() {
 	const router = useRouter();
@@ -162,15 +163,17 @@ export default function LoginForm() {
 					</Button>
 				</div>
 
-				<div className="text-muted-foreground text-center text-sm">
-					Don&apos;t have an account?{" "}
-					<Link
-						href="/signup"
-						className="text-primary hover:text-primary/80 font-medium underline-offset-4 transition-colors hover:underline"
-					>
-						Create one here
-					</Link>
-				</div>
+				{!SIGNUP_DISABLED && (
+					<div className="text-muted-foreground text-center text-sm">
+						Don&apos;t have an account?{" "}
+						<Link
+							href="/signup"
+							className="text-primary hover:text-primary/80 font-medium underline-offset-4 transition-colors hover:underline"
+						>
+							Create one here
+						</Link>
+					</div>
+				)}
 			</form>
 		</div>
 	);
