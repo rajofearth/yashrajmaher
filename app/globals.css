@@ -562,3 +562,57 @@
 		@apply bg-background text-foreground font-sans antialiased;
 	}
 }
+
+/* Custom styles for Tiptap editor */
+.ProseMirror {
+	outline: none;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+	color: #adb5bd;
+	content: attr(data-placeholder);
+	float: left;
+	height: 0;
+	pointer-events: none;
+}
+
+/* Enhanced prose styles for the editor */
+.prose-bullet-list {
+	@apply list-disc list-inside space-y-2;
+}
+
+.prose-ordered-list {
+	@apply list-decimal list-inside space-y-2;
+}
+
+.prose-task-list {
+	@apply space-y-2;
+}
+
+.prose-task-item {
+	@apply flex items-start space-x-2;
+}
+
+.prose-blockquote {
+	@apply border-l-4 border-muted-foreground/30 pl-4 italic text-muted-foreground;
+}
+
+.prose-code-block {
+	@apply bg-muted rounded-md p-4 text-sm font-mono overflow-x-auto;
+}
+
+.prose-heading {
+	@apply font-bold text-foreground;
+}
+
+.prose-link {
+	@apply text-blue-600 hover:text-blue-800 underline;
+}
+
+.prose-highlight {
+	@apply bg-yellow-200 dark:bg-yellow-800 px-1 rounded;
+}
+
+.prose-image {
+	@apply rounded-lg max-w-full h-auto;
+}

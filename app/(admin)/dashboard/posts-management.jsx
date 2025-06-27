@@ -450,7 +450,7 @@ export default function PostsManagement({ posts: initialPosts }) {
 					<TabsTrigger value="analytics">Analytics</TabsTrigger>
 				</TabsList>
 				<Button asChild>
-					<Link href="/admin/posts/new">
+					<Link href="/dashboard/create">
 						<PlusCircle className="mr-2 h-4 w-4" />
 						New Post
 					</Link>

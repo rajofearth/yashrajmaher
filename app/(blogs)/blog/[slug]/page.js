@@ -5,6 +5,8 @@ import ErrorPage from "@/components/ErrorPage";
 import { PostSchema } from "@/lib/types";
 import { format } from "date-fns";
 import prisma from "@/prisma/db";
+import { headers } from "next/headers";
+import { auth } from "@/app/auth";
 
 export async function generateMetadata({ params }) {
 	const { slug } = await params;
@@ -27,8 +29,12 @@ export default async function BlogPost({ params }) {
 
 	const validatedPost = PostSchema.parse(post);
 
-	if ("published" !== validatedPost.status) {
-		return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
+	// Allow drafts to be viewed by authenticated users (e.g., admins)
+	if (validatedPost.status !== "published") {
+		const session = await auth.api.getSession({ headers: headers() });
+		if (!session) {
+			return <ErrorPage title="Post Not Available" message="This post is not currently available" backLink="/blog" />;
+		}
 	}
 
 	const formattedDate = validatedPost.createdAt
