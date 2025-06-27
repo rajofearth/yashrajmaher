@@ -25,15 +25,15 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Calendar } from "@/components/ui/calendar";
 import React, { useState, useMemo, useEffect, useCallback } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import truncateText from "@/app/utils/truncateText";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import truncateText from "@/app/utils/truncateText";
 
 const getStatusColor = status => {
 	switch (status) {
@@ -427,8 +427,7 @@ export default function PostsManagement({ posts: initialPosts }) {
 				}));
 				setPosts(transformed);
 			}
-		} catch {
-		}
+		} catch {}
 	}, []);
 
 	// Initial fetch and polling every second

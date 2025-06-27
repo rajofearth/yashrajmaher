@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "@/prisma/db";
 import { auth } from "@/app/auth";
+import prisma from "@/prisma/db";
 
 export const dynamic = "force-dynamic";
 
@@ -35,4 +35,4 @@ export async function GET(request) {
 	} catch {
 		return NextResponse.json({ error: "Server error" }, { status: 500 });
 	}
-} 
+}

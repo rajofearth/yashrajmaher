@@ -1,6 +1,6 @@
+import { getDashboardMetrics } from "@/lib/metrics";
 import { NextResponse } from "next/server";
 import { auth } from "@/app/auth";
-import { getDashboardMetrics } from "@/lib/metrics";
 
 export const dynamic = "force-dynamic"; // always compute fresh data
 
@@ -18,4 +18,4 @@ export async function GET(request) {
 	} catch {
 		return NextResponse.json({ error: "Server error" }, { status: 500 });
 	}
-} 
+}

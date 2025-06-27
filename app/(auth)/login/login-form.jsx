@@ -8,10 +8,10 @@ import { authClient } from "@/lib/auth-client";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState, useCallback } from "react";
+import { SIGNUP_DISABLED } from "@/app/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Link from "next/link";
-import { SIGNUP_DISABLED } from "@/app/auth";
 
 export default function LoginForm() {
 	const router = useRouter();

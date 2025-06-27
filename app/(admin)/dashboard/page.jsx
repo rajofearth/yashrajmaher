@@ -1,13 +1,13 @@
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import truncateText from "@/app/utils/truncateText";
+import { getDashboardMetrics } from "@/lib/metrics";
 import PostsManagement from "./posts-management";
+import DashboardStats from "./dashboard-stats";
 import { redirect } from "next/navigation";
 import LogoutButton from "./logout-button";
 import { headers } from "next/headers";
 import { auth } from "@/app/auth";
 import prisma from "@/prisma/db";
-import { getDashboardMetrics } from "@/lib/metrics";
-import DashboardStats from "./dashboard-stats";
 
 export default async function DashboardPage() {
 	// Get session from better-auth

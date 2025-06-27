@@ -1,9 +1,9 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { FileText, Eye, Edit, TrendingUp } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 function StatsCard({ title, value, icon }) {
 	return (
@@ -29,8 +29,7 @@ export default function DashboardStats({ initialStats = null, refreshInterval = 
 				const data = await res.json();
 				setStats(data);
 			}
-		} catch {
-		}
+		} catch {}
 	}, []);
 
 	useEffect(() => {
@@ -61,11 +60,7 @@ export default function DashboardStats({ initialStats = null, refreshInterval = 
 				value={stats.publishedPosts}
 				icon={<Eye className="text-muted-foreground h-4 w-4" />}
 			/>
-			<StatsCard
-				title="Drafts"
-				value={stats.draftPosts}
-				icon={<Edit className="text-muted-foreground h-4 w-4" />}
-			/>
+			<StatsCard title="Drafts" value={stats.draftPosts} icon={<Edit className="text-muted-foreground h-4 w-4" />} />
 			<StatsCard
 				title="Total Views"
 				value={stats.totalViews.toLocaleString()}
@@ -73,4 +68,4 @@ export default function DashboardStats({ initialStats = null, refreshInterval = 
 			/>
 		</div>
 	);
-} 
+}
