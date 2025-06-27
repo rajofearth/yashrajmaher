@@ -26,6 +26,7 @@ export default function ArticleLayout({
 	content,
 	tags = [],
 	website = undefined,
+	viewTracker = null,
 }) {
 	return (
 		<section className="bg-background min-h-screen pt-8 pb-16">
@@ -68,6 +69,11 @@ export default function ArticleLayout({
 										<p className="text-muted-foreground text-xs" style={{ fontFamily: "var(--font-sans)" }}>
 											{createdAt}
 										</p>
+										{viewTracker && (
+											<div className="mt-1">
+												{viewTracker}
+											</div>
+										)}
 									</div>
 								</div>
 

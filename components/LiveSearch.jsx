@@ -126,6 +126,7 @@ export default function LiveSearch({ initialQuery = "", allItems = [] }) {
 								createdAt: item.createdAt,
 								description: item.description,
 								tags: item.tags,
+								views: item.views,
 							}}
 						/>
 					))}

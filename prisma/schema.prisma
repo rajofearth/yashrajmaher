@@ -25,8 +25,26 @@ model Post {
   status        String   @default("draft")
   website       String?
   tags          String?
+  views         Int      @default(0)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  postViews     PostView[]
+}
+
+model PostView {
+  id          String   @id @default(cuid())
+  postId      String
+  viewerHash  String   // Hash of IP + User Agent for duplicate prevention
+  timestamp   DateTime @default(now())
+  ipAddress   String?
+  userAgent   String?
+  referrer    String?
+  
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@unique([postId, viewerHash])
+  @@index([postId])
+  @@index([timestamp])
 }
 
 model User {

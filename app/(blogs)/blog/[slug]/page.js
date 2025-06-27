@@ -1,6 +1,7 @@
 import { generateMetadata as baseGenerateMetadata } from "@/lib/metadata";
 import ArticleLayout from "@/components/ArticleLayout";
 import ErrorPage from "@/components/ErrorPage";
+import ViewTracker from "@/components/ViewTracker";
 import { PostSchema } from "@/lib/types";
 import { format } from "date-fns";
 import prisma from "@/prisma/db";
@@ -47,6 +48,7 @@ export default async function BlogPost({ params }) {
 			backText="Return to blog"
 			tags={validatedPost.tags ? validatedPost.tags.split(",").map(tag => tag.trim()) : []}
 			website={validatedPost.website}
+			viewTracker={<ViewTracker postSlug={validatedPost.slug} initialViews={validatedPost.views} />}
 		/>
 	);
 }

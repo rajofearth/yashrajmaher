@@ -17,70 +17,8 @@ import { headers } from "next/headers";
 import { auth } from "@/app/auth";
 import PostsManagement from "./posts-management";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-
-// Mock data for blog posts - Replace with actual database queries
-const mockPosts = [
-	{
-		id: 1,
-		title: "Getting Started with Next.js 14",
-		slug: "getting-started-nextjs-14",
-		status: "published",
-		createdAt: "2024-01-15",
-		updatedAt: "2024-01-20",
-		views: 1250,
-		excerpt: "Learn the fundamentals of Next.js 14 and its new features..."
-	},
-	{
-		id: 2,
-		title: "Building Modern UIs with Shadcn/UI",
-		slug: "building-modern-uis-shadcn",
-		status: "draft",
-		createdAt: "2024-01-10",
-		updatedAt: "2024-01-18",
-		views: 850,
-		excerpt: "A comprehensive guide to using Shadcn/UI components..."
-	},
-	{
-		id: 3,
-		title: "TypeScript Best Practices for 2024",
-		slug: "typescript-best-practices-2024",
-		status: "published",
-		createdAt: "2024-01-05",
-		updatedAt: "2024-01-15",
-		views: 2100,
-		excerpt: "Essential TypeScript patterns and practices for modern development..."
-	},
-	{
-		id: 4,
-		title: "Deployment Strategies with Vercel",
-		slug: "deployment-strategies-vercel",
-		status: "scheduled",
-		createdAt: "2024-01-20",
-		updatedAt: "2024-01-22",
-		views: 0,
-		excerpt: "Master deployment workflows with Vercel and CI/CD..."
-	},
-	{
-		id: 5,
-		title: "React Server Components Deep Dive",
-		slug: "react-server-components-deep-dive",
-		status: "published",
-		createdAt: "2023-12-15",
-		updatedAt: "2023-12-20",
-		views: 3200,
-		excerpt: "Understanding the power of React Server Components..."
-	},
-	{
-		id: 6,
-		title: "Authentication with Better Auth",
-		slug: "authentication-better-auth",
-		status: "draft",
-		createdAt: "2024-01-25",
-		updatedAt: "2024-01-25",
-		views: 120,
-		excerpt: "Implementing secure authentication in modern web apps..."
-	},
-];
+import prisma from "@/prisma/db";
+import truncateText from "@/app/utils/truncateText";
 
 export default async function DashboardPage() {
 	// Get session from better-auth
@@ -95,11 +33,34 @@ export default async function DashboardPage() {
 
 	const { user } = session;
 
+	// Fetch real posts from database
+	const posts = await prisma.post.findMany({
+		orderBy: { updatedAt: "desc" },
+		select: {
+			id: true,
+			title: true,
+			slug: true,
+			description: true,
+			status: true,
+			views: true,
+			createdAt: true,
+			updatedAt: true,
+		}
+	});
+
+	// Transform posts for the component
+	const transformedPosts = posts.map(post => ({
+		...post,
+		excerpt: truncateText(post.description, 100), // Use description as excerpt
+		createdAt: post.createdAt.toISOString().split('T')[0], // Format date
+		updatedAt: post.updatedAt.toISOString().split('T')[0], // Format date
+	}));
+
 	// Calculate stats
-	const totalPosts = mockPosts.length;
-	const publishedPosts = mockPosts.filter(post => post.status === "published").length;
-	const draftPosts = mockPosts.filter(post => post.status === "draft").length;
-	const totalViews = mockPosts.reduce((sum, post) => sum + post.views, 0);
+	const totalPosts = transformedPosts.length;
+	const publishedPosts = transformedPosts.filter(post => post.status === "published").length;
+	const draftPosts = transformedPosts.filter(post => post.status === "draft").length;
+	const totalViews = transformedPosts.reduce((sum, post) => sum + post.views, 0);
 
 	return (
 		<div className="bg-background min-h-screen">
@@ -165,7 +126,7 @@ export default async function DashboardPage() {
 				</div>
 
 				{/* Main Content - Client Component */}
-				<PostsManagement posts={mockPosts} />
+				<PostsManagement posts={transformedPosts} />
 			</div>
 		</div>
 	);
