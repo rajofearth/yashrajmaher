@@ -1,231 +1,281 @@
-# Yashraj Maher's Personal Website
+# 🚀 Yashraj Maher's Personal Website & Portfolio
 
-[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Frajofearth.github.io&label=Website&style=flat-square)](https://rajofearth.github.io)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
+[![Website](https://img.shields.io/website?url=https%3A%2F%2Fyashrajmaher.vercel.app&style=for-the-badge&logo=vercel)](https://yashrajmaher.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15.1.5-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.0.0-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.1.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 
-Welcome to the repository for my personal website! This site serves as a portfolio showcasing my projects, a blog where I share my thoughts and experiences, and a central point of contact. It's built with a retro-futuristic aesthetic and is designed to be a dynamic and evolving space.
+> A modern, responsive personal website and portfolio showcasing projects, thoughts, and experiences through an elegant interface built with cutting-edge web technologies.
 
-➡️ Live Site: [**https://yashrajmaher.vercel.app**](https://yashrajmaher.vercel.app)
+## 🌟 Live Demo
 
-## Table of Contents
+**[Visit the Website →](https://yashrajmaher.vercel.app)**
 
-*   [About](#about)
-*   [Features](#features)
-*   [Technologies Used](#technologies-used)
-*   [Project Structure](#project-structure)
-*   [Getting Started (Local Development)](#getting-started-local-development)
-    *   [Prerequisites](#prerequisites)
-    *   [Installation](#installation)
-    *   [Running Locally](#running-locally)
-*   [Content Management via GitHub CMS (Blogs and Projects)](#content-management-via-github-cms-blogs-and-projects)
-*   [Authentication](#authentication)
-*   [Admin Dashboard](#admin-dashboard)
-*   [Scripts](#scripts)
-*   [License](#license)
-*   [Contact](#contact)
+## 📖 Table of Contents
 
-## About
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Quick Start](#-quick-start)
+- [📁 Project Structure](#-project-structure)
+- [🎨 Customization](#-customization)
+- [📝 Content Management](#-content-management)
+- [🔐 Authentication & Admin](#-authentication--admin)
+- [🌐 Deployment](#-deployment)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [📞 Contact](#-contact)
 
-This website is my digital home, where I blend my passion for technology, creativity, and storytelling.  I'm a full-stack developer, a student, and a writer. Here, you'll find:
+## ✨ Features
 
-*   **Projects:** Case studies of my development work, ranging from experimental prototypes to production-ready applications.  I focus on an architectural approach to problem-solving with code.
-*   **Blog:** A mix of technical insights, personal narratives, and musings on topics like technology, creativity, and even space exploration.
-*   **About Me:** A deeper dive into who I am and what drives me.
-*   **Contact:**  Ways to get in touch with me for collaborations, questions, or just to say hello.
+### 🎯 Core Features
+- **📱 Fully Responsive Design** - Optimized for all devices and screen sizes
+- **🌙 Dark/Light Theme Toggle** - Seamless theme switching with system preference detection
+- **⚡ Lightning Fast** - Built with Next.js 15 for optimal performance
+- **🔍 Search Functionality** - Advanced search across blog posts and projects
+- **📊 Analytics Integration** - Privacy-focused analytics with Vercel Analytics
+- **♿ Accessibility First** - WCAG compliant with semantic HTML and ARIA attributes
 
-## Features
+### 📝 Content Management
+- **📰 Dynamic Blog System** - Markdown-powered blog with syntax highlighting
+- **💼 Project Showcase** - Detailed project case studies and documentation
+- **🎛️ Admin Dashboard** - GitHub-integrated CMS for content management
+- **📄 Markdown Support** - Full GitHub Flavored Markdown with tables, code blocks, and more
+- **🏷️ Tag System** - Organize and filter content by categories and tags
 
-*   **Responsive Design:**  The site is fully responsive and works well on all devices (desktop, tablet, mobile).
-*   **Dynamic Content:**  Blog posts and projects are loaded from Markdown files, making it easy to add and update content.
-*   **Search Functionality:**  Integrated search for both blog posts and projects.
-*   **Syntax Highlighting:**  Code snippets within blog posts and project descriptions are properly highlighted.
-*   **Markdown Support:**  Full Markdown support for rich text formatting in blog posts and project details, including images, links, tables, and more.
-*   **SEO Optimized:**  Dynamic metadata generation for improved search engine visibility.
-*   **Accessibility:**  Built with accessibility in mind, including semantic HTML and ARIA attributes where appropriate.
-*   **Analytics:**  Integrated with Vercel Analytics for basic, privacy-respecting website usage tracking.
-*   **PWA (Progressive Web App):**  The site is installable as a PWA on supported devices.
+### 🔧 Technical Features
+- **📱 Progressive Web App (PWA)** - Installable on mobile and desktop
+- **🎨 Modern UI Components** - Built with Radix UI and Tailwind CSS
+- **🚀 SEO Optimized** - Dynamic metadata generation and OpenGraph support
+- **⚡ Performance Optimized** - Image optimization, code splitting, and caching
+- **🔒 Secure Authentication** - Clerk-powered authentication for admin access
 
-## Technologies Used
+## 🛠️ Tech Stack
 
-*   **Next.js 15:**  A React framework for building server-rendered and statically generated web applications.
-*   **React:**  A JavaScript library for building user interfaces.
-*   **Tailwind CSS:**  A utility-first CSS framework for rapidly building custom designs.
-*   **Shadcn/ui:** A collection of re-usable components built on top of Radix UI and Tailwind CSS. (Although, custom components are heavily used instead of Shadcn/ui components.)
-*   **Lucide React:**  A library of beautifully designed SVG icons.
-*   **gray-matter:**  A library for parsing front matter in Markdown files.
-*   **react-markdown:**  A React component for rendering Markdown.
-*   **remark-gfm:**  A remark plugin to support GitHub Flavored Markdown (tables, strikethrough, etc.).
-*   **remark-breaks:** A remark plugin to convert newlines into `<br>` tags.
-*   **rehype-raw:**  A rehype plugin to allow raw HTML within Markdown.
-*   **date-fns:**  A modern JavaScript date utility library.
-*   **Vercel Analytics:**  For privacy-focused website analytics.
-*   **Server-Only:** Used to safeguard server-only code from being exposed on client-side.
+### Frontend
+- **Framework**: [Next.js 15](https://nextjs.org/) with App Router
+- **UI Library**: [React 19](https://reactjs.org/)
+- **Styling**: [Tailwind CSS 4.1](https://tailwindcss.com/)
+- **Components**: [Radix UI](https://www.radix-ui.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Rich Text Editor**: [Tiptap](https://tiptap.dev/)
 
-## Project Structure
+### Backend & Content
+- **Content Management**: GitHub as CMS with Markdown files
+- **Authentication**: [Clerk](https://clerk.com/)
+- **File Processing**: [Gray Matter](https://github.com/jonschlinkert/gray-matter)
+- **Markdown Rendering**: [React Markdown](https://github.com/remarkjs/react-markdown)
+- **Syntax Highlighting**: [Prism.js](https://prismjs.com/)
 
-The project follows a standard Next.js directory structure, with some key areas highlighted below:
+### DevOps & Deployment
+- **Hosting**: [Vercel](https://vercel.com/)
+- **Analytics**: [Vercel Analytics](https://vercel.com/analytics)
+- **Package Manager**: [Bun](https://bun.sh/)
+- **Version Control**: Git & GitHub
 
-```
-app/
-├── (blogs)/           # Blog-related routes and components
-│   └── blog/
-│       ├── [id]/      # Dynamic route for individual blog posts
-│       │   └── page.js
-│       └── page.js   # Blog listing page
-├── (projects)/        # Project-related routes and components
-│   └── projects/
-│       ├── [id]/      # Dynamic route for individual project pages
-│       │   └── page.js
-│       └── page.js   # Project listing page
-├── about/              # About page
-├── components/         # Reusable React components
-├── contact/            # Contact page
-├── logo/             # Page dedicated to the logo
-├── privacy/           # Privacy policy page
-├── utils/              # Utility functions (fetching data, text truncation)
-├── globals.css        # Global CSS styles
-├── layout.js          # Main layout component
-└── page.js            # Home page
-lib/
-├── metadata.js     # Functions for generating metadata
-└── utils.js       # General utility functions
-public/
-├── Bposts/           # Markdown files for blog posts
-├── projects/         # Markdown files for project descriptions
-├── manifest.json    # PWA manifest file
-└── ...              # Static assets (images, etc.)
-.gitignore
-eslint.config.mjs    # ESLint configuration
-jsconfig.json        # JavaScript configuration (for path aliases)
-README.md
-LICENSE           # MIT License file
-```
-
-*   **`app/`:**  Contains all the routes, components, and logic for the application.  The structure uses Next.js's App Router.
-*   **`app/(blogs)/` and `app/(projects)/`:** These directories organize the blog and project sections, using parentheses to group related routes without affecting the URL structure.
-*   **`app/components/`:**  Houses reusable UI components like `BlogCard`, `ProjectCard`, `Socials`, `BackButton`, etc.
-*   **`app/utils/`:**  Contains helper functions for fetching blog posts and projects, truncating text, and other utilities.
-*   **`public/Bposts/` and `public/projects/`:** These directories store the Markdown files that contain the content for blog posts and projects, respectively.
-*   **`lib/`:** Contains helper functions related to metadata and overall utility functions used throughout the app.
-
-## Getting Started (Local Development)
+## 🚀 Quick Start
 
 ### Prerequisites
-
-*   **Node.js:**  Version 18 or later.
-*   **npm:**  (or yarn, or pnpm) - Node.js package manager.
+- **Node.js** 18.0 or later
+- **Bun** (recommended) or npm/yarn/pnpm
+- **Git** for version control
 
 ### Installation
 
-1.  **Clone the repository:**
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/rajofearth/yashrajmaher.git
+   cd yashrajmaher
+   ```
 
-    ```bash
-    git clone https://github.com/rajofearth/yashrajmaher.git
-    cd yashrajmaher
-    ```
+2. **Install dependencies**
+   ```bash
+   bun install
+   # or
+   npm install
+   ```
 
-2.  **Install dependencies:**
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env.local
+   ```
+   
+   Fill in the required environment variables:
+   ```env
+   # Required for admin functionality
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_SECRET_KEY=your_clerk_secret_key
+   ADMIN_USER_ID=your_clerk_user_id
+   
+   # Required for GitHub CMS
+   GITHUB_TOKEN=your_github_personal_access_token
+   GITHUB_OWNER=your_github_username
+   GITHUB_REPO=your_repository_name
+   ```
 
-    ```bash
-    npm install
-    # OR
-    yarn install
-    # OR
-    pnpm install
-    ```
+4. **Run the development server**
+   ```bash
+   bun dev
+   # or
+   npm run dev
+   ```
 
-### Running Locally
+5. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-1.  **Start the development server:**
+## 📁 Project Structure
 
-    ```bash
-    npm run dev
-    # OR
-    yarn dev
-    # OR
-    pnpm dev
-    ```
+```
+yashrajmaher/
+├── 📁 app/                     # Next.js app directory
+│   ├── 📁 (blogs)/            # Blog-related routes
+│   │   └── blog/              # Blog listing and detail pages
+│   ├── 📁 (projects)/         # Project-related routes  
+│   │   └── devposts/          # Project listing and detail pages
+│   ├── 📁 about/              # About page
+│   ├── 📁 admin/              # Admin dashboard
+│   ├── 📁 api/                # API routes
+│   ├── 📁 components/         # Reusable React components
+│   ├── 📁 contact/            # Contact page
+│   ├── 📁 utils/              # Utility functions
+│   ├── 📄 globals.css         # Global styles
+│   ├── 📄 layout.js           # Root layout
+│   └── 📄 page.js             # Homepage
+├── 📁 components/             # UI components (shadcn/ui)
+│   └── ui/                    # Base UI components
+├── 📁 lib/                    # Shared utilities and configurations
+├── 📁 public/                 # Static assets
+│   ├── 📁 Bposts/            # Blog posts (Markdown)
+│   ├── 📁 devposts/          # Project posts (Markdown)
+│   ├── 📁 images/            # Image assets
+│   └── 📁 icons/             # Icon assets
+├── 📄 package.json           # Project dependencies
+├── 📄 tailwind.config.mjs    # Tailwind configuration
+├── 📄 next.config.mjs        # Next.js configuration
+└── 📄 README.md              # Project documentation
+```
 
-2.  **Open your browser:**  The application will be running at `http://localhost:3000`.
+## 🎨 Customization
 
-## Content Management via GitHub CMS (Blogs and Projects)
+### Themes
+The website supports both light and dark themes with automatic system preference detection. Customize theme colors in:
+- `app/globals.css` - CSS custom properties
+- `tailwind.config.mjs` - Tailwind color palette
 
-*   **Adding a Blog Post:**
-    1.  Create a new Markdown file (`.md`) in the `public/Bposts/` directory.  The filename will become the slug for the blog post (e.g., `my-new-post.md` will be accessible at `/blog/my-new-post`).
-    2.  Add front matter to the Markdown file:
+### Content
+- **Blog Posts**: Add Markdown files to `public/Bposts/`
+- **Projects**: Add Markdown files to `public/devposts/`
+- **Images**: Store in `public/images/`
+- **Personal Info**: Update content in respective page components
 
-        ```markdown
-        ---
-        title: "My Awesome Blog Post"
-        date: 2024-02-09
-        description: "A short description of the blog post."
-        ---
+### UI Components
+Built with shadcn/ui for easy customization:
+```bash
+# Add new components
+npx shadcn-ui@latest add [component-name]
+```
 
-        The content of your blog post goes here.  You can use Markdown syntax.
-        ```
+## 📝 Content Management
 
-*   **Adding a Project:**
-    1.  Create a new Markdown file (`.md`) in the `public/projects/` directory. The filename will be the project's slug.
-    2.  Add front matter to the Markdown file:
+### Adding Blog Posts
+1. Create a new `.md` file in `public/Bposts/`
+2. Add frontmatter:
+   ```markdown
+   ---
+   title: "Your Blog Post Title"
+   date: 2024-01-01
+   description: "Brief description of your post"
+   tags: ["technology", "web-development"]
+   ---
+   
+   Your blog content here...
+   ```
 
-        ```markdown
-        ---
-        title: "My Amazing Project"
-        date: 2024-02-09
-        description: "A brief description of the project."
-        ---
+### Adding Projects
+1. Create a new `.md` file in `public/devposts/`
+2. Add frontmatter:
+   ```markdown
+   ---
+   title: "Your Project Title"
+   date: 2024-01-01
+   description: "Project description"
+   tags: ["react", "nextjs", "typescript"]
+   ---
+   
+   Detailed project description...
+   ```
 
-        Detailed project description and content goes here.
-        ```
+### Admin Dashboard
+Access the admin panel at `/admin` to:
+- ✏️ Edit posts inline with rich text editor
+- ➕ Create new blog posts and projects
+- 🗑️ Delete existing content
+- 🔍 Search and filter content
+- 💾 Auto-commit changes to GitHub
 
-*   **Important**: Ensure that your dates are in a format Javascript can parse.
+## 🔐 Authentication & Admin
 
-## Authentication
+The website uses Clerk for authentication. Only users with the `ADMIN_USER_ID` can access the admin dashboard.
 
-We secure the `/admin` area using Clerk. Clerk handles sign-in, session management, and sign-out. Only the user matching the `ADMIN_USER_ID` environment variable can access the admin dashboard.
+### Setup Clerk
+1. Create a [Clerk](https://clerk.com/) account
+2. Create a new application
+3. Copy your keys to `.env.local`
+4. Add your user ID as `ADMIN_USER_ID`
 
-## Admin Dashboard
+## 🌐 Deployment
 
-The admin interface is available at `/admin` and lets you manage your blog posts and projects directly through your GitHub repository:
-* **List & Search:** View, filter, and search all existing blog and project entries.
-* **Inline Editing:** Edit content in the browser using an inline markdown editor.
-* **Create & Delete:** Add new posts/projects or remove existing ones.
-* **GitHub as CMS:** Uses Octokit under the hood to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
+### Deploy to Vercel (Recommended)
+1. Push your code to GitHub
+2. Connect your repository to [Vercel](https://vercel.com/)
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically on every push
 
-## License
+### Other Platforms
+The project can be deployed to any platform supporting Next.js:
+- **Netlify**: Use `next export` for static export
+- **Railway**: Full-stack deployment
+- **Cloudflare Pages**: Edge deployment
 
-This project uses a dual-licensing approach to clearly distinguish between the website's *code* and its *content*:
+## 🤝 Contributing
 
-1.  **Code:** The source code of this website (specifically *excluding* the content as defined below) is licensed under the MIT License. A copy of the MIT License is provided in the [LICENSE](LICENSE) file. This generally includes all files *except* those located within:
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTORS.md) for details.
 
-    *   `public/Bposts/`
-    *   `public/projects/`
-    *   Most of the image files in `public/` (see exceptions below).
-    *   Parts of `public/manifest.json`
+### Quick Contribution Steps
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
 
-2.  **Content:** All original content belongs to Yashraj Maher. All Rights Reserved. Unauthorized use, reproduction, modification, or distribution of this content is strictly prohibited. This *includes*, but is *not limited to*:
+## 📄 License
 
-    *   **Blog posts:** All text and images within the `public/Bposts/` directory.
-    *   **Project descriptions:** All text and images within the `public/projects/` directory.
-    *   **Textual content on all pages:** This includes, but is not limited to, the text on the "About" page, "Contact" page, home page, and Privacy Policy page.
-    *   **Images:** Most images within the `public/` directory. *Exceptions* to this are icons sourced from external libraries (such as Lucide React), which are governed by *their own* licenses. You are responsible for respecting the licenses of any third-party assets.
-    *   **`public/manifest.json`:** The `name`, `short_name`, and `description` fields within `public/manifest.json` are considered part of the website's content. Standard PWA properties like `display`, `background_color`, `theme_color`, and the `icons` array (referencing image *paths*, not the images themselves if they are custom) can be reused under the MIT License.
+This project uses a dual-license approach:
 
-**Summary:** You *are* permitted to fork this repository, modify the code, and deploy your own website *using the MIT-licensed code*, provided you:
+- **Code**: MIT License - Feel free to use the codebase for your projects
+- **Content**: All Rights Reserved - Blog posts, projects, and personal content belong to Yashraj Maher
 
-*   **Replace all of the content** (as defined above) with your own original content. Do not reuse any of the blog posts, project descriptions, page text, or custom images.
-*   **Include the MIT License** (LICENSE file) in your forked repository.
-*   **Respect the licenses of third-party libraries.** This includes Lucide React and any other dependencies.
-*   **Maintain the copyright notice** for the original content (if any small snippets are inadvertently kept). Ideally, include a link back to the original repository ([https://github.com/rajofearth/yashrajmaher](https://github.com/rajofearth/yashrajmaher)) in your README to acknowledge the origin of the code.
+See [LICENSE](LICENSE) for the full MIT license text.
 
-## Contact
+## 📞 Contact
 
-I'm always open to connecting and collaborating! You can reach me through:
+**Yashraj Maher**
 
-*   **GitHub:** [https://github.com/rajofearth](https://github.com/rajofearth)
-*   **X (Twitter):** [https://x.com/yashrajmaher](https://x.com/yashrajmaher)
-*  **Your Universe(YU):**[https://your-universe.vercel.app/profile/yashraj.maher](https://your-universe.vercel.app/profile/yashraj.maher)
-*   **LinkedIn:** [https://linkedin.com/in/yashrajmaher](https://linkedin.com/in/yashrajmaher)
-*   **Instagram:** [https://instagram.com/yashraj.maher](https://instagram.com/yashraj.maher)
-*   **Email:** [maheryashraj@gmail.com](mailto:maheryashraj@gmail.com)
-*  **Website Contact Page**: [https://yashrajmaher.vercel.app/contact](https://yashrajmaher.vercel.app/contact)
+- 🌐 **Website**: [yashrajmaher.vercel.app](https://yashrajmaher.vercel.app)
+- 📧 **Email**: [maheryashraj@gmail.com](mailto:maheryashraj@gmail.com)
+- 🐙 **GitHub**: [@rajofearth](https://github.com/rajofearth)
+- 🐦 **Twitter**: [@yashrajmaher](https://x.com/yashrajmaher)
+- 💼 **LinkedIn**: [@yashrajmaher](https://linkedin.com/in/yashrajmaher)
+- 📷 **Instagram**: [@yashraj.maher](https://instagram.com/yashraj.maher)
+
+---
+
+<div align="center">
+  <p>
+    Made with ❤️ by <a href="https://github.com/rajofearth">Yashraj Maher</a>
+  </p>
+  <p>
+    <a href="https://yashrajmaher.vercel.app">Visit Website</a> •
+    <a href="https://github.com/rajofearth/yashrajmaher/issues">Report Bug</a> •
+    <a href="https://github.com/rajofearth/yashrajmaher/issues">Request Feature</a>
+  </p>
+</div>
