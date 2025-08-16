@@ -1,6 +1,6 @@
 # Yashraj Maher's Personal Website
 
-[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Frajofearth.github.io&label=Website&style=flat-square)](https://rajofearth.github.io)
+[![Website Status](https://img.shields.io/website?url=https%3A%2F%2Fyashrajmaher.vercel.app&label=Website&style=flat-square)](https://yashrajmaher.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE.md)
 
 Welcome to the repository for my personal website! This site serves as a portfolio showcasing my projects, a blog where I share my thoughts and experiences, and a central point of contact. It's built with a retro-futuristic aesthetic and is designed to be a dynamic and evolving space.
