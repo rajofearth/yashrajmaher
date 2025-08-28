@@ -47,6 +47,65 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Admin Dashboard:**  Full-featured content management system with inline editing capabilities.
 *   **Authentication:**  Secure admin access using Clerk authentication.
 
+### Feature Overview
+
+```mermaid
+mindmap
+  root((Personal Website))
+    Frontend
+      Responsive Design
+        Mobile First
+        Tablet Optimized
+        Desktop Experience
+      Modern UI/UX
+        Retro-futuristic Theme
+        Smooth Animations
+        Interactive Elements
+      PWA Features
+        Installable
+        Offline Support
+        App-like Experience
+    Content Management
+      Blog System
+        Markdown Support
+        Syntax Highlighting
+        Search Functionality
+      Project Showcase
+        Case Studies
+        Live Demos
+        Code Examples
+      Admin Dashboard
+        Inline Editing
+        Real-time Preview
+        Content Organization
+    Technical Features
+      SEO Optimization
+        Dynamic Metadata
+        Structured Data
+        Performance Metrics
+      Analytics
+        Privacy-focused
+        User Insights
+        Performance Monitoring
+      Security
+        Authentication
+        Access Control
+        Data Protection
+    Development
+      Modern Stack
+        Next.js 15
+        React 19
+        Tailwind CSS 4
+      Performance
+        Fast Loading
+        Optimized Assets
+        CDN Distribution
+      Maintainability
+        Clean Code
+        Type Safety
+        Documentation
+```
+
 ## Technologies Used
 
 *   **Next.js 15:**  A React framework for building server-rendered and statically generated web applications.
@@ -68,6 +127,107 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Server-Only:** Used to safeguard server-only code from being exposed on client-side.
 *   **Prism.js:**  Syntax highlighting for code blocks.
 *   **Zod:**  TypeScript-first schema validation.
+
+### Tech Stack Architecture
+
+```mermaid
+graph TB
+    subgraph "Frontend"
+        UI[Next.js 15 + React 19]
+        TW[Tailwind CSS 4]
+        SH[Shadcn/ui Components]
+        IC[Lucide React Icons]
+    end
+    
+    subgraph "Backend & APIs"
+        API[Next.js API Routes]
+        OCT[Octokit GitHub API]
+        CLK[Clerk Authentication]
+        VA[Vercel Analytics]
+    end
+    
+    subgraph "Content Management"
+        TIP[TipTap Editor]
+        MD[Markdown Processing]
+        GM[gray-matter]
+        RM[react-markdown]
+    end
+    
+    subgraph "Content Storage"
+        GH[GitHub Repository]
+        BP[Blog Posts .md]
+        PR[Projects .md]
+    end
+    
+    subgraph "Development Tools"
+        BUN[Bun Runtime]
+        ESL[ESLint]
+        ZOD[Zod Validation]
+    end
+    
+    UI --> API
+    API --> OCT
+    API --> CLK
+    API --> VA
+    TIP --> MD
+    MD --> GM
+    MD --> RM
+    OCT --> GH
+    GH --> BP
+    GH --> PR
+    UI --> TIP
+    BUN --> UI
+    ESL --> UI
+    ZOD --> API
+```
+
+### System Architecture Overview
+
+```mermaid
+graph LR
+    subgraph "Client Layer"
+        U[User Browser]
+        A[Admin Dashboard]
+    end
+    
+    subgraph "Application Layer"
+        N[Next.js App Router]
+        C[Components]
+        U2[Utils]
+    end
+    
+    subgraph "Service Layer"
+        AUTH[Clerk Auth]
+        CMS[GitHub CMS]
+        EDIT[TipTap Editor]
+    end
+    
+    subgraph "Data Layer"
+        GH[(GitHub Repo)]
+        MD[Markdown Files]
+        STATIC[Static Assets]
+    end
+    
+    subgraph "Infrastructure"
+        V[Vercel Platform]
+        CDN[CDN]
+        ANALYTICS[Analytics]
+    end
+    
+    U --> N
+    A --> N
+    N --> C
+    N --> U2
+    N --> AUTH
+    N --> CMS
+    N --> EDIT
+    CMS --> GH
+    GH --> MD
+    GH --> STATIC
+    N --> V
+    V --> CDN
+    V --> ANALYTICS
+```
 
 ## Project Structure
 
@@ -123,6 +283,71 @@ LICENSE           # MIT License file
 *   **`app/utils/`:**  Contains helper functions for fetching blog posts and projects, truncating text, and other utilities.
 *   **`public/Bposts/` and `public/projects/`:** These directories store the Markdown files that contain the content for blog posts and projects, respectively.
 *   **`lib/`:** Contains helper functions related to metadata and overall utility functions used throughout the app.
+
+### Data Flow Architecture
+
+```mermaid
+flowchart TD
+    subgraph "Content Creation"
+        A[Admin User] --> B[Admin Dashboard]
+        B --> C[TipTap Editor]
+        C --> D[Markdown Conversion]
+    end
+    
+    subgraph "Content Storage"
+        D --> E[GitHub API via Octokit]
+        E --> F[GitHub Repository]
+        F --> G[public/Bposts/]
+        F --> H[public/projects/]
+    end
+    
+    subgraph "Content Delivery"
+        G --> I[Next.js App Router]
+        H --> I
+        I --> J[gray-matter Parser]
+        J --> K[react-markdown Renderer]
+        K --> L[User Interface]
+    end
+    
+    subgraph "Authentication Flow"
+        M[User] --> N[Clerk Auth]
+        N --> O[Admin Access Control]
+        O --> B
+    end
+    
+    subgraph "Analytics & Monitoring"
+        L --> P[Vercel Analytics]
+        F --> Q[GitHub Webhooks]
+    end
+```
+
+### Component Interaction Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant P as Page Component
+    participant C as Card Components
+    participant U2 as Utils
+    participant A as API Routes
+    participant G as GitHub
+    participant M as Markdown Processor
+    
+    U->>P: Visit Blog/Projects Page
+    P->>U2: Fetch Content Data
+    U2->>A: API Request
+    A->>G: Fetch Markdown Files
+    G->>A: Return File Content
+    A->>U2: Processed Data
+    U2->>P: Structured Content
+    P->>C: Render Cards
+    C->>U: Display Content
+    
+    U->>P: Click on Card
+    P->>M: Process Markdown
+    M->>P: Rendered HTML
+    P->>U: Display Full Content
+```
 
 ## Getting Started (Local Development)
 
@@ -224,6 +449,70 @@ The admin interface is available at `/admin` and provides a comprehensive conten
 * **GitHub as CMS:** Uses Octokit to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
 * **Real-time Preview:** See changes as you type with live preview functionality.
 * **Markdown Support:** Full Markdown editing with syntax highlighting and formatting tools.
+
+### Development & Deployment Workflow
+
+```mermaid
+graph LR
+    subgraph "Development"
+        A[Local Development] --> B[Code Changes]
+        B --> C[Content Updates]
+        C --> D[Admin Dashboard]
+        D --> E[GitHub CMS]
+    end
+    
+    subgraph "Testing"
+        E --> F[Local Testing]
+        F --> G[Code Review]
+        G --> H[Quality Checks]
+    end
+    
+    subgraph "Deployment"
+        H --> I[Git Push]
+        I --> J[Vercel Build]
+        J --> K[Production Deploy]
+        K --> L[CDN Distribution]
+    end
+    
+    subgraph "Monitoring"
+        L --> M[Analytics]
+        M --> N[Performance Monitoring]
+        N --> O[User Feedback]
+        O --> A
+    end
+```
+
+### Content Management Workflow
+
+```mermaid
+flowchart TD
+    subgraph "Content Creation"
+        A[Admin Login] --> B[Access Dashboard]
+        B --> C[Choose Content Type]
+        C --> D[Blog Post]
+        C --> E[Project]
+    end
+    
+    subgraph "Editing Process"
+        D --> F[TipTap Editor]
+        E --> F
+        F --> G[Live Preview]
+        G --> H[Save Changes]
+    end
+    
+    subgraph "Publishing"
+        H --> I[GitHub API]
+        I --> J[Create/Update File]
+        J --> K[Commit to Repository]
+        K --> L[Trigger Build]
+    end
+    
+    subgraph "Live Site"
+        L --> M[Vercel Deployment]
+        M --> N[Content Available]
+        N --> O[User Access]
+    end
+```
 
 ## Scripts
 
