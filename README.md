@@ -44,14 +44,20 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Accessibility:**  Built with accessibility in mind, including semantic HTML and ARIA attributes where appropriate.
 *   **Analytics:**  Integrated with Vercel Analytics for basic, privacy-respecting website usage tracking.
 *   **PWA (Progressive Web App):**  The site is installable as a PWA on supported devices.
+*   **Admin Dashboard:**  Full-featured content management system with inline editing capabilities.
+*   **Authentication:**  Secure admin access using Clerk authentication.
 
 ## Technologies Used
 
 *   **Next.js 15:**  A React framework for building server-rendered and statically generated web applications.
-*   **React:**  A JavaScript library for building user interfaces.
-*   **Tailwind CSS:**  A utility-first CSS framework for rapidly building custom designs.
-*   **Shadcn/ui:** A collection of re-usable components built on top of Radix UI and Tailwind CSS. (Although, custom components are heavily used instead of Shadcn/ui components.)
+*   **React 19:**  A JavaScript library for building user interfaces.
+*   **Bun:**  Fast JavaScript runtime and package manager for development and production.
+*   **Tailwind CSS 4:**  A utility-first CSS framework for rapidly building custom designs.
+*   **Shadcn/ui:** A collection of re-usable components built on top of Radix UI and Tailwind CSS.
 *   **Lucide React:**  A library of beautifully designed SVG icons.
+*   **Clerk:**  Authentication and user management for the admin dashboard.
+*   **Octokit:**  GitHub API client for content management via GitHub CMS.
+*   **TipTap:**  Rich text editor for inline content editing in the admin dashboard.
 *   **gray-matter:**  A library for parsing front matter in Markdown files.
 *   **react-markdown:**  A React component for rendering Markdown.
 *   **remark-gfm:**  A remark plugin to support GitHub Flavored Markdown (tables, strikethrough, etc.).
@@ -60,6 +66,8 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **date-fns:**  A modern JavaScript date utility library.
 *   **Vercel Analytics:**  For privacy-focused website analytics.
 *   **Server-Only:** Used to safeguard server-only code from being exposed on client-side.
+*   **Prism.js:**  Syntax highlighting for code blocks.
+*   **Zod:**  TypeScript-first schema validation.
 
 ## Project Structure
 
@@ -77,6 +85,13 @@ app/
 │       ├── [id]/      # Dynamic route for individual project pages
 │       │   └── page.js
 │       └── page.js   # Project listing page
+├── admin/             # Admin dashboard routes and components
+│   ├── components/    # Admin-specific components
+│   ├── hooks/         # Custom hooks for admin functionality
+│   ├── inline-editor/ # TipTap editor components
+│   ├── layout.js      # Admin layout with authentication
+│   └── page.js        # Main admin dashboard page
+├── api/               # API routes for admin functionality
 ├── about/              # About page
 ├── components/         # Reusable React components
 ├── contact/            # Contact page
@@ -103,6 +118,7 @@ LICENSE           # MIT License file
 
 *   **`app/`:**  Contains all the routes, components, and logic for the application.  The structure uses Next.js's App Router.
 *   **`app/(blogs)/` and `app/(projects)/`:** These directories organize the blog and project sections, using parentheses to group related routes without affecting the URL structure.
+*   **`app/admin/`:**  Contains the admin dashboard with authentication, inline editing capabilities, and content management features.
 *   **`app/components/`:**  Houses reusable UI components like `BlogCard`, `ProjectCard`, `Socials`, `BackButton`, etc.
 *   **`app/utils/`:**  Contains helper functions for fetching blog posts and projects, truncating text, and other utilities.
 *   **`public/Bposts/` and `public/projects/`:** These directories store the Markdown files that contain the content for blog posts and projects, respectively.
@@ -113,7 +129,7 @@ LICENSE           # MIT License file
 ### Prerequisites
 
 *   **Node.js:**  Version 18 or later.
-*   **npm:**  (or yarn, or pnpm) - Node.js package manager.
+*   **Bun:**  Version 1.0 or later (recommended) or npm/yarn/pnpm.
 
 ### Installation
 
@@ -127,6 +143,8 @@ LICENSE           # MIT License file
 2.  **Install dependencies:**
 
     ```bash
+    bun install
+    # OR
     npm install
     # OR
     yarn install
@@ -139,6 +157,8 @@ LICENSE           # MIT License file
 1.  **Start the development server:**
 
     ```bash
+    bun dev
+    # OR
     npm run dev
     # OR
     yarn dev
@@ -184,13 +204,33 @@ LICENSE           # MIT License file
 
 We secure the `/admin` area using Clerk. Clerk handles sign-in, session management, and sign-out. Only the user matching the `ADMIN_USER_ID` environment variable can access the admin dashboard.
 
+To set up authentication:
+
+1. Create a Clerk account and application
+2. Add your Clerk environment variables to `.env.local`:
+   ```
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_publishable_key
+   CLERK_SECRET_KEY=your_secret_key
+   ADMIN_USER_ID=your_user_id
+   ```
+
 ## Admin Dashboard
 
-The admin interface is available at `/admin` and lets you manage your blog posts and projects directly through your GitHub repository:
+The admin interface is available at `/admin` and provides a comprehensive content management system:
+
 * **List & Search:** View, filter, and search all existing blog and project entries.
-* **Inline Editing:** Edit content in the browser using an inline markdown editor.
+* **Inline Editing:** Edit content in the browser using a rich text editor powered by TipTap.
 * **Create & Delete:** Add new posts/projects or remove existing ones.
-* **GitHub as CMS:** Uses Octokit under the hood to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
+* **GitHub as CMS:** Uses Octokit to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
+* **Real-time Preview:** See changes as you type with live preview functionality.
+* **Markdown Support:** Full Markdown editing with syntax highlighting and formatting tools.
+
+## Scripts
+
+*   `bun dev` - Start the development server
+*   `bun build` - Build the application for production
+*   `bun start` - Start the production server
+*   `bun lint` - Run ESLint to check code quality
 
 ## License
 
