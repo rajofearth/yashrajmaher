@@ -47,64 +47,7 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Admin Dashboard:**  Full-featured content management system with inline editing capabilities.
 *   **Authentication:**  Secure admin access using Clerk authentication.
 
-### Feature Overview
 
-```mermaid
-mindmap
-  root((Personal Website))
-    Frontend
-      Responsive Design
-        Mobile First
-        Tablet Optimized
-        Desktop Experience
-      Modern UI/UX
-        Retro-futuristic Theme
-        Smooth Animations
-        Interactive Elements
-      PWA Features
-        Installable
-        Offline Support
-        App-like Experience
-    Content Management
-      Blog System
-        Markdown Support
-        Syntax Highlighting
-        Search Functionality
-      Project Showcase
-        Case Studies
-        Live Demos
-        Code Examples
-      Admin Dashboard
-        Inline Editing
-        Real-time Preview
-        Content Organization
-    Technical Features
-      SEO Optimization
-        Dynamic Metadata
-        Structured Data
-        Performance Metrics
-      Analytics
-        Privacy-focused
-        User Insights
-        Performance Monitoring
-      Security
-        Authentication
-        Access Control
-        Data Protection
-    Development
-      Modern Stack
-        Next.js 15
-        React 19
-        Tailwind CSS 4
-      Performance
-        Fast Loading
-        Optimized Assets
-        CDN Distribution
-      Maintainability
-        Clean Code
-        Type Safety
-        Documentation
-```
 
 ## Technologies Used
 
@@ -321,33 +264,7 @@ flowchart TD
     end
 ```
 
-### Component Interaction Flow
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant P as Page Component
-    participant C as Card Components
-    participant U2 as Utils
-    participant A as API Routes
-    participant G as GitHub
-    participant M as Markdown Processor
-    
-    U->>P: Visit Blog/Projects Page
-    P->>U2: Fetch Content Data
-    U2->>A: API Request
-    A->>G: Fetch Markdown Files
-    G->>A: Return File Content
-    A->>U2: Processed Data
-    U2->>P: Structured Content
-    P->>C: Render Cards
-    C->>U: Display Content
-    
-    U->>P: Click on Card
-    P->>M: Process Markdown
-    M->>P: Rendered HTML
-    P->>U: Display Full Content
-```
 
 ## Getting Started (Local Development)
 
@@ -450,68 +367,25 @@ The admin interface is available at `/admin` and provides a comprehensive conten
 * **Real-time Preview:** See changes as you type with live preview functionality.
 * **Markdown Support:** Full Markdown editing with syntax highlighting and formatting tools.
 
-### Development & Deployment Workflow
 
-```mermaid
-graph LR
-    subgraph "Development"
-        A[Local Development] --> B[Code Changes]
-        B --> C[Content Updates]
-        C --> D[Admin Dashboard]
-        D --> E[GitHub CMS]
-    end
-    
-    subgraph "Testing"
-        E --> F[Local Testing]
-        F --> G[Code Review]
-        G --> H[Quality Checks]
-    end
-    
-    subgraph "Deployment"
-        H --> I[Git Push]
-        I --> J[Vercel Build]
-        J --> K[Production Deploy]
-        K --> L[CDN Distribution]
-    end
-    
-    subgraph "Monitoring"
-        L --> M[Analytics]
-        M --> N[Performance Monitoring]
-        N --> O[User Feedback]
-        O --> A
-    end
-```
 
 ### Content Management Workflow
 
 ```mermaid
 flowchart TD
-    subgraph "Content Creation"
-        A[Admin Login] --> B[Access Dashboard]
-        B --> C[Choose Content Type]
-        C --> D[Blog Post]
-        C --> E[Project]
-    end
-    
-    subgraph "Editing Process"
-        D --> F[TipTap Editor]
-        E --> F
-        F --> G[Live Preview]
-        G --> H[Save Changes]
-    end
-    
-    subgraph "Publishing"
-        H --> I[GitHub API]
-        I --> J[Create/Update File]
-        J --> K[Commit to Repository]
-        K --> L[Trigger Build]
-    end
-    
-    subgraph "Live Site"
-        L --> M[Vercel Deployment]
-        M --> N[Content Available]
-        N --> O[User Access]
-    end
+    A[Admin Login] --> B[Access Dashboard]
+    B --> C[Choose Content Type]
+    C --> D[Blog Post]
+    C --> E[Project]
+    D --> F[TipTap Editor]
+    E --> F
+    F --> G[Live Preview]
+    G --> H[Save Changes]
+    H --> I[GitHub API]
+    I --> J[Create/Update File]
+    J --> K[Commit to Repository]
+    K --> L[Vercel Deployment]
+    L --> M[Content Live]
 ```
 
 ## Scripts
