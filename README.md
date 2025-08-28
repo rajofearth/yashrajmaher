@@ -60,14 +60,7 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Clerk:**  Authentication and user management for the admin dashboard.
 *   **Octokit:**  GitHub API client for content management via GitHub CMS.
 *   **TipTap:**  Rich text editor for inline content editing in the admin dashboard.
-*   **gray-matter:**  A library for parsing front matter in Markdown files.
-*   **react-markdown:**  A React component for rendering Markdown.
-*   **remark-gfm:**  A remark plugin to support GitHub Flavored Markdown (tables, strikethrough, etc.).
-*   **remark-breaks:** A remark plugin to convert newlines into `<br>` tags.
-*   **rehype-raw:**  A rehype plugin to allow raw HTML within Markdown.
-*   **date-fns:**  A modern JavaScript date utility library.
 *   **Vercel Analytics:**  For privacy-focused website analytics.
-*   **Server-Only:** Used to safeguard server-only code from being exposed on client-side.
 *   **Prism.js:**  Syntax highlighting for code blocks.
 *   **Zod:**  TypeScript-first schema validation.
 
