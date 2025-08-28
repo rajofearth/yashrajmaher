@@ -245,15 +245,24 @@ flowchart TD
         K --> L[User Interface]
     end
     
+    subgraph "User Access"
+        M[Regular User] --> N[Website Visit]
+        N --> O[Browse Content]
+        O --> P[Read Blog Posts]
+        O --> Q[View Projects]
+        P --> L
+        Q --> L
+    end
+    
     subgraph "Authentication Flow"
-        M[User] --> N[Clerk Auth]
-        N --> O[Admin Access Control]
-        O --> B
+        R[Admin User] --> S[Clerk Auth]
+        S --> T[Admin Access Control]
+        T --> B
     end
     
     subgraph "Analytics & Monitoring"
-        L --> P[Vercel Analytics]
-        F --> Q[GitHub Webhooks]
+        L --> U[Vercel Analytics]
+        F --> V[GitHub Webhooks]
     end
 ```
 
@@ -366,19 +375,28 @@ The admin interface is available at `/admin` and provides a comprehensive conten
 
 ```mermaid
 flowchart TD
-    A[Admin Login] --> B[Access Dashboard]
-    B --> C[Choose Content Type]
-    C --> D[Blog Post]
-    C --> E[Project]
-    D --> F[TipTap Editor]
-    E --> F
-    F --> G[Live Preview]
-    G --> H[Save Changes]
-    H --> I[GitHub API]
-    I --> J[Create/Update File]
-    J --> K[Commit to Repository]
-    K --> L[Vercel Deployment]
-    L --> M[Content Live]
+    subgraph "Admin Workflow"
+        A[Admin Login] --> B[Access Dashboard]
+        B --> C[Choose Content Type]
+        C --> D[Blog Post]
+        C --> E[Project]
+        D --> F[TipTap Editor]
+        E --> F
+        F --> G[Live Preview]
+        G --> H[Save Changes]
+        H --> I[GitHub API]
+        I --> J[Create/Update File]
+        J --> K[Commit to Repository]
+        K --> L[Vercel Deployment]
+        L --> M[Content Live]
+    end
+    
+    subgraph "User Access"
+        N[Regular User] --> O[Visit Website]
+        O --> P[Browse Blog/Projects]
+        P --> Q[Read Content]
+        M --> Q
+    end
 ```
 
 ## Scripts
