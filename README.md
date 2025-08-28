@@ -47,6 +47,8 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Admin Dashboard:**  Full-featured content management system with inline editing capabilities.
 *   **Authentication:**  Secure admin access using Clerk authentication.
 
+
+
 ## Technologies Used
 
 *   **Next.js 15:**  A React framework for building server-rendered and statically generated web applications.
@@ -58,16 +60,110 @@ This website is my digital home, where I blend my passion for technology, creati
 *   **Clerk:**  Authentication and user management for the admin dashboard.
 *   **Octokit:**  GitHub API client for content management via GitHub CMS.
 *   **TipTap:**  Rich text editor for inline content editing in the admin dashboard.
-*   **gray-matter:**  A library for parsing front matter in Markdown files.
-*   **react-markdown:**  A React component for rendering Markdown.
-*   **remark-gfm:**  A remark plugin to support GitHub Flavored Markdown (tables, strikethrough, etc.).
-*   **remark-breaks:** A remark plugin to convert newlines into `<br>` tags.
-*   **rehype-raw:**  A rehype plugin to allow raw HTML within Markdown.
-*   **date-fns:**  A modern JavaScript date utility library.
 *   **Vercel Analytics:**  For privacy-focused website analytics.
-*   **Server-Only:** Used to safeguard server-only code from being exposed on client-side.
 *   **Prism.js:**  Syntax highlighting for code blocks.
 *   **Zod:**  TypeScript-first schema validation.
+
+### Tech Stack Architecture
+
+```mermaid
+graph TB
+    subgraph "Frontend"
+        UI[Next.js 15 + React 19]
+        TW[Tailwind CSS 4]
+        SH[Shadcn/ui Components]
+        IC[Lucide React Icons]
+    end
+    
+    subgraph "Backend & APIs"
+        API[Next.js API Routes]
+        OCT[Octokit GitHub API]
+        CLK[Clerk Authentication]
+        VA[Vercel Analytics]
+    end
+    
+    subgraph "Content Management"
+        TIP[TipTap Editor]
+        MD[Markdown Processing]
+        GM[gray-matter]
+        RM[react-markdown]
+    end
+    
+    subgraph "Content Storage"
+        GH[GitHub Repository]
+        BP[Blog Posts .md]
+        PR[Projects .md]
+    end
+    
+    subgraph "Development Tools"
+        BUN[Bun Runtime]
+        ESL[ESLint]
+        ZOD[Zod Validation]
+    end
+    
+    UI --> API
+    API --> OCT
+    API --> CLK
+    API --> VA
+    TIP --> MD
+    MD --> GM
+    MD --> RM
+    OCT --> GH
+    GH --> BP
+    GH --> PR
+    UI --> TIP
+    BUN --> UI
+    ESL --> UI
+    ZOD --> API
+```
+
+### System Architecture Overview
+
+```mermaid
+graph LR
+    subgraph "Client Layer"
+        U[User Browser]
+        A[Admin Dashboard]
+    end
+    
+    subgraph "Application Layer"
+        N[Next.js App Router]
+        C[Components]
+        U2[Utils]
+    end
+    
+    subgraph "Service Layer"
+        AUTH[Clerk Auth]
+        CMS[GitHub CMS]
+        EDIT[TipTap Editor]
+    end
+    
+    subgraph "Data Layer"
+        GH[(GitHub Repo)]
+        MD[Markdown Files]
+        STATIC[Static Assets]
+    end
+    
+    subgraph "Infrastructure"
+        V[Vercel Platform]
+        CDN[CDN]
+        ANALYTICS[Analytics]
+    end
+    
+    U --> N
+    A --> N
+    N --> C
+    N --> U2
+    N --> AUTH
+    N --> CMS
+    N --> EDIT
+    CMS --> GH
+    GH --> MD
+    GH --> STATIC
+    N --> V
+    V --> CDN
+    V --> ANALYTICS
+```
 
 ## Project Structure
 
@@ -123,6 +219,54 @@ LICENSE           # MIT License file
 *   **`app/utils/`:**  Contains helper functions for fetching blog posts and projects, truncating text, and other utilities.
 *   **`public/Bposts/` and `public/projects/`:** These directories store the Markdown files that contain the content for blog posts and projects, respectively.
 *   **`lib/`:** Contains helper functions related to metadata and overall utility functions used throughout the app.
+
+### Data Flow Architecture
+
+```mermaid
+flowchart TD
+    subgraph "Content Creation"
+        A[Admin User] --> B[Admin Dashboard]
+        B --> C[TipTap Editor]
+        C --> D[Markdown Conversion]
+    end
+    
+    subgraph "Content Storage"
+        D --> E[GitHub API via Octokit]
+        E --> F[GitHub Repository]
+        F --> G[public/Bposts/]
+        F --> H[public/projects/]
+    end
+    
+    subgraph "Content Delivery"
+        G --> I[Next.js App Router]
+        H --> I
+        I --> J[gray-matter Parser]
+        J --> K[react-markdown Renderer]
+        K --> L[User Interface]
+    end
+    
+    subgraph "User Access"
+        M[Regular User] --> N[Website Visit]
+        N --> O[Browse Content]
+        O --> P[Read Blog Posts]
+        O --> Q[View Projects]
+        P --> L
+        Q --> L
+    end
+    
+    subgraph "Authentication Flow"
+        R[Admin User] --> S[Clerk Auth]
+        S --> T[Admin Access Control]
+        T --> B
+    end
+    
+    subgraph "Analytics & Monitoring"
+        L --> U[Vercel Analytics]
+        F --> V[GitHub Webhooks]
+    end
+```
+
+
 
 ## Getting Started (Local Development)
 
@@ -224,6 +368,36 @@ The admin interface is available at `/admin` and provides a comprehensive conten
 * **GitHub as CMS:** Uses Octokit to read, create, update, and delete Markdown files in `public/Bposts` and `public/projects`, committing changes directly to your GitHub repo.
 * **Real-time Preview:** See changes as you type with live preview functionality.
 * **Markdown Support:** Full Markdown editing with syntax highlighting and formatting tools.
+
+
+
+### Content Management Workflow
+
+```mermaid
+flowchart TD
+    subgraph "Admin Workflow"
+        A[Admin Login] --> B[Access Dashboard]
+        B --> C[Choose Content Type]
+        C --> D[Blog Post]
+        C --> E[Project]
+        D --> F[TipTap Editor]
+        E --> F
+        F --> G[Live Preview]
+        G --> H[Save Changes]
+        H --> I[GitHub API]
+        I --> J[Create/Update File]
+        J --> K[Commit to Repository]
+        K --> L[Vercel Deployment]
+        L --> M[Content Live]
+    end
+    
+    subgraph "User Access"
+        N[Regular User] --> O[Visit Website]
+        O --> P[Browse Blog/Projects]
+        P --> Q[Read Content]
+        M --> Q
+    end
+```
 
 ## Scripts
 
